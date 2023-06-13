@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "allthetrims",
+	"version": "${version}",
+	"name": "AllTheTrims",
+	"description": "A mod that allows any material to be a trim",
+	"authors": [
+		"Bawnorton"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "CC0-1.0",
+	"icon": "assets/allthetrims/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+          "com.bawnorton.allthetrims.AllTheTrims"
+		],
+		"client": [
+			"com.bawnorton.allthetrims.ExampleModClient"
+		]
+	},
+	"mixins": [
+		"allthetrims.mixins.json",
+		{
+			"config": "allthetrims.client.mixins.json",
+			"environment": "client"
+		}
+	],
+	"depends": {
+		"fabricloader": ">=0.14.21",
+		"minecraft": "~1.20",
+		"java": ">=17",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}

@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "com.bawnorton.allthetrims.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "plugin": "com.bawnorton.allthetrims.AllTheTrimsMixinConfigPlugin",
+  "mixins": [
+    "ArmorTrimMaterialsMixin",
+    "BuiltinRegistriesMixin",
+    "SmithingTrimRecipeMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}
