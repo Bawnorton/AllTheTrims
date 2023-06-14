@@ -19,7 +19,7 @@
           "com.bawnorton.allthetrims.AllTheTrims"
 		],
 		"client": [
-			"com.bawnorton.allthetrims.ExampleModClient"
+			"com.bawnorton.allthetrims.AllTheTrimsClient"
 		]
 	},
 	"mixins": [

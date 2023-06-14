@@ -1,12 +1,6 @@
 package com.bawnorton.allthetrims;
 
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.registry.RegistryKeys;
-import net.minecraft.text.Style;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
