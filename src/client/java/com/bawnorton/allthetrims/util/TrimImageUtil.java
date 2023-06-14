@@ -53,19 +53,25 @@ public class TrimImageUtil {
         BakedModel model = models.getModel(item);
         if(model == null) {
             AllTheTrims.LOGGER.warn("Could not find model for item " + item.getName().getString());
-            return new Color(255, 255, 255);
+            Color colour = new Color(255, 255, 255);
+            textureCache.put(item, colour);
+            return colour;
         }
 
         Sprite sprite = model.getParticleSprite();
         if(sprite == null) {
             AllTheTrims.LOGGER.warn("Could not find sprite for item " + item.getName().getString());
-            return new Color(255, 255, 255);
+            Color colour = new Color(255, 255, 255);
+            textureCache.put(item, colour);
+            return colour;
         }
 
         SpriteContents content = sprite.getContents();
         if (content.getDistinctFrameCount().count() <= 0) {
-            AllTheTrims.LOGGER.warn("Could not find sprite content for item " + item.getName().getString());
-            return new Color(255, 255, 255);
+            AllTheTrims.LOGGER.warn("Could not find sprite contents for item " + item.getName().getString());
+            Color colour = new Color(255, 255, 255);
+            textureCache.put(item, colour);
+            return colour;
         }
 
         long[] colorVals = new long[]{0, 0, 0, 0};

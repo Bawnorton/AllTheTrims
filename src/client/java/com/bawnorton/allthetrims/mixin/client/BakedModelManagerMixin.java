@@ -17,10 +17,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Mixin(BakedModelManager.class)
 public abstract class BakedModelManagerMixin {
@@ -37,6 +34,10 @@ public abstract class BakedModelManagerMixin {
             try (BufferedReader reader = resource.getReader()) {
                 ArmourModel model = JsonRepresentable.fromJson(reader, ArmourModel.class);
                 List<ArmourModel.Override> overrides = model.overrides;
+                if(overrides == null) {
+                    overrides = new ArrayList<>();
+                    model.overrides = overrides;
+                }
                 int max = (Registries.ITEM.getIds().size() + 10) * 10;
                 float index = 1f / max;
                 for (Item item : Registries.ITEM) {
@@ -54,7 +55,7 @@ public abstract class BakedModelManagerMixin {
                     }
                     Identifier itemId = Registries.ITEM.getId(item);
                     Map<String, Float> predicate = Map.of("trim_type", index);
-                    overrides.add(new ArmourModel.Override(itemId.getNamespace() + ":item/" + armourId.getPath() + "_" + itemId.getPath() + "_trim", predicate));
+                    overrides.add(new ArmourModel.Override(armourId.getNamespace() + ":item/" + armourId.getPath() + "_" + itemId.getPath() + "_trim", predicate));
                     index += 1f / max;
 
                     String overrideResourceString;
@@ -63,22 +64,22 @@ public abstract class BakedModelManagerMixin {
                                 {
                                    "parent": "minecraft:item/generated",
                                    "textures": {
-                                     "layer0": "minecraft:item/%s",
+                                     "layer0": "%s:item/%s",
                                      "layer1": "minecraft:item/%s_overlay",
                                      "layer2": "minecraft:trims/items/%s_trim_quartz"
                                    }
                                  }
-                                """.formatted(armourId.getPath(), armourId.getPath(), armourType);
+                                """.formatted(armourId.getNamespace(), armourId.getPath(), armourId.getPath(), armourType);
                     } else {
                         overrideResourceString = """
                                 {
                                   "parent": "minecraft:item/generated",
                                   "textures": {
-                                    "layer0": "minecraft:item/%s",
+                                    "layer0": "%s:item/%s",
                                     "layer1": "minecraft:trims/items/%s_trim_quartz"
                                   }
                                 }
-                                """.formatted(armourId.getPath(), armourType);
+                                """.formatted(armourId.getNamespace(), armourId.getPath(), armourType);
                     }
                     Identifier overrideResourceModelId = new Identifier(armourId.getNamespace(), "models/item/" + armourId.getPath() + "_" + itemId.getPath() + "_trim.json");
                     Resource overrideResource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(overrideResourceString, "UTF-8"));
