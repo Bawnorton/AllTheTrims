@@ -1,10 +1,13 @@
 package com.bawnorton.allthetrims.mixin;
 
+import com.bawnorton.allthetrims.AllTheTrims;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.item.Item;
+import net.minecraft.item.trim.ArmorTrimMaterials;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryLoader;
 import net.minecraft.resource.Resource;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.apache.commons.io.IOUtils;
 import org.spongepowered.asm.mixin.Debug;
@@ -29,22 +32,22 @@ public abstract class RegistryLoaderMixin {
         int max = (Registries.ITEM.getIds().size() + 10) * 10; // index can't be greater than 1 and 0.1 to 1 are reserved for vanilla, this reduces the chance of a colision
         float index = 1f / max;
         for (Item item : Registries.ITEM) {
+            if(AllTheTrims.isVanilla(item)) continue;
             Identifier itemId = Registries.ITEM.getId(item);
             String resourceString =
                     """
                             {
-                              "asset_name": "allthetrims_%s",
+                              "asset_name": "allthetrims_blank_trim",
                               "description": {
                                 "color": "%s",
-                                "translate": "trim_material.allthetrims.%s"
+                                "translate": "%s %s"
                               },
                               "ingredient": "%s",
                               "item_model_index": %f
                             }
                     """.formatted(
-                            item.getTranslationKey().replace(".", "_"),
-                            "#FF0000",
-                            item.getTranslationKey(),
+                            "#FFFFFF",
+                            item.getName().getString(), Text.translatable("text.allthetrims.material").getString(),
                             itemId,
                             index
                       );

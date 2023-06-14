@@ -26,6 +26,7 @@ loom {
 		}
 	}
 
+	accessWidenerPath = file("src/main/resources/allthetrims.accesswidener")
 }
 
 dependencies {
