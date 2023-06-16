@@ -1,7 +1,7 @@
 package com.bawnorton.allthetrims.mixin.client;
 
 import com.bawnorton.allthetrims.AllTheTrims;
-import com.bawnorton.allthetrims.json.ArmourModel;
+import com.bawnorton.allthetrims.json.ArmourModelJson;
 import com.bawnorton.allthetrims.json.JsonRepresentable;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.render.model.BakedModelManager;
@@ -32,8 +32,8 @@ public abstract class BakedModelManagerMixin {
             Identifier resourceId = new Identifier(armourId.getNamespace(), "models/item/" + armourId.getPath() + ".json");
             Resource resource = original.get(resourceId);
             try (BufferedReader reader = resource.getReader()) {
-                ArmourModel model = JsonRepresentable.fromJson(reader, ArmourModel.class);
-                List<ArmourModel.Override> overrides = model.overrides;
+                ArmourModelJson model = JsonRepresentable.fromJson(reader, ArmourModelJson.class);
+                List<ArmourModelJson.Override> overrides = model.overrides;
                 if(overrides == null) {
                     overrides = new ArrayList<>();
                     model.overrides = overrides;
@@ -55,7 +55,7 @@ public abstract class BakedModelManagerMixin {
                     }
                     Identifier itemId = Registries.ITEM.getId(item);
                     Map<String, Float> predicate = Map.of("trim_type", index);
-                    overrides.add(new ArmourModel.Override(armourId.getNamespace() + ":item/" + armourId.getPath() + "_" + itemId.getPath() + "_trim", predicate));
+                    overrides.add(new ArmourModelJson.Override(armourId.getNamespace() + ":item/" + armourId.getPath() + "-att-" + itemId.getPath() + "_trim", predicate));
                     index += 1f / max;
 
                     String overrideResourceString;
@@ -81,7 +81,7 @@ public abstract class BakedModelManagerMixin {
                                 }
                                 """.formatted(armourId.getNamespace(), armourId.getPath(), armourType);
                     }
-                    Identifier overrideResourceModelId = new Identifier(armourId.getNamespace(), "models/item/" + armourId.getPath() + "_" + itemId.getPath() + "_trim.json");
+                    Identifier overrideResourceModelId = new Identifier(armourId.getNamespace(), "models/item/" + armourId.getPath() + "-att-" + itemId.getPath() + "_trim.json");
                     Resource overrideResource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(overrideResourceString, "UTF-8"));
                     original.put(overrideResourceModelId, overrideResource);
                 }

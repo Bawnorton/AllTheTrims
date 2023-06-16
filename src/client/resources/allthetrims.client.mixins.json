@@ -6,12 +6,12 @@
     "ArmorFeatureRendererMixin",
     "ArmorTrimMaterialMixin",
     "AtlasLoaderMixin",
+    "BakedModelManagerMixin",
     "PalettedPermutationsAtlasSourceMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "mixins": [
-    "BakedModelManagerMixin"
   ]
 }

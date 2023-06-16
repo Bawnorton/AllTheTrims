@@ -29,7 +29,6 @@ public abstract class SimpleRegistryMixin {
             tagEntries = new HashMap<>(tagEntries);
             tagEntries.put((TagKey<T>) ItemTags.TRIMMABLE_ARMOR, Registries.ITEM.stream().filter(item -> item instanceof ArmorItem).map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item)).toList());
             tagEntries = Collections.unmodifiableMap(tagEntries);
-            System.out.println(tagEntries);
         }
         return tagEntries;
     }

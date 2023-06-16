@@ -1,9 +1,13 @@
 package com.bawnorton.allthetrims.mixin.client;
 
-import com.bawnorton.allthetrims.json.ArmorTrimAtlas;
+import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.json.AtlasJson;
 import com.bawnorton.allthetrims.json.JsonRepresentable;
+import com.bawnorton.allthetrims.util.ImageUtil;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.texture.atlas.AtlasLoader;
+import net.minecraft.item.Item;
+import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -24,13 +28,14 @@ public abstract class AtlasLoaderMixin {
             List<Resource> newResources = new ArrayList<>();
             for(Resource resource: resourceList) {
                 try(BufferedReader reader = resource.getReader()) {
-                    ArmorTrimAtlas atlas = JsonRepresentable.fromJson(reader, ArmorTrimAtlas.class);
-                    ArmorTrimAtlas.Source source = atlas.sources.get(0);
-                    Map<String, String> permuations = source.permutations;
-                    permuations.put("allthetrims_blank_trim", "trims/color_palettes/blank");
+                    AtlasJson atlas = JsonRepresentable.fromJson(reader, AtlasJson.class);
+                    AtlasJson.Source permutationSource = atlas.sources.get(0);
+                    Map<String, String> permuations = permutationSource.permutations;
+                    permuations.put("att_blank", "trims/color_palettes/blank");
                     newResources.add(new Resource(resource.getPack(), atlas::toInputStream));
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
+                } catch (RuntimeException | IOException e) {
+                    AllTheTrims.LOGGER.error("Failed to modify trim atlas: " + id);
+                    return resourceList;
                 }
             }
             resourceList = newResources;

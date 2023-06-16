@@ -1,6 +1,6 @@
 package com.bawnorton.allthetrims.mixin.client;
 
-import com.bawnorton.allthetrims.util.TrimImageUtil;
+import com.bawnorton.allthetrims.util.ImageUtil;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.item.Item;
 import net.minecraft.item.trim.ArmorTrimMaterial;
@@ -17,6 +17,6 @@ public abstract class ArmorTrimMaterialMixin {
 
     @ModifyReturnValue(method = "description", at = @At("RETURN"))
     private Text updateColour(Text original) {
-        return Text.literal(original.getString()).setStyle(original.getStyle().withColor(TrimImageUtil.getAverageColour(ingredient.value()).getRGB()));
+        return Text.literal(original.getString()).setStyle(original.getStyle().withColor(ImageUtil.getMedianColour(ingredient.value()).getRGB()));
     }
 }

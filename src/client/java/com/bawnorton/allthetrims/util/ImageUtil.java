@@ -20,20 +20,20 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-public class TrimImageUtil {
-    private static final Map<Item, Color> textureCache = new HashMap<>();
+public class ImageUtil {
+    private static final Map<Item, Color> AVERAGE_TEXTURE_COLOUR_CACHE = new HashMap<>();
 
     public static BufferedImage newBlankPalette() {
-        BufferedImage blank = new BufferedImage(8, 1, BufferedImage.TYPE_INT_RGB);
-        blank.setRGB(0, 0, 0xFFFFFF);
-        blank.setRGB(1, 0, 0xEEEEEE);
-        blank.setRGB(2, 0, 0xDDDDDD);
-        blank.setRGB(3, 0, 0xCCCCCC);
-        blank.setRGB(4, 0, 0xBBBBBB);
-        blank.setRGB(5, 0, 0xAAAAAA);
-        blank.setRGB(6, 0, 0x999999);
-        blank.setRGB(7, 0, 0x888888);
-        return blank;
+        return newColouredPalette(new Color(255, 255, 255));
+    }
+
+    public static BufferedImage newColouredPalette(Color colour) {
+        BufferedImage palette = new BufferedImage(8, 1, BufferedImage.TYPE_INT_RGB);
+        for (int x = 0; x < 8; x++) {
+            palette.setRGB(x, 0, colour.getRGB());
+            colour = new Color(Math.max(colour.getRed() - 0x5, 0), Math.max(colour.getGreen() - 0x5, 0), Math.max(colour.getBlue() - 0x5, 0));
+        }
+        return palette;
     }
 
     public static InputStream toInputStream(BufferedImage image) {
@@ -46,31 +46,31 @@ public class TrimImageUtil {
         return new ByteArrayInputStream(baos.toByteArray());
     }
 
-    public static Color getAverageColour(Item item) {
-        if(textureCache.containsKey(item)) return textureCache.get(item);
+    public static Color getMedianColour(Item item) {
+        if (AVERAGE_TEXTURE_COLOUR_CACHE.containsKey(item)) return AVERAGE_TEXTURE_COLOUR_CACHE.get(item);
         ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
         ItemModels models = itemRenderer.getModels();
         BakedModel model = models.getModel(item);
-        if(model == null) {
-            AllTheTrims.LOGGER.warn("Could not find model for item " + item.getName().getString());
+        if (model == null) {
+            AllTheTrims.LOGGER.warn("Item " + item.getName().getString() + " has no model");
             Color colour = new Color(255, 255, 255);
-            textureCache.put(item, colour);
+            AVERAGE_TEXTURE_COLOUR_CACHE.put(item, colour);
             return colour;
         }
 
         Sprite sprite = model.getParticleSprite();
-        if(sprite == null) {
-            AllTheTrims.LOGGER.warn("Could not find sprite for item " + item.getName().getString());
+        if (sprite == null) {
+            AllTheTrims.LOGGER.warn("Model of item " + item.getName().getString() + " has no particle sprite");
             Color colour = new Color(255, 255, 255);
-            textureCache.put(item, colour);
+            AVERAGE_TEXTURE_COLOUR_CACHE.put(item, colour);
             return colour;
         }
 
         SpriteContents content = sprite.getContents();
         if (content.getDistinctFrameCount().count() <= 0) {
-            AllTheTrims.LOGGER.warn("Could not find sprite contents for item " + item.getName().getString());
+            AllTheTrims.LOGGER.warn("Sprite of item " + item.getName().getString() + " has no frames");
             Color colour = new Color(255, 255, 255);
-            textureCache.put(item, colour);
+            AVERAGE_TEXTURE_COLOUR_CACHE.put(item, colour);
             return colour;
         }
 
@@ -94,8 +94,9 @@ public class TrimImageUtil {
             colorVals[i] = i != 0 ? colorVals[i] >= 235 ? 255 : colorVals[i] + 20 : colorVals[i];
         }
         int colourValue = ColorHelper.Argb.getArgb(255, (int) colorVals[1], (int) colorVals[2], (int) colorVals[3]);
-        Color colour = new Color(colourValue, true);
-        textureCache.put(item, colour);
+
+        Color colour = new Color(colourValue);
+        AVERAGE_TEXTURE_COLOUR_CACHE.put(item, colour);
         return colour;
     }
 }

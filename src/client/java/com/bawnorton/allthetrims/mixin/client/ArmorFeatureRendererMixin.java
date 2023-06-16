@@ -1,6 +1,6 @@
 package com.bawnorton.allthetrims.mixin.client;
 
-import com.bawnorton.allthetrims.util.TrimImageUtil;
+import com.bawnorton.allthetrims.util.ImageUtil;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import net.minecraft.client.render.VertexConsumerProvider;
@@ -31,7 +31,7 @@ public abstract class ArmorFeatureRendererMixin {
     private void setArmorTrimColour(Args args, @Share("trim") LocalRef<ArmorTrim> trimLocalRef) {
         ArmorTrim trim = trimLocalRef.get();
         Item material = trim.getMaterial().value().ingredient().value();
-        Color colour = TrimImageUtil.getAverageColour(material);
+        Color colour = ImageUtil.getMedianColour(material);
         args.set(4, colour.getRed() / 255f);
         args.set(5, colour.getGreen() / 255f);
         args.set(6, colour.getBlue() / 255f);

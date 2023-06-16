@@ -3,7 +3,7 @@ package com.bawnorton.allthetrims.json;
 import java.util.List;
 import java.util.Map;
 
-public class ArmourModel implements JsonRepresentable {
+public class ArmourModelJson implements JsonRepresentable {
     public String parent;
     public List<Override> overrides;
     public Map<String, String> textures;
@@ -15,7 +15,6 @@ public class ArmourModel implements JsonRepresentable {
         public Override(String model, Map<String, Float> predicate) {
             this.model = model;
             this.predicate = predicate;
-
         }
 
         public String toString() {
@@ -27,7 +26,7 @@ public class ArmourModel implements JsonRepresentable {
     }
 
     public String toString() {
-        return "ArmourModel{" +
+        return "ArmourModelJson{" +
                 "parent='" + parent + '\'' +
                 ", overrides=" + overrides +
                 ", textures=" + textures +
