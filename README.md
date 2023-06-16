@@ -1,6 +1,8 @@
 # All The Trims
 ### Literally All Of Them
 
+<img width="1770" alt="Screenshot 2023-06-16 at 1 07 23 PM" src="https://github.com/Benjamin-Norton/AllTheTrims/assets/18416784/7136a098-2701-4520-b0d6-e1c93e2f16bb">
+
 [![Modrinth](https://img.shields.io/modrinth/dt/allthetrims?color=00AF5C&label=downloads&logo=modrinth)](https://modrinth.com/mod/allthetrims)
 [![CurseForge](https://cf.way2muchnoise.eu/full_876154_downloads.svg)](https://curseforge.com/minecraft/mc-mods/all-the-trims)
 
