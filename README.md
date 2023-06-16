@@ -2,7 +2,7 @@
 ### Literally All Of Them
 
 [![Modrinth](https://img.shields.io/modrinth/dt/allthetrims?color=00AF5C&label=downloads&logo=modrinth)](https://modrinth.com/mod/allthetrims)
-[![CurseForge](https://cf.way2muchnoise.eu/full_999999_downloads.svg)](https://curseforge.com/minecraft/mc-mods/all-the-trims)
+[![CurseForge](https://cf.way2muchnoise.eu/full_876154_downloads.svg)](https://curseforge.com/minecraft/mc-mods/all-the-trims)
 
 ## Features:
 - Allows any item, including modded, to be an armour trim material.
