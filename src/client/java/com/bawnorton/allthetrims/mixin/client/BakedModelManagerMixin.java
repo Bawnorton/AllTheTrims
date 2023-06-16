@@ -34,14 +34,14 @@ public abstract class BakedModelManagerMixin {
             try (BufferedReader reader = resource.getReader()) {
                 ArmourModelJson model = JsonRepresentable.fromJson(reader, ArmourModelJson.class);
                 List<ArmourModelJson.Override> overrides = model.overrides;
-                if(overrides == null) {
+                if (overrides == null) {
                     overrides = new ArrayList<>();
                     model.overrides = overrides;
                 }
                 int max = (Registries.ITEM.getIds().size() + 10) * 10;
                 float index = 1f / max;
                 for (Item item : Registries.ITEM) {
-                    if(AllTheTrims.isVanilla(item)) continue;
+                    if (AllTheTrims.isVanilla(item)) continue;
                     String armourType = switch (armourItem.getSlotType()) {
                         case HEAD -> "helmet";
                         case CHEST -> "chestplate";

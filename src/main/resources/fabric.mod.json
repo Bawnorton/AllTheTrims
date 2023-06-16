@@ -3,7 +3,7 @@
 	"id": "allthetrims",
 	"version": "${version}",
 	"name": "AllTheTrims",
-	"description": "A mod that allows any material to be a trim",
+	"description": "A mod that allows any item to be a trim material and makes all armour trimmable.",
 	"authors": [
 		"Bawnorton"
 	],

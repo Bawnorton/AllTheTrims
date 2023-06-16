@@ -16,7 +16,7 @@ import java.util.Optional;
 public abstract class PalettedPermutationsAtlasSourceMixin {
     @ModifyExpressionValue(method = "method_48486", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ResourceManager;getResource(Lnet/minecraft/util/Identifier;)Ljava/util/Optional;"))
     private static Optional<Resource> onLoad(Optional<Resource> resource, ResourceManager resourceManager, Identifier id) {
-        if(resource.isPresent() || !id.getPath().contains("trims/color_palettes/")) return resource;
+        if (resource.isPresent() || !id.getPath().contains("trims/color_palettes/")) return resource;
         return Optional.of(new Resource(MinecraftClient.getInstance().getDefaultResourcePack(), () -> ImageUtil.toInputStream(ImageUtil.newBlankPalette())));
     }
 }

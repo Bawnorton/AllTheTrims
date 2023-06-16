@@ -1,5 +1,6 @@
 package com.bawnorton.allthetrims.mixin.client;
 
+import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.util.ImageUtil;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
@@ -31,6 +32,7 @@ public abstract class ArmorFeatureRendererMixin {
     private void setArmorTrimColour(Args args, @Share("trim") LocalRef<ArmorTrim> trimLocalRef) {
         ArmorTrim trim = trimLocalRef.get();
         Item material = trim.getMaterial().value().ingredient().value();
+        if(AllTheTrims.isVanilla(material)) return;
         Color colour = ImageUtil.getMedianColour(material);
         args.set(4, colour.getRed() / 255f);
         args.set(5, colour.getGreen() / 255f);

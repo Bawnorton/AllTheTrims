@@ -13,7 +13,9 @@ import org.spongepowered.asm.mixin.injection.At;
 
 @Mixin(ArmorTrimMaterial.class)
 public abstract class ArmorTrimMaterialMixin {
-    @Shadow @Final private RegistryEntry<Item> ingredient;
+    @Shadow
+    @Final
+    private RegistryEntry<Item> ingredient;
 
     @ModifyReturnValue(method = "description", at = @At("RETURN"))
     private Text updateColour(Text original) {

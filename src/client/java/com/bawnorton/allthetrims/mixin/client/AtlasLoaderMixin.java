@@ -3,11 +3,8 @@ package com.bawnorton.allthetrims.mixin.client;
 import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.json.AtlasJson;
 import com.bawnorton.allthetrims.json.JsonRepresentable;
-import com.bawnorton.allthetrims.util.ImageUtil;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.texture.atlas.AtlasLoader;
-import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
@@ -24,10 +21,10 @@ import java.util.Map;
 public abstract class AtlasLoaderMixin {
     @ModifyExpressionValue(method = "of", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ResourceManager;getAllResources(Lnet/minecraft/util/Identifier;)Ljava/util/List;"))
     private static List<Resource> addAllTrimMaterials(List<Resource> resourceList, ResourceManager resourceManager, Identifier id) {
-        if(id.getPath().contains("armor_trims")) {
+        if (id.getPath().contains("armor_trims")) {
             List<Resource> newResources = new ArrayList<>();
-            for(Resource resource: resourceList) {
-                try(BufferedReader reader = resource.getReader()) {
+            for (Resource resource : resourceList) {
+                try (BufferedReader reader = resource.getReader()) {
                     AtlasJson atlas = JsonRepresentable.fromJson(reader, AtlasJson.class);
                     AtlasJson.Source permutationSource = atlas.sources.get(0);
                     Map<String, String> permuations = permutationSource.permutations;

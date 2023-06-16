@@ -20,7 +20,7 @@ public abstract class SimpleRegistryMixin {
     @SuppressWarnings("unchecked")
     @ModifyVariable(method = "populateTags", at = @At("LOAD"), index = 1, argsOnly = true)
     private <T> Map<TagKey<T>, List<RegistryEntry<T>>> addAllItemsToTrimMaterialTag(Map<TagKey<T>, List<RegistryEntry<T>>> tagEntries) {
-        if(tagEntries.containsKey(ItemTags.TRIM_MATERIALS)) {
+        if (tagEntries.containsKey(ItemTags.TRIM_MATERIALS)) {
             tagEntries = new HashMap<>(tagEntries);
             tagEntries.put((TagKey<T>) ItemTags.TRIM_MATERIALS, Registries.ITEM.stream().map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item)).toList());
             tagEntries = Collections.unmodifiableMap(tagEntries);

@@ -29,9 +29,10 @@ public class ImageUtil {
 
     public static BufferedImage newColouredPalette(Color colour) {
         BufferedImage palette = new BufferedImage(8, 1, BufferedImage.TYPE_INT_RGB);
+        int fadeAmount = 0x1A;
         for (int x = 0; x < 8; x++) {
             palette.setRGB(x, 0, colour.getRGB());
-            colour = new Color(Math.max(colour.getRed() - 0x5, 0), Math.max(colour.getGreen() - 0x5, 0), Math.max(colour.getBlue() - 0x5, 0));
+            colour = new Color(Math.max(colour.getRed() - fadeAmount, 0), Math.max(colour.getGreen() - fadeAmount, 0), Math.max(colour.getBlue() - fadeAmount, 0));
         }
         return palette;
     }
@@ -79,7 +80,7 @@ public class ImageUtil {
         for (int x = 0; x < content.getWidth(); x++) {
             for (int y = 0; y < content.getHeight(); y++) {
                 int pixel = content.image.getColor(x, y);
-                int borrowedAlpha =  pixel >> 24 & 0xFF;
+                int borrowedAlpha = pixel >> 24 & 0xFF;
                 if (borrowedAlpha >= 5) {
                     colorVals[0] += borrowedAlpha;
                     colorVals[1] += (pixel & 0xFF);
@@ -91,7 +92,7 @@ public class ImageUtil {
         }
         for (int i = 0; i < colorVals.length; i++) {
             colorVals[i] = Math.round((float) colorVals[i] / size);
-            colorVals[i] = i != 0 ? colorVals[i] >= 235 ? 255 : colorVals[i] + 20 : colorVals[i];
+            colorVals[i] = colorVals[i] >= 255 ? 255 : colorVals[i];
         }
         int colourValue = ColorHelper.Argb.getArgb(255, (int) colorVals[1], (int) colorVals[2], (int) colorVals[3]);
 
