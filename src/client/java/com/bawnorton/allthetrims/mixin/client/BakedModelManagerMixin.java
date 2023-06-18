@@ -41,7 +41,7 @@ public abstract class BakedModelManagerMixin {
                 int max = (Registries.ITEM.getIds().size() + 10) * 10;
                 float index = 1f / max;
                 for (Item item : Registries.ITEM) {
-                    if (AllTheTrims.isVanilla(item)) continue;
+                    if (AllTheTrims.isUsedAsMaterial(item)) continue;
                     String armourType = switch (armourItem.getSlotType()) {
                         case HEAD -> "helmet";
                         case CHEST -> "chestplate";

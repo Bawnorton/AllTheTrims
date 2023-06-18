@@ -7,7 +7,7 @@ import java.io.BufferedReader;
 import java.io.InputStream;
 
 public interface JsonRepresentable {
-    static <T extends JsonRepresentable> T fromJson(BufferedReader reader, Class<T> clazz) {
+    static <T> T fromJson(BufferedReader reader, Class<T> clazz) {
         return new Gson().fromJson(reader, clazz);
     }
 

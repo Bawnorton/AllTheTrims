@@ -32,7 +32,7 @@ public abstract class ArmorFeatureRendererMixin {
     private void setArmorTrimColour(Args args, @Share("trim") LocalRef<ArmorTrim> trimLocalRef) {
         ArmorTrim trim = trimLocalRef.get();
         Item material = trim.getMaterial().value().ingredient().value();
-        if(AllTheTrims.isVanilla(material)) return;
+        if(AllTheTrims.isUsedAsMaterial(material)) return;
         Color colour = ImageUtil.getMedianColour(material);
         args.set(4, colour.getRed() / 255f);
         args.set(5, colour.getGreen() / 255f);

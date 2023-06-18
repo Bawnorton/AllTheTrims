@@ -1,6 +1,8 @@
 package com.bawnorton.allthetrims.mixin;
 
+import com.bawnorton.allthetrims.AllTheTrims;
 import net.minecraft.item.ArmorItem;
+import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.registry.entry.RegistryEntry;
@@ -10,10 +12,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Mixin(SimpleRegistry.class)
 public abstract class SimpleRegistryMixin {
@@ -22,13 +21,28 @@ public abstract class SimpleRegistryMixin {
     private <T> Map<TagKey<T>, List<RegistryEntry<T>>> addAllItemsToTrimMaterialTag(Map<TagKey<T>, List<RegistryEntry<T>>> tagEntries) {
         if (tagEntries.containsKey(ItemTags.TRIM_MATERIALS)) {
             tagEntries = new HashMap<>(tagEntries);
-            tagEntries.put((TagKey<T>) ItemTags.TRIM_MATERIALS, Registries.ITEM.stream().map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item)).toList());
+            List<RegistryEntry<T>> entries = new ArrayList<>(tagEntries.get(ItemTags.TRIM_MATERIALS));
+            for(RegistryEntry<T> entry: entries) {
+                if(entry.value() instanceof Item item) {
+                    AllTheTrims.addUsedAsMaterial(item);
+                }
+            }
+            entries.addAll(Registries.ITEM.stream().map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item)).toList());
+            tagEntries.put((TagKey<T>) ItemTags.TRIM_MATERIALS, entries);
             tagEntries = Collections.unmodifiableMap(tagEntries);
         }
         if (tagEntries.containsKey(ItemTags.TRIMMABLE_ARMOR)) {
             tagEntries = new HashMap<>(tagEntries);
-            tagEntries.put((TagKey<T>) ItemTags.TRIMMABLE_ARMOR, Registries.ITEM.stream().filter(item -> item instanceof ArmorItem).map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item)).toList());
+            List<RegistryEntry<T>> entries = new ArrayList<>(tagEntries.get(ItemTags.TRIMMABLE_ARMOR));
+            for(RegistryEntry<T> entry: entries) {
+                if(entry.value() instanceof Item item) {
+                    AllTheTrims.addUsedAsArmour(item);
+                }
+            }
+            entries.addAll(Registries.ITEM.stream().filter(item -> item instanceof ArmorItem).map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item)).toList());
+            tagEntries.put((TagKey<T>) ItemTags.TRIMMABLE_ARMOR, entries);
             tagEntries = Collections.unmodifiableMap(tagEntries);
+            System.out.println(tagEntries.get(ItemTags.TRIMMABLE_ARMOR));
         }
         return tagEntries;
     }

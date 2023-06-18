@@ -31,7 +31,7 @@ public abstract class RegistryLoaderMixin {
         int max = (Registries.ITEM.getIds().size() + 10) * 10; // index can't be greater than 1 and 0.1 to 1 are reserved for vanilla, this reduces the chance of a colision with vanilla or another mod
         float index = 1f / max;
         for (Item item : Registries.ITEM) {
-            if (AllTheTrims.isVanilla(item)) continue;
+            if (AllTheTrims.isUsedAsMaterial(item)) continue;
             Identifier itemId = Registries.ITEM.getId(item);
             String resourceString =
                     """
