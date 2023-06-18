@@ -45,7 +45,7 @@ public abstract class AtlasLoaderMixin {
                         if(!sourceJson.has("type")) continue;
 
                         String type = sourceJson.get("type").getAsString();
-                        if(!type.equals("palette_permutations")) continue;
+                        if(!type.equals("paletted_permutations")) continue;
 
                         JsonObject permutations = sourceJson.getAsJsonObject("permutations");
                         permutations.addProperty("att_blank", "trims/color_palettes/blank");

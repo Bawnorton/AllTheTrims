@@ -19,7 +19,7 @@ public class AllTheTrims implements ModInitializer {
         USED_MATERIALS.add(item);
     }
 
-    public static void addUsedAsArmour(Item item) {
+    public static void addUsedAsEquipment(Item item) {
         USED_ARMOUR.add(item);
     }
 
@@ -32,7 +32,7 @@ public class AllTheTrims implements ModInitializer {
 		return USED_MATERIALS.contains(item);
 	}
 
-    public static boolean isUsedAsArmour(Item item) {
+    public static boolean isUsedAsEquipment(Item item) {
         return USED_ARMOUR.contains(item);
     }
 }

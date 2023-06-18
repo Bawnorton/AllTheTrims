@@ -4,10 +4,12 @@ import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.json.ArmourModelJson;
 import com.bawnorton.allthetrims.json.JsonRepresentable;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.render.model.BakedModelManager;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.DyeableArmorItem;
+import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
@@ -23,13 +25,25 @@ import java.util.*;
 public abstract class BakedModelManagerMixin {
     @ModifyExpressionValue(method = "method_45895(Lnet/minecraft/resource/ResourceManager;)Ljava/util/Map;", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ResourceFinder;findResources(Lnet/minecraft/resource/ResourceManager;)Ljava/util/Map;"))
     private static Map<Identifier, Resource> addTrimModels(Map<Identifier, Resource> original) {
-        Set<ArmorItem> armourItems = new HashSet<>();
+        Set<Equipment> equipmentSet = new HashSet<>();
         Registries.ITEM.forEach(item -> {
-            if (item instanceof ArmorItem) armourItems.add((ArmorItem) item);
+            if (item instanceof Equipment equipment) equipmentSet.add(equipment);
         });
-        for (ArmorItem armourItem : armourItems) {
-            Identifier armourId = Registries.ITEM.getId(armourItem);
-            Identifier resourceId = new Identifier(armourId.getNamespace(), "models/item/" + armourId.getPath() + ".json");
+        for (Equipment equipment : equipmentSet) {
+            Identifier equipmentId = Registries.ITEM.getId((Item) equipment);
+            Identifier resourceId = new Identifier(equipmentId.getNamespace(), "models/item/" + equipmentId.getPath() + ".json");
+            String armourType = switch (equipment.getSlotType()) {
+                case HEAD -> "helmet";
+                case CHEST -> "chestplate";
+                case LEGS -> "leggings";
+                case FEET -> "boots";
+                case MAINHAND, OFFHAND -> null;
+            };
+            if (armourType == null) {
+                AllTheTrims.LOGGER.warn("Item " + equipmentId + "'s slot type is not an armour slot type, skipping");
+                continue;
+            }
+            if(FabricLoader.getInstance().isModLoaded("elytratrims") && Registries.ITEM.get(equipmentId) == Items.ELYTRA) armourType = "elytra";
             Resource resource = original.get(resourceId);
             try (BufferedReader reader = resource.getReader()) {
                 ArmourModelJson model = JsonRepresentable.fromJson(reader, ArmourModelJson.class);
@@ -42,24 +56,13 @@ public abstract class BakedModelManagerMixin {
                 float index = 1f / max;
                 for (Item item : Registries.ITEM) {
                     if (AllTheTrims.isUsedAsMaterial(item)) continue;
-                    String armourType = switch (armourItem.getSlotType()) {
-                        case HEAD -> "helmet";
-                        case CHEST -> "chestplate";
-                        case LEGS -> "leggings";
-                        case FEET -> "boots";
-                        case MAINHAND, OFFHAND -> null;
-                    };
-                    if (armourType == null) {
-                        AllTheTrims.LOGGER.warn("Item " + armourId + "'s slot type is not an armour slot type, skipping");
-                        continue;
-                    }
                     Identifier itemId = Registries.ITEM.getId(item);
                     Map<String, Float> predicate = Map.of("trim_type", index);
-                    overrides.add(new ArmourModelJson.Override(armourId.getNamespace() + ":item/" + armourId.getPath() + "-att-" + itemId.getPath() + "_trim", predicate));
+                    overrides.add(new ArmourModelJson.Override(equipmentId.getNamespace() + ":item/" + equipmentId.getPath() + "-att-" + itemId.getPath() + "_trim", predicate));
                     index += 1f / max;
 
                     String overrideResourceString;
-                    if (armourItem instanceof DyeableArmorItem) {
+                    if (equipment instanceof DyeableArmorItem) {
                         overrideResourceString = """
                                 {
                                    "parent": "minecraft:item/generated",
@@ -69,7 +72,7 @@ public abstract class BakedModelManagerMixin {
                                      "layer2": "minecraft:trims/items/%s_trim_quartz"
                                    }
                                  }
-                                """.formatted(armourId.getNamespace(), armourId.getPath(), armourId.getPath(), armourType);
+                                """.formatted(equipmentId.getNamespace(), equipmentId.getPath(), equipmentId.getPath(), armourType);
                     } else {
                         overrideResourceString = """
                                 {
@@ -79,9 +82,9 @@ public abstract class BakedModelManagerMixin {
                                     "layer1": "minecraft:trims/items/%s_trim_quartz"
                                   }
                                 }
-                                """.formatted(armourId.getNamespace(), armourId.getPath(), armourType);
+                                """.formatted(equipmentId.getNamespace(), equipmentId.getPath(), armourType);
                     }
-                    Identifier overrideResourceModelId = new Identifier(armourId.getNamespace(), "models/item/" + armourId.getPath() + "-att-" + itemId.getPath() + "_trim.json");
+                    Identifier overrideResourceModelId = new Identifier(equipmentId.getNamespace(), "models/item/" + equipmentId.getPath() + "-att-" + itemId.getPath() + "_trim.json");
                     Resource overrideResource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(overrideResourceString, "UTF-8"));
                     original.put(overrideResourceModelId, overrideResource);
                 }
