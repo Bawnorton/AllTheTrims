@@ -1,3 +1,4 @@
 {
-  "text.allthetrims.material": "Material"
+  "text.allthetrims.material": "Material",
+  "tooltip.elytratrims.missing": "§cRequires Elytra Trims to render trim"
 }

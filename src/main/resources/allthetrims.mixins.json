@@ -4,6 +4,8 @@
   "compatibilityLevel": "JAVA_17",
   "plugin": "com.bawnorton.allthetrims.AllTheTrimsMixinConfigPlugin",
   "mixins": [
+    "ElytraItemMixin",
+    "ItemMixin",
     "RegistryLoaderMixin",
     "SimpleRegistryMixin"
   ],
