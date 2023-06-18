@@ -43,7 +43,14 @@ public abstract class BakedModelManagerMixin {
                 AllTheTrims.LOGGER.warn("Item " + equipmentId + "'s slot type is not an armour slot type, skipping");
                 continue;
             }
-            if(FabricLoader.getInstance().isModLoaded("elytratrims") && Registries.ITEM.get(equipmentId) == Items.ELYTRA) armourType = "elytra";
+            if(Registries.ITEM.get(equipmentId) == Items.ELYTRA) {
+                if(FabricLoader.getInstance().isModLoaded("elytratrims")) {
+                    armourType = "elytra";
+                } else {
+                    AllTheTrims.LOGGER.warn("Item " + equipmentId + " is an elytra, but elytratrims is not loaded, skipping");
+                    continue;
+                }
+            }
             Resource resource = original.get(resourceId);
             try (BufferedReader reader = resource.getReader()) {
                 ArmourModelJson model = JsonRepresentable.fromJson(reader, ArmourModelJson.class);
