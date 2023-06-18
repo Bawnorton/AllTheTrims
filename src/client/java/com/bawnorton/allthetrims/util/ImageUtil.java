@@ -1,17 +1,14 @@
 package com.bawnorton.allthetrims.util;
 
 import com.bawnorton.allthetrims.AllTheTrims;
-import net.minecraft.block.Block;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.block.BlockModels;
-import net.minecraft.client.render.block.BlockRenderManager;
 import net.minecraft.client.render.item.ItemModels;
 import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteContents;
 import net.minecraft.item.Item;
-import org.jetbrains.annotations.Nullable;
+import net.minecraft.util.math.ColorHelper;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -20,8 +17,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 public class ImageUtil {
     private static final Map<Item, Color> AVERAGE_TEXTURE_COLOUR_CACHE = new HashMap<>();
@@ -52,15 +49,6 @@ public class ImageUtil {
 
     public static Color getAverageColour(Item item) {
         if (AVERAGE_TEXTURE_COLOUR_CACHE.containsKey(item)) return AVERAGE_TEXTURE_COLOUR_CACHE.get(item);
-        Block block = Block.getBlockFromItem(item);
-        if (block != null) {
-            Color blockColour = getAverageColour(block);
-            if(blockColour != null) {
-                AVERAGE_TEXTURE_COLOUR_CACHE.put(item, blockColour);
-                return blockColour;
-            }
-        }
-
         ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
         ItemModels models = itemRenderer.getModels();
         BakedModel model = models.getModel(item);
@@ -87,60 +75,13 @@ public class ImageUtil {
             return colour;
         }
 
-//        long[] colourVals = new long[]{0, 0, 0, 0};
-//        int size = 0;
-//        for (int x = 0; x < content.getWidth(); x++) {
-//            for (int y = 0; y < content.getHeight(); y++) {
-//                int pixel = content.image.getColor(x, y);
-//                int borrowedAlpha = pixel >> 24 & 0xFF;
-//                if (borrowedAlpha >= 5) {
-//                    colourVals[0] += borrowedAlpha;
-//                    colourVals[1] += (pixel & 0xFF);
-//                    colourVals[2] += (pixel >> 8 & 0xFF);
-//                    colourVals[3] += (pixel >> 16 & 0xFF);
-//                    size++;
-//                }
-//            }
-//        }
-//        for (int i = 0; i < colourVals.length; i++) {
-//            colourVals[i] = Math.round((float) colourVals[i] / size);
-//            colourVals[i] = colourVals[i] >= 255 ? 255 : colourVals[i];
-//        }
-//        int colourValue = ColorHelper.Argb.getArgb(255, (int) colourVals[1], (int) colourVals[2], (int) colourVals[3]);
-//
-//        Color colour = new Color(colourValue);
         Color colour = getColourFromSpriteContent(content);
         AVERAGE_TEXTURE_COLOUR_CACHE.put(item, colour);
         return colour;
     }
 
-    private static @Nullable Color getAverageColour(Block block) {
-        BlockRenderManager blockRenderManager = MinecraftClient.getInstance().getBlockRenderManager();
-        BlockModels models = blockRenderManager.getModels();
-        BakedModel model = models.getModel(block.getDefaultState());
-        if (model == null) {
-            AllTheTrims.LOGGER.warn("Block " + block.getName().getString() + " has no model, trying item model");
-            return null;
-        }
-
-        Sprite sprite = model.getParticleSprite();
-        if (sprite == null) {
-            AllTheTrims.LOGGER.warn("Model of block " + block.getName().getString() + " has no particle sprite, trying item model");
-            return null;
-        }
-
-        SpriteContents content = sprite.getContents();
-        if (content.getDistinctFrameCount().count() <= 0) {
-            AllTheTrims.LOGGER.warn("Sprite of block " + block.getName().getString() + " has no frames, trying item model");
-            return null;
-        }
-
-        return getColourFromSpriteContent(content);
-    }
-
-
     private static Color getColourFromSpriteContent(SpriteContents content) {
-        Map<int[], Integer> colourMap = new HashMap<>();
+        Map<Color, Integer> colourMap = new HashMap<>();
         for (int x = 0; x < content.getWidth(); x++) {
             for (int y = 0; y < content.getHeight(); y++) {
                 int pixel = content.image.getColor(x, y);
@@ -151,99 +92,90 @@ public class ImageUtil {
                     argb[1] = (pixel & 0xFF);
                     argb[2] = (pixel >> 8 & 0xFF);
                     argb[3] = (pixel >> 16 & 0xFF);
-                    colourMap.put(argb, colourMap.getOrDefault(argb, 0) + 1);
+                    Color colour = new Color(ColorHelper.Argb.getArgb(argb[0], argb[1], argb[2], argb[3]), true);
+                    colourMap.put(colour, colourMap.getOrDefault(colour, 0) + 1);
                 }
             }
         }
-        return mergeColors(colourMap);
+        return mergeAndAverageColors(colourMap, 10);
     }
 
-    private static Color mergeColors(Map<int[], Integer> colourMap) {
-        Map<Integer, Integer> colourFrequencyMap = new HashMap<>();
-
-        for (int[] colour : colourMap.keySet()) {
-            int frequency = colourMap.get(colour);
-            colourFrequencyMap.put(Arrays.hashCode(colour), colourFrequencyMap.getOrDefault(Arrays.hashCode(colour), 0) + frequency);
-        }
-
-        List<Map.Entry<Integer, Integer>> sortedColors = new ArrayList<>(colourFrequencyMap.entrySet());
-        sortedColors.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
-
-        List<Integer> mergedColors = new ArrayList<>();
-        for (Map.Entry<Integer, Integer> entry : sortedColors) {
-            int colour = entry.getKey();
+    public static Color mergeAndAverageColors(Map<Color, Integer> colorMap, int hueRange) {
+        Map<Color, Integer> mergedColorMap = new HashMap<>();
+        for (Map.Entry<Color, Integer> entry : colorMap.entrySet()) {
+            Color color = entry.getKey();
             int frequency = entry.getValue();
+            boolean merged = false;
 
-            boolean similarColorFound = false;
-            for (int mergedColor : mergedColors) {
-                if (areColorsSimilar(colour, mergedColor, 5)) {
-                    int mergedFrequency = colourFrequencyMap.get(mergedColor);
-                    colourFrequencyMap.put(mergedColor, mergedFrequency + frequency);
-                    similarColorFound = true;
+            for (Color mergedColor : mergedColorMap.keySet()) {
+                if (isColorSimilar(color, mergedColor, hueRange)) {
+                    int mergedFrequency = mergedColorMap.get(mergedColor);
+                    Color normalMerged = normalMerge(mergedColor, mergedFrequency, color, frequency);
+                    mergedColorMap.put(normalMerged, mergedFrequency + frequency);
+                    merged = true;
                     break;
                 }
             }
 
-            if (!similarColorFound) {
-                mergedColors.add(colour);
+            if (!merged) {
+                mergedColorMap.put(color, frequency);
             }
         }
 
-        List<Integer> topColors = new ArrayList<>();
-        for (int i = 0; i < Math.min(5, mergedColors.size()); i++) {
-            topColors.add(mergedColors.get(i));
+        List<Map.Entry<Color, Integer>> sortedColors = new ArrayList<>(mergedColorMap.entrySet());
+        sortedColors.sort(Map.Entry.comparingByValue(Comparator.reverseOrder()));
+
+        List<Color> topColors = new ArrayList<>();
+        for (int i = 0; i < Math.min(5, sortedColors.size()); i++) {
+            topColors.add(sortedColors.get(i).getKey());
         }
 
-        int alphaSum = 0;
+        return calculateAverageColor(topColors);
+    }
+
+    private static boolean isColorSimilar(Color color1, Color color2, int hueRange) {
+        float[] hsb1 = Color.RGBtoHSB(color1.getRed(), color1.getGreen(), color1.getBlue(), null);
+        float[] hsb2 = Color.RGBtoHSB(color2.getRed(), color2.getGreen(), color2.getBlue(), null);
+        float hueDiff = Math.abs(hsb1[0] - hsb2[0]);
+        hueDiff = Math.min(hueDiff, 1 - hueDiff);
+        float hueRangeNormalized = (float) hueRange / 360;
+        return hueDiff <= hueRangeNormalized;
+    }
+
+    private static Color calculateAverageColor(List<Color> colors) {
         int redSum = 0;
         int greenSum = 0;
         int blueSum = 0;
-        int totalFrequency = 0;
 
-        for (int colour : topColors) {
-            int frequency = colourFrequencyMap.get(colour);
-            int alpha = (colour >> 24) & 0xFF;
-            int red = (colour >> 16) & 0xFF;
-            int green = (colour >> 8) & 0xFF;
-            int blue = colour & 0xFF;
-
-            alphaSum += alpha * frequency;
-            redSum += red * frequency;
-            greenSum += green * frequency;
-            blueSum += blue * frequency;
-            totalFrequency += frequency;
+        for (Color color : colors) {
+            redSum += color.getRed();
+            greenSum += color.getGreen();
+            blueSum += color.getBlue();
         }
 
-        int averageAlpha = alphaSum / totalFrequency;
-        int averageRed = redSum / totalFrequency;
-        int averageGreen = greenSum / totalFrequency;
-        int averageBlue = blueSum / totalFrequency;
+        int averageRed = redSum / colors.size();
+        int averageGreen = greenSum / colors.size();
+        int averageBlue = blueSum / colors.size();
 
-        return argbToColour((averageAlpha << 24) | (averageRed << 16) | (averageGreen << 8) | averageBlue);
+        return new Color(averageRed, averageGreen, averageBlue);
     }
 
-    private static boolean areColorsSimilar(int colour1, int colour2, int hueRange) {
-        int hue1 = calculateHue(colour1);
-        int hue2 = calculateHue(colour2);
-        int hueDifference = Math.abs(hue1 - hue2);
+    public static Color normalMerge(Color color1, int frequency1, Color color2, int frequency2) {
+        double weight1 = frequency1 / (double) (frequency1 + frequency2);
+        double weight2 = frequency2 / (double) (frequency1 + frequency2);
 
-        return hueDifference <= hueRange || hueDifference >= (360 - hueRange);
-    }
+        int red1 = color1.getRed();
+        int green1 = color1.getGreen();
+        int blue1 = color1.getBlue();
 
-    private static int calculateHue(int colour) {
-        int red = (colour >> 16) & 0xFF;
-        int green = (colour >> 8) & 0xFF;
-        int blue = colour & 0xFF;
+        int red2 = color2.getRed();
+        int green2 = color2.getGreen();
+        int blue2 = color2.getBlue();
 
-        return (int) Math.toDegrees(Math.atan2(Math.sqrt(3) * (green - blue), 2 * red - green - blue));
-    }
+        int mergedRed = (int) (weight1 * red1 + weight2 * red2);
+        int mergedGreen = (int) (weight1 * green1 + weight2 * green2);
+        int mergedBlue = (int) (weight1 * blue1 + weight2 * blue2);
 
-    private static Color argbToColour(int colourValue) {
-        int alpha = (colourValue >> 24) & 0xFF;
-        int red = (colourValue >> 16) & 0xFF;
-        int green = (colourValue >> 8) & 0xFF;
-        int blue = colourValue & 0xFF;
-
-        return new Color(red, green, blue, alpha);
+        return new Color(mergedRed, mergedGreen, mergedBlue);
     }
 }
