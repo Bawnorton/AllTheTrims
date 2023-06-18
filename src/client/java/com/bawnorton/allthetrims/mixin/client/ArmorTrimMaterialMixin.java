@@ -19,6 +19,6 @@ public abstract class ArmorTrimMaterialMixin {
 
     @ModifyReturnValue(method = "description", at = @At("RETURN"))
     private Text updateColour(Text original) {
-        return Text.literal(original.getString()).setStyle(original.getStyle().withColor(ImageUtil.getMedianColour(ingredient.value()).getRGB()));
+        return Text.literal(original.getString()).setStyle(original.getStyle().withColor(ImageUtil.getAverageColour(ingredient.value()).getRGB()));
     }
 }

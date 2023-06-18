@@ -47,7 +47,7 @@ public class ImageUtil {
         return new ByteArrayInputStream(baos.toByteArray());
     }
 
-    public static Color getMedianColour(Item item) {
+    public static Color getAverageColour(Item item) {
         if (AVERAGE_TEXTURE_COLOUR_CACHE.containsKey(item)) return AVERAGE_TEXTURE_COLOUR_CACHE.get(item);
         ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
         ItemModels models = itemRenderer.getModels();
