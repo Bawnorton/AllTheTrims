@@ -57,6 +57,10 @@ public abstract class BakedModelManagerMixin {
                 }
             }
             Resource resource = original.get(resourceId);
+            if(resource == null) {
+                AllTheTrims.LOGGER.warn("Could not find resource " + resourceId + " for item " + equipmentId + ", skipping");
+                continue;
+            }
             try (BufferedReader reader = resource.getReader()) {
                 JsonObject model = JsonRepresentable.fromJson(reader, JsonObject.class);
                 if(!model.has("overrides")) {

@@ -1,5 +1,6 @@
 package com.bawnorton.allthetrims;
 
+import com.bawnorton.allthetrims.util.LogWrapper;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class AllTheTrims implements ModInitializer {
     public static final String MOD_ID = "allthetrims";
-    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+    public static final LogWrapper LOGGER = LogWrapper.of(LoggerFactory.getLogger(MOD_ID), "[AllTheTrims]");
 
     public static List<Item> USED_MATERIALS = new ArrayList<>(List.of(
             Items.DIAMOND,

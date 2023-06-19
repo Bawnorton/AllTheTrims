@@ -45,7 +45,7 @@ public abstract class RegistryLoaderMixin {
                                     }
                             """.formatted(
                             "#FFFFFF",
-                            item.getName().getString(), Text.translatable("text.allthetrims.material").getString(),
+                            escape(item.getName().getString()), escape(Text.translatable("text.allthetrims.material").getString()),
                             itemId,
                             index
                     );
@@ -56,5 +56,9 @@ public abstract class RegistryLoaderMixin {
             DebugHelper.createDebugFile("trim_materials", itemId + ".json", resourceString);
         });
         return original;
+    }
+
+    private static String escape(String string) {
+        return string.replace("\"", "\\\"");
     }
 }
