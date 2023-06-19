@@ -8,8 +8,9 @@
 		"Bawnorton"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
-		"sources": "https://github.com/FabricMC/fabric-example-mod"
+		"homepage": "https://github.com/Benjamin-Norton/AllTheTrims",
+		"sources": "https://github.com/Benjamin-Norton",
+		"issues": "https://github.com/Benjamin-Norton/AllTheTrims/issues"
 	},
 	"license": "CC0-1.0",
 	"icon": "assets/allthetrims/icon.png",

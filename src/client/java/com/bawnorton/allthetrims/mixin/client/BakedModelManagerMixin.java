@@ -1,8 +1,11 @@
 package com.bawnorton.allthetrims.mixin.client;
 
 import com.bawnorton.allthetrims.AllTheTrims;
-import com.bawnorton.allthetrims.json.ArmourModelJson;
 import com.bawnorton.allthetrims.json.JsonRepresentable;
+import com.bawnorton.allthetrims.util.DebugHelper;
+import com.bawnorton.allthetrims.util.TrimIndexHelper;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.render.model.BakedModelManager;
@@ -17,9 +20,11 @@ import org.apache.commons.io.IOUtils;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.util.*;
+import java.io.*;
+import java.nio.file.Path;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Mixin(BakedModelManager.class)
 public abstract class BakedModelManagerMixin {
@@ -53,20 +58,22 @@ public abstract class BakedModelManagerMixin {
             }
             Resource resource = original.get(resourceId);
             try (BufferedReader reader = resource.getReader()) {
-                ArmourModelJson model = JsonRepresentable.fromJson(reader, ArmourModelJson.class);
-                List<ArmourModelJson.Override> overrides = model.overrides;
-                if (overrides == null) {
-                    overrides = new ArrayList<>();
-                    model.overrides = overrides;
+                JsonObject model = JsonRepresentable.fromJson(reader, JsonObject.class);
+                if(!model.has("overrides")) {
+                    model.add("overrides", new JsonArray());
                 }
-                int max = (Registries.ITEM.getIds().size() + 10) * 10;
-                float index = 1f / max;
-                for (Item item : Registries.ITEM) {
-                    if (AllTheTrims.isUsedAsMaterial(item)) continue;
+                JsonArray overrides = model.getAsJsonArray("overrides");
+
+                final Resource finalResource = resource;
+                final String finalArmourType = armourType;
+                TrimIndexHelper.loopTrimMaterials((item, index) -> {
                     Identifier itemId = Registries.ITEM.getId(item);
-                    Map<String, Float> predicate = Map.of("trim_type", index);
-                    overrides.add(new ArmourModelJson.Override(equipmentId.getNamespace() + ":item/" + equipmentId.getPath() + "-att-" + itemId.getPath() + "_trim", predicate));
-                    index += 1f / max;
+                    JsonObject override = new JsonObject();
+                    override.addProperty("model", equipmentId.getNamespace() + ":item/" + equipmentId.getPath() + "-att-" + itemId.getPath() + "_trim");
+                    JsonObject predicate = new JsonObject();
+                    predicate.addProperty("trim_type", index);
+                    override.add("predicate", predicate);
+                    overrides.add(override);
 
                     String overrideResourceString;
                     if (equipment instanceof DyeableArmorItem) {
@@ -79,7 +86,7 @@ public abstract class BakedModelManagerMixin {
                                      "layer2": "minecraft:trims/items/%s_trim_quartz"
                                    }
                                  }
-                                """.formatted(equipmentId.getNamespace(), equipmentId.getPath(), equipmentId.getPath(), armourType);
+                                """.formatted(equipmentId.getNamespace(), equipmentId.getPath(), equipmentId.getPath(), finalArmourType);
                     } else {
                         overrideResourceString = """
                                 {
@@ -89,13 +96,15 @@ public abstract class BakedModelManagerMixin {
                                     "layer1": "minecraft:trims/items/%s_trim_quartz"
                                   }
                                 }
-                                """.formatted(equipmentId.getNamespace(), equipmentId.getPath(), armourType);
+                                """.formatted(equipmentId.getNamespace(), equipmentId.getPath(), finalArmourType);
                     }
                     Identifier overrideResourceModelId = new Identifier(equipmentId.getNamespace(), "models/item/" + equipmentId.getPath() + "-att-" + itemId.getPath() + "_trim.json");
-                    Resource overrideResource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(overrideResourceString, "UTF-8"));
+                    Resource overrideResource = new Resource(finalResource.getPack(), () -> IOUtils.toInputStream(overrideResourceString, "UTF-8"));
                     original.put(overrideResourceModelId, overrideResource);
-                }
-                resource = new Resource(resource.getPack(), model::toInputStream);
+                });
+                resource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonRepresentable.toJson(model), "UTF-8"));
+
+                DebugHelper.createDebugFile("models", equipmentId + ".json", JsonRepresentable.toJson(model));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

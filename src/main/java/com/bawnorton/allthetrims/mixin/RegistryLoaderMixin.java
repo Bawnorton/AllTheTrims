@@ -1,8 +1,10 @@
 package com.bawnorton.allthetrims.mixin;
 
-import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.json.JsonRepresentable;
+import com.bawnorton.allthetrims.util.DebugHelper;
+import com.bawnorton.allthetrims.util.TrimIndexHelper;
+import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryLoader;
 import net.minecraft.resource.Resource;
@@ -28,13 +30,10 @@ public abstract class RegistryLoaderMixin {
         Map.Entry<Identifier, Resource> first = original.entrySet().iterator().next();
         if (!first.getKey().getPath().contains("trim_material")) return original;
 
-        int max = (Registries.ITEM.getIds().size() + 10) * 10; // index can't be greater than 1 and 0.1 to 1 are reserved for vanilla, this reduces the chance of a colision with vanilla or another mod
-        float index = 1f / max;
-        for (Item item : Registries.ITEM) {
-            if (AllTheTrims.isUsedAsMaterial(item)) continue;
+        TrimIndexHelper.loopTrimMaterials((item, index) -> {
             Identifier itemId = Registries.ITEM.getId(item);
             String resourceString =
-                    """
+                            """
                                     {
                                       "asset_name": "att_blank",
                                       "description": {
@@ -53,8 +52,9 @@ public abstract class RegistryLoaderMixin {
             Resource resource = new Resource(first.getValue().getPack(), () -> IOUtils.toInputStream(resourceString, "UTF-8"));
             Identifier resourceId = new Identifier(itemId.getNamespace(), "trim_material/" + itemId.getPath() + ".json");
             original.put(resourceId, resource);
-            index += 1f / max;
-        }
+
+            DebugHelper.createDebugFile("trim_materials", itemId + ".json", resourceString);
+        });
         return original;
     }
 }
