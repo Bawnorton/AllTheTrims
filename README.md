@@ -17,4 +17,6 @@
 
 ## Notes:
 - This adds over 500,000 new armour trim combinations to just the vanilla game, with a couple of armour mods and content mods this number jumps to over a million with minimal effect on load times.
-- The item texture currently does not render the colour of the trim, it will appear white, this is a limitation of how minecraft creates item textures and renders them. I am working around this and trying to figure out a way to make it work, but it has proven to be very difficult.
+
+## Credits:
+- [Andrew6rant](https://github.com/Andrew6rant) for the item model colouring.
