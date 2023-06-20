@@ -1,13 +1,13 @@
 package com.bawnorton.allthetrims.mixin.client;
 
 import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.compat.Compat;
 import com.bawnorton.allthetrims.json.JsonHelper;
 import com.bawnorton.allthetrims.util.DebugHelper;
 import com.bawnorton.allthetrims.util.TrimIndexHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.item.DyeableArmorItem;
 import net.minecraft.item.Equipment;
@@ -48,7 +48,7 @@ public abstract class BakedModelManagerMixin {
                 continue;
             }
             if(Registries.ITEM.get(equipmentId) == Items.ELYTRA) {
-                if(FabricLoader.getInstance().isModLoaded("elytratrims")) {
+                if(Compat.isElytraTrimsLoaded()) {
                     armourType = "elytra";
                 } else {
                     AllTheTrims.LOGGER.warn("Item " + equipmentId + " is an elytra, but elytratrims is not loaded, skipping");

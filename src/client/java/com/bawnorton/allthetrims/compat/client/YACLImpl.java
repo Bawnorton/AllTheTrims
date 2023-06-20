@@ -1,4 +1,4 @@
-package com.bawnorton.allthetrims.compat;
+package com.bawnorton.allthetrims.compat.client;
 
 import com.bawnorton.allthetrims.config.Config;
 import com.bawnorton.allthetrims.config.ConfigManager;

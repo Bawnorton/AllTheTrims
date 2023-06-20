@@ -1,7 +1,7 @@
 package com.bawnorton.allthetrims;
 
 import com.bawnorton.allthetrims.compat.Compat;
-import com.bawnorton.allthetrims.compat.YACLImpl;
+import com.bawnorton.allthetrims.compat.client.YACLImpl;
 import net.fabricmc.api.ClientModInitializer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;

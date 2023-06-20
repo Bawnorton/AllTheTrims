@@ -23,7 +23,7 @@
 			"com.bawnorton.allthetrims.AllTheTrimsClient"
 		],
 		"modmenu": [
-			"com.bawnorton.allthetrims.compat.ModMenuImpl"
+			"com.bawnorton.allthetrims.compat.client.ModMenuImpl"
 		]
 	},
 	"mixins": [
