@@ -9,10 +9,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.render.model.BakedModelManager;
-import net.minecraft.item.DyeableArmorItem;
-import net.minecraft.item.Equipment;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
@@ -47,7 +44,7 @@ public abstract class BakedModelManagerMixin {
                 AllTheTrims.LOGGER.warn("Item " + equipmentId + "'s slot type is not an armour slot type, skipping");
                 continue;
             }
-            if(Registries.ITEM.get(equipmentId) == Items.ELYTRA) {
+            if(Registries.ITEM.get(equipmentId) instanceof ElytraItem) {
                 if(Compat.isElytraTrimsLoaded()) {
                     armourType = "elytra";
                 } else {

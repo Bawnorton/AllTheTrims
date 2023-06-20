@@ -5,6 +5,7 @@ import com.bawnorton.allthetrims.config.ConfigManager;
 import com.bawnorton.allthetrims.data.AllTheTrimsTags;
 import com.bawnorton.allthetrims.util.LogWrapper;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
