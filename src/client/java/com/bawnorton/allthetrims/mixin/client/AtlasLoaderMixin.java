@@ -1,13 +1,12 @@
 package com.bawnorton.allthetrims.mixin.client;
 
 import com.bawnorton.allthetrims.AllTheTrims;
-import com.bawnorton.allthetrims.json.JsonRepresentable;
+import com.bawnorton.allthetrims.json.JsonHelper;
 import com.bawnorton.allthetrims.util.DebugHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.texture.atlas.AtlasLoader;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
@@ -17,7 +16,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 import java.io.*;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +27,7 @@ public abstract class AtlasLoaderMixin {
             List<Resource> newResources = new ArrayList<>();
             for (Resource resource : resourceList) {
                 try (BufferedReader reader = resource.getReader()) {
-                    JsonObject atlas = JsonRepresentable.fromJson(reader, JsonObject.class);
+                    JsonObject atlas = JsonHelper.fromJson(reader, JsonObject.class);
                     if(!atlas.has("sources")) return resourceList;
 
                     JsonArray sources = atlas.getAsJsonArray("sources");
@@ -46,9 +44,9 @@ public abstract class AtlasLoaderMixin {
                         JsonObject permutations = sourceJson.getAsJsonObject("permutations");
                         permutations.addProperty("att_blank", "trims/color_palettes/blank");
                     }
-                    newResources.add(new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonRepresentable.toJson(atlas), "UTF-8")));
+                    newResources.add(new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonHelper.toJson(atlas), "UTF-8")));
 
-                    DebugHelper.createDebugFile("atlases", resource.getResourcePackName() + "_armour_trims.json", JsonRepresentable.toJson(atlas));
+                    DebugHelper.createDebugFile("atlases", resource.getResourcePackName() + "_armour_trims.json", JsonHelper.toJson(atlas));
                 } catch (RuntimeException | IOException e) {
                     AllTheTrims.LOGGER.error("Failed to modify trim atlas: " + id);
                     return resourceList;

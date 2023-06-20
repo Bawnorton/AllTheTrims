@@ -49,7 +49,9 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation("maven.modrinth:elytra-trims:MggVxdpI")
+	modImplementation("maven.modrinth:elytra-trims:${project.elytra_trims_version}")
+	modImplementation("maven.modrinth:yacl:${project.yacl_version}")
+	modImplementation("maven.modrinth:modmenu:${project.modmenu_version}")
 
 	include(implementation(annotationProcessor(clientAnnotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}"))))
 }

@@ -7,7 +7,9 @@
     "ElytraItemMixin",
     "ItemMixin",
     "RegistryLoaderMixin",
-    "SimpleRegistryMixin"
+    "SimpleRegistryMixin",
+    "SmithingScreenHandlerMixin",
+    "SmithingTrimRecipeMixin"
   ],
   "injectors": {
     "defaultRequire": 1

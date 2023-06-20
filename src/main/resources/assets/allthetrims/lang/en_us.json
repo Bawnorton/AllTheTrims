@@ -1,4 +1,17 @@
 {
   "text.allthetrims.material": "Material",
-  "tooltip.elytratrims.missing": "§cRequires Elytra Trims to render trim"
+  "tooltip.elytratrims.missing": "§cRequires Elytra Trims to render trim",
+  "item.allthetrims.materials.unavailable": "§cMaterial Not Whitelisted",
+  "yacl.allthetrims.title": "All The Trims Config",
+  "yacl.allthetrims.category.general": "General",
+  "yacl.allthetrims.tooltip.general": "General Settings",
+  "yacl.allthetrims.group.main": "Main",
+  "yacl.allthetrims.description.main": "Main Settings",
+  "yacl.allthetrims.name.ignorewhitelist": "Ignore Whitelist",
+  "yacl.allthetrims.description.ignorewhitelist": "Ignore the whitelist and allow the use of all trim materials",
+  "yacl.allthetrims.description.debug1": "Toggle Debug mode",
+  "yacl.allthetrims.description.debug2": "When enabled, debug files will be generated in the game folder",
+  "yacl.allthetrims.description.debug3": "§cRequires a restart and to join a world to generate the debug files",
+  "yacl.allthetrims.name.debug": "Debug",
+  "allthetrims.website": "My Website"
 }

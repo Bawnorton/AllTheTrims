@@ -1,9 +1,7 @@
 package com.bawnorton.allthetrims.mixin;
 
-import com.bawnorton.allthetrims.json.JsonRepresentable;
 import com.bawnorton.allthetrims.util.DebugHelper;
 import com.bawnorton.allthetrims.util.TrimIndexHelper;
-import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryLoader;

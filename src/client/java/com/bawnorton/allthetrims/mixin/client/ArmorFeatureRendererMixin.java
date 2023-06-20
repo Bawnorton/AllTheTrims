@@ -23,15 +23,16 @@ import java.awt.*;
 
 @Mixin(ArmorFeatureRenderer.class)
 public abstract class ArmorFeatureRendererMixin {
-    @Inject(method = "renderTrim", at = @At("HEAD"))
-    private <T extends LivingEntity, A extends BipedEntityModel<T>> void captureTrim(ArmorMaterial material, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, A model, boolean leggings, CallbackInfo ci, @Share("trim") LocalRef<ArmorTrim> trimLocalRef) {
-        trimLocalRef.set(trim);
+    @Inject(method = "renderTrim", at = @At("HEAD"), cancellable = true)
+    private <T extends LivingEntity, A extends BipedEntityModel<T>> void captureTrim(ArmorMaterial material, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, A model, boolean leggings, CallbackInfo ci, @Share("trim") LocalRef<Item> trimLocalRef) {
+        Item trimMaterial = trim.getMaterial().value().ingredient().value();
+        if(!AllTheTrims.isUsedAsMaterial(trimMaterial) && AllTheTrims.notWhitelisted(trimMaterial)) ci.cancel();
+        trimLocalRef.set(trimMaterial);
     }
 
     @ModifyArgs(method = "renderTrim", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"))
-    private void setArmorTrimColour(Args args, @Share("trim") LocalRef<ArmorTrim> trimLocalRef) {
-        ArmorTrim trim = trimLocalRef.get();
-        Item material = trim.getMaterial().value().ingredient().value();
+    private void setArmorTrimColour(Args args, @Share("trim") LocalRef<Item> trimLocalRef) {
+        Item material = trimLocalRef.get();
         if(AllTheTrims.isUsedAsMaterial(material)) return;
 
         Color colour = ImageUtil.getAverageColour(material);

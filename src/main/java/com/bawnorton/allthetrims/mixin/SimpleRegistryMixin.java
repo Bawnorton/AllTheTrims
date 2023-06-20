@@ -22,7 +22,8 @@ public abstract class SimpleRegistryMixin {
         if (tagEntries.containsKey(ItemTags.TRIM_MATERIALS)) {
             tagEntries = new HashMap<>(tagEntries);
             List<RegistryEntry<T>> entries = new ArrayList<>(tagEntries.get(ItemTags.TRIM_MATERIALS));
-            if(AllTheTrims.USED_MATERIALS.isEmpty()) {
+            if(!AllTheTrims.checkedUsedMaterials) {
+                AllTheTrims.checkedUsedMaterials = true;
                 for(RegistryEntry<T> entry : entries) {
                     if(entry.value() instanceof Item item) {
                         AllTheTrims.addUsedAsMaterial(item);
@@ -36,13 +37,6 @@ public abstract class SimpleRegistryMixin {
         if (tagEntries.containsKey(ItemTags.TRIMMABLE_ARMOR)) {
             tagEntries = new HashMap<>(tagEntries);
             List<RegistryEntry<T>> entries = new ArrayList<>(tagEntries.get(ItemTags.TRIMMABLE_ARMOR));
-            if(AllTheTrims.USED_ARMOUR.isEmpty()) {
-                for(RegistryEntry<T> entry : entries) {
-                    if(entry.value() instanceof Item item) {
-                        AllTheTrims.addUsedAsEquipment(item);
-                    }
-                }
-            }
             entries.addAll(Registries.ITEM.stream().filter(item -> item instanceof Equipment).map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item)).toList());
             tagEntries.put((TagKey<T>) ItemTags.TRIMMABLE_ARMOR, entries);
             tagEntries = Collections.unmodifiableMap(tagEntries);

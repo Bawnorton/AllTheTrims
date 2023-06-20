@@ -21,6 +21,9 @@
 		],
 		"client": [
 			"com.bawnorton.allthetrims.AllTheTrimsClient"
+		],
+		"modmenu": [
+			"com.bawnorton.allthetrims.compat.ModMenuImpl"
 		]
 	},
 	"mixins": [
@@ -39,5 +42,12 @@
 	},
 	"suggests": {
 		"another-mod": "*"
+	},
+	"custom": {
+		"modmenu": {
+			"links": {
+				"allthetrims.website": "https://bawnorton.com"
+			}
+		}
 	}
 }

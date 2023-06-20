@@ -1,7 +1,7 @@
 package com.bawnorton.allthetrims.mixin.client;
 
 import com.bawnorton.allthetrims.AllTheTrims;
-import com.bawnorton.allthetrims.json.JsonRepresentable;
+import com.bawnorton.allthetrims.json.JsonHelper;
 import com.bawnorton.allthetrims.util.DebugHelper;
 import com.bawnorton.allthetrims.util.TrimIndexHelper;
 import com.google.gson.JsonArray;
@@ -21,7 +21,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 import java.io.*;
-import java.nio.file.Path;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -62,7 +61,7 @@ public abstract class BakedModelManagerMixin {
                 continue;
             }
             try (BufferedReader reader = resource.getReader()) {
-                JsonObject model = JsonRepresentable.fromJson(reader, JsonObject.class);
+                JsonObject model = JsonHelper.fromJson(reader, JsonObject.class);
                 if(!model.has("overrides")) {
                     model.add("overrides", new JsonArray());
                 }
@@ -106,9 +105,9 @@ public abstract class BakedModelManagerMixin {
                     Resource overrideResource = new Resource(finalResource.getPack(), () -> IOUtils.toInputStream(overrideResourceString, "UTF-8"));
                     original.put(overrideResourceModelId, overrideResource);
                 });
-                resource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonRepresentable.toJson(model), "UTF-8"));
+                resource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonHelper.toJson(model), "UTF-8"));
 
-                DebugHelper.createDebugFile("models", equipmentId + ".json", JsonRepresentable.toJson(model));
+                DebugHelper.createDebugFile("models", equipmentId + ".json", JsonHelper.toJson(model));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
