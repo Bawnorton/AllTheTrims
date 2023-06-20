@@ -15,8 +15,9 @@
   - Colour of the trim is based on the ***average*** colour of the item's texture.
 - No additional files or configuration required, just drop the mod in your mods folder.
 
-## Notes:
+### Notes:
 - This adds over 500,000 new armour trim combinations to just the vanilla game, with a couple of armour mods and content mods this number jumps to over a million with minimal effect on load times.
+- There is a whitelist system for modpack developers to limit the trim materials avaliable to the player. See the [Wiki](https://github.com/Benjamin-Norton/AllTheTrims/wiki) for more information.
 
-## Credits:
+### Credits:
 - [Andrew6rant](https://github.com/Andrew6rant) for the item model colouring.
