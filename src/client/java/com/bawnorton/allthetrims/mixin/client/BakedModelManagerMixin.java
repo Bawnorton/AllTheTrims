@@ -64,7 +64,7 @@ public abstract class BakedModelManagerMixin {
                 JsonArray overrides = model.getAsJsonArray("overrides");
 
                 JsonObject override = new JsonObject();
-                override.addProperty("model", equipmentId.getNamespace() + ":item/" + equipmentId.getPath() + "_all-the-trims_trim");
+                override.addProperty("model", equipmentId.getNamespace() + ":item/" + equipmentId.getPath() + "_att-blank_trim");
                 JsonObject predicate = new JsonObject();
                 predicate.addProperty("trim_type", 0.00001);
                 override.add("predicate", predicate);
@@ -93,9 +93,10 @@ public abstract class BakedModelManagerMixin {
                             }
                             """.formatted(equipmentId.getNamespace(), equipmentId.getPath(), armourType);
                 }
-                Identifier overrideResourceModelId = new Identifier(equipmentId.getNamespace(), "models/item/" + equipmentId.getPath() + "_all-the-trims_trim.json");
+                Identifier overrideResourceModelId = new Identifier(equipmentId.getNamespace(), "models/item/" + equipmentId.getPath() + "_att-blank_trim.json");
                 Resource overrideResource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(overrideResourceString, "UTF-8"));
                 original.put(overrideResourceModelId, overrideResource);
+                DebugHelper.createDebugFile("models", equipmentId + "_att-blank_trim.json", overrideResourceString);
                 resource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonHelper.toJson(model), "UTF-8"));
 
                 DebugHelper.createDebugFile("models", equipmentId + ".json", JsonHelper.toJson(model));

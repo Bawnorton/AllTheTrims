@@ -42,7 +42,7 @@ public abstract class AtlasLoaderMixin {
                         if(!type.equals("paletted_permutations")) continue;
 
                         JsonObject permutations = sourceJson.getAsJsonObject("permutations");
-                        permutations.addProperty("att_blank", "trims/color_palettes/blank");
+                        permutations.addProperty("att-blank", "trims/color_palettes/blank");
                     }
                     newResources.add(new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonHelper.toJson(atlas), "UTF-8")));
 

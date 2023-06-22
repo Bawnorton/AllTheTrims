@@ -33,7 +33,7 @@ public abstract class RegistryLoaderMixin {
             String resourceString =
                             """
                                     {
-                                      "asset_name": "att_blank",
+                                      "asset_name": "att-blank",
                                       "description": {
                                         "color": "%s",
                                         "translate": "%s %s"
