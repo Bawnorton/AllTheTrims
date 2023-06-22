@@ -4,7 +4,6 @@ import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.compat.Compat;
 import com.bawnorton.allthetrims.json.JsonHelper;
 import com.bawnorton.allthetrims.util.DebugHelper;
-import com.bawnorton.allthetrims.util.TrimIndexHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -64,44 +63,39 @@ public abstract class BakedModelManagerMixin {
                 }
                 JsonArray overrides = model.getAsJsonArray("overrides");
 
-                final Resource finalResource = resource;
-                final String finalArmourType = armourType;
-                TrimIndexHelper.loopTrimMaterials((item, index) -> {
-                    Identifier itemId = Registries.ITEM.getId(item);
-                    JsonObject override = new JsonObject();
-                    override.addProperty("model", equipmentId.getNamespace() + ":item/" + equipmentId.getPath() + "-att-" + itemId.getPath() + "_trim");
-                    JsonObject predicate = new JsonObject();
-                    predicate.addProperty("trim_type", index);
-                    override.add("predicate", predicate);
-                    overrides.add(override);
+                JsonObject override = new JsonObject();
+                override.addProperty("model", equipmentId.getNamespace() + ":item/" + equipmentId.getPath() + "_all-the-trims_trim");
+                JsonObject predicate = new JsonObject();
+                predicate.addProperty("trim_type", 0.00001);
+                override.add("predicate", predicate);
+                overrides.add(override);
 
-                    String overrideResourceString;
-                    if (equipment instanceof DyeableArmorItem) {
-                        overrideResourceString = """
-                                {
-                                   "parent": "minecraft:item/generated",
-                                   "textures": {
-                                     "layer0": "%s:item/%s",
-                                     "layer1": "minecraft:item/%s_overlay",
-                                     "layer2": "minecraft:trims/items/%s_trim_quartz"
-                                   }
-                                 }
-                                """.formatted(equipmentId.getNamespace(), equipmentId.getPath(), equipmentId.getPath(), finalArmourType);
-                    } else {
-                        overrideResourceString = """
-                                {
-                                  "parent": "minecraft:item/generated",
-                                  "textures": {
-                                    "layer0": "%s:item/%s",
-                                    "layer1": "minecraft:trims/items/%s_trim_quartz"
-                                  }
-                                }
-                                """.formatted(equipmentId.getNamespace(), equipmentId.getPath(), finalArmourType);
-                    }
-                    Identifier overrideResourceModelId = new Identifier(equipmentId.getNamespace(), "models/item/" + equipmentId.getPath() + "-att-" + itemId.getPath() + "_trim.json");
-                    Resource overrideResource = new Resource(finalResource.getPack(), () -> IOUtils.toInputStream(overrideResourceString, "UTF-8"));
-                    original.put(overrideResourceModelId, overrideResource);
-                });
+                String overrideResourceString;
+                if (equipment instanceof DyeableArmorItem) {
+                    overrideResourceString = """
+                            {
+                               "parent": "minecraft:item/generated",
+                               "textures": {
+                                 "layer0": "%s:item/%s",
+                                 "layer1": "minecraft:item/%s_overlay",
+                                 "layer2": "minecraft:trims/items/%s_trim_quartz"
+                               }
+                            }
+                            """.formatted(equipmentId.getNamespace(), equipmentId.getPath(), equipmentId.getPath(), armourType);
+                } else {
+                    overrideResourceString = """
+                            {
+                              "parent": "minecraft:item/generated",
+                              "textures": {
+                                "layer0": "%s:item/%s",
+                                "layer1": "minecraft:trims/items/%s_trim_quartz"
+                              }
+                            }
+                            """.formatted(equipmentId.getNamespace(), equipmentId.getPath(), armourType);
+                }
+                Identifier overrideResourceModelId = new Identifier(equipmentId.getNamespace(), "models/item/" + equipmentId.getPath() + "_all-the-trims_trim.json");
+                Resource overrideResource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(overrideResourceString, "UTF-8"));
+                original.put(overrideResourceModelId, overrideResource);
                 resource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonHelper.toJson(model), "UTF-8"));
 
                 DebugHelper.createDebugFile("models", equipmentId + ".json", JsonHelper.toJson(model));

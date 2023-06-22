@@ -1,7 +1,7 @@
 package com.bawnorton.allthetrims.mixin;
 
 import com.bawnorton.allthetrims.util.DebugHelper;
-import com.bawnorton.allthetrims.util.TrimIndexHelper;
+import com.bawnorton.allthetrims.util.TrimMaterialHelper;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryLoader;
@@ -28,7 +28,7 @@ public abstract class RegistryLoaderMixin {
         Map.Entry<Identifier, Resource> first = original.entrySet().iterator().next();
         if (!first.getKey().getPath().contains("trim_material")) return original;
 
-        TrimIndexHelper.loopTrimMaterials((item, index) -> {
+        TrimMaterialHelper.loopTrimMaterials((item) -> {
             Identifier itemId = Registries.ITEM.getId(item);
             String resourceString =
                             """
@@ -45,7 +45,7 @@ public abstract class RegistryLoaderMixin {
                             "#FFFFFF",
                             escape(item.getName().getString()), escape(Text.translatable("text.allthetrims.material").getString()),
                             itemId,
-                            index
+                            0.00001
                     );
             Resource resource = new Resource(first.getValue().getPack(), () -> IOUtils.toInputStream(resourceString, "UTF-8"));
             Identifier resourceId = new Identifier(itemId.getNamespace(), "trim_material/" + itemId.getPath() + ".json");
