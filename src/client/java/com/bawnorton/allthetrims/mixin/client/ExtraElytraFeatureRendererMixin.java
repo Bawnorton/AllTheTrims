@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.function.Function;
 
 @Pseudo
-@Mixin(ExtraElytraFeatureRenderer.class)
+@Mixin(value = ExtraElytraFeatureRenderer.class, remap = false)
 public abstract class ExtraElytraFeatureRendererMixin {
     @Shadow @Final private ElytraEntityModel<?> elytra;
     @Shadow @Final private static Function<Identifier, RenderLayer> ELYTRA_LAYER;

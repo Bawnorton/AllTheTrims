@@ -1,11 +1,12 @@
 package com.bawnorton.allthetrims.mixin.client;
 
+import com.bawnorton.allthetrims.util.DebugHelper;
 import com.bawnorton.allthetrims.util.ImageUtil;
 import com.bawnorton.allthetrims.util.PaletteHelper;
-import com.bawnorton.allthetrims.util.ResourceHelper;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.texture.atlas.AtlasSource;
 import net.minecraft.client.texture.atlas.PalettedPermutationsAtlasSource;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
@@ -13,7 +14,14 @@ import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
 import java.util.*;
 
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
@@ -50,8 +58,29 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
         return Optional.of(new Resource(MinecraftClient.getInstance().getDefaultResourcePack(), () -> ImageUtil.toInputStream(ImageUtil.newBlankPaletteImage())));
     }
 
-    @ModifyExpressionValue(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ResourceManager;getResource(Lnet/minecraft/util/Identifier;)Ljava/util/Optional;"))
-    private Optional<Resource> getLayeredTrimResource(Optional<Resource> original, ResourceManager resourceManager, @Local(name = "identifier2") Identifier identifier) {
-        return ResourceHelper.getLayeredTrimResource(original, resourceManager, identifier);
+    @Redirect(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ResourceManager;getResource(Lnet/minecraft/util/Identifier;)Ljava/util/Optional;"))
+    private Optional<Resource> getLayeredTrimResource(ResourceManager instance, Identifier identifier) {
+        Optional<Resource> original = instance.getResource(identifier);
+        if(original.isPresent()) return original;
+
+        String path = identifier.getPath();
+        Identifier originalIdentifier = identifier.withPath(path.substring(0, path.lastIndexOf('_')) + ".png");
+        Optional<Resource> optionalResource = instance.getResource(originalIdentifier);
+        if(optionalResource.isEmpty()) return optionalResource;
+
+        int layer = Integer.parseInt(String.valueOf(path.charAt(path.length() - "x.png".length())));
+        Resource resource = optionalResource.get();
+        try(InputStream inputStream = resource.getInputStream()) {
+            BufferedImage bufferedImage = ImageIO.read(inputStream);
+            if(bufferedImage == null) {
+                throw new RuntimeException("Failed to read image from " + originalIdentifier);
+            }
+            Color colour = ImageUtil.getNthDarkestColour(bufferedImage, layer);
+            BufferedImage newImage = ImageUtil.removeOtherColours(bufferedImage, colour);
+            DebugHelper.saveLayeredTexture(newImage, identifier.toString());
+            return Optional.of(new Resource(resource.getPack(), () -> ImageUtil.toInputStream(newImage)));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

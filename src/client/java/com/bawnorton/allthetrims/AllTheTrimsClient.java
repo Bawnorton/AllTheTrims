@@ -63,7 +63,9 @@ public class AllTheTrimsClient implements ClientModInitializer {
 			}
 			if(stack.getItem() instanceof DyeableArmorItem dyeableArmorItem) {
 				if(tintIndex == 0) return dyeableArmorItem.getColor(stack);
-				if(tintIndex >= 2) return palette.get(MathHelper.clamp(6 - tintIndex, 0, palette.size() - 1)).getRGB();
+				if(tintIndex >= 2) {
+					return palette.get(MathHelper.clamp(6 - tintIndex, 0, palette.size() - 1)).getRGB();
+				}
 				return -1;
 			}
 
