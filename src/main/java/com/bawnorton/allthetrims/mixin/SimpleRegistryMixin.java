@@ -1,8 +1,6 @@
 package com.bawnorton.allthetrims.mixin;
 
-import com.bawnorton.allthetrims.AllTheTrims;
 import net.minecraft.item.Equipment;
-import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.registry.entry.RegistryEntry;

@@ -17,7 +17,6 @@ import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.*;
 
