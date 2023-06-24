@@ -1,5 +1,7 @@
 package com.bawnorton.allthetrims.util;
 
+import net.minecraft.util.math.MathHelper;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -73,5 +75,11 @@ public abstract class ImageUtil {
             }
         }
         return maskedImage;
+    }
+
+    public static Color changeBrightness(Color color, float percent) {
+        float[] hsb = Color.RGBtoHSB(color.getRed(), color.getGreen(), color.getBlue(), null);
+        float brightness = MathHelper.clamp(hsb[2] * percent, 0, 1);
+        return Color.getHSBColor(hsb[0], hsb[1], brightness);
     }
 }

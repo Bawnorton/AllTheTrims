@@ -127,20 +127,10 @@ public abstract class PaletteHelper {
                 return hsb[1];
             })));
             Color darkest = colours.get(0);
-            darkest = darken(darkest);
+            darkest = ImageUtil.changeBrightness(darkest, 0.95f);
             Color lightest = colours.get(colours.size() - 1);
-            lightest = lighten(lightest);
+            lightest = ImageUtil.changeBrightness(lightest, 1.05f);
             return stretchColors(darkest, lightest);
-        }
-
-        private static Color darken(Color colour) {
-            float[] hsb = Color.RGBtoHSB(colour.getRed(), colour.getGreen(), colour.getBlue(), null);
-            return Color.getHSBColor(hsb[0], hsb[1], MathHelper.clamp(hsb[2] - 0.05f, 0.0f, 1.0f));
-        }
-
-        private static Color lighten(Color colour) {
-            float[] hsb = Color.RGBtoHSB(colour.getRed(), colour.getGreen(), colour.getBlue(), null);
-            return Color.getHSBColor(hsb[0], hsb[1], MathHelper.clamp(hsb[2] + 0.05f, 0.0f, 1.0f));
         }
 
         private static List<Color> stretchColors(Color... originalColors) {

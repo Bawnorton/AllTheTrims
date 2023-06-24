@@ -2,6 +2,7 @@ package com.bawnorton.allthetrims;
 
 import com.bawnorton.allthetrims.compat.Compat;
 import com.bawnorton.allthetrims.compat.client.YACLImpl;
+import com.bawnorton.allthetrims.util.ImageUtil;
 import com.bawnorton.allthetrims.util.PaletteHelper;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
@@ -69,7 +70,12 @@ public class AllTheTrimsClient implements ClientModInitializer {
 				return -1;
 			}
 
-			return tintIndex >= 1 ? palette.get(MathHelper.clamp(5 - tintIndex, 0, palette.size() - 1)).getRGB() : -1;
+			if(tintIndex < 1) return -1;
+			Color color = palette.get(MathHelper.clamp(6 - tintIndex, 0, palette.size() - 1));
+			if(tintIndex == 1) return ImageUtil.changeBrightness(color, 0.6f).getRGB();
+			if(tintIndex == 2) return ImageUtil.changeBrightness(color, 0.75f).getRGB();
+			if(tintIndex == 3) return ImageUtil.changeBrightness(color, 0.9f).getRGB();
+			return color.getRGB();
 		}, Registries.ITEM.stream().filter(item -> item instanceof Equipment).toArray(Item[]::new));
 	}
 
