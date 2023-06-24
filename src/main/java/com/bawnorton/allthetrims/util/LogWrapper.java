@@ -15,19 +15,15 @@ public class LogWrapper {
         return new LogWrapper(logger, prefix);
     }
 
-    public void info(String message) {
-        logger.info(prefix + " " + message);
+    public void info(String message, Object... args) {
+        logger.info(prefix + " " + message, args);
     }
 
-    public void warn(String message) {
-        logger.warn(prefix + " " + message);
+    public void warn(String message, Object... args) {
+        logger.warn(prefix + " " + message, args);
     }
 
-    public void error(String message) {
-        logger.error(prefix + " " + message);
-    }
-
-    public void error(String message, Throwable throwable) {
-        logger.error(prefix + " " + message, throwable);
+    public void error(String message, Object... args) {
+        logger.error(prefix + " " + message, args);
     }
 }

@@ -1,50 +1,58 @@
 package com.bawnorton.allthetrims.mixin.client;
 
-import com.bawnorton.allthetrims.AllTheTrims;
-import com.bawnorton.allthetrims.util.ImageUtil;
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.sugar.Share;
-import com.llamalad7.mixinextras.sugar.ref.LocalRef;
+import com.bawnorton.allthetrims.util.PaletteHelper;
+import dev.kikugie.elytratrims.config.ConfigState;
 import dev.kikugie.elytratrims.render.ExtraElytraFeatureRenderer;
-import net.minecraft.client.render.VertexConsumerProvider;
+import net.minecraft.client.render.*;
+import net.minecraft.client.render.entity.model.ElytraEntityModel;
+import net.minecraft.client.render.item.ItemRenderer;
+import net.minecraft.client.texture.Sprite;
+import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.trim.ArmorTrim;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
+import net.minecraft.util.Identifier;
+import net.minecraft.world.World;
+import org.spongepowered.asm.mixin.*;
 
 import java.awt.*;
+import java.util.List;
+import java.util.function.Function;
 
 @Pseudo
 @Mixin(ExtraElytraFeatureRenderer.class)
 public abstract class ExtraElytraFeatureRendererMixin {
-    @ModifyExpressionValue(method = "renderElytraTrims", at = @At(value = "INVOKE", target = "Ljava/util/Optional;orElse(Ljava/lang/Object;)Ljava/lang/Object;"))
-    private Object captureTrim(Object trim, @Share("trim") LocalRef<Item> trimLocalRef) {
-        trimLocalRef.set(((ArmorTrim) trim).getMaterial().value().ingredient().value());
-        return trim;
+    @Shadow @Final private ElytraEntityModel<?> elytra;
+    @Shadow @Final private static Function<Identifier, RenderLayer> ELYTRA_LAYER;
+    @Shadow @Final private SpriteAtlasTexture atlas;
+
+    /**
+     * @author Bawnorton
+     * @reason Completely replace the renderTrim method to render all the dynamic layers
+     * <br>See {@link ArmorFeatureRendererMixin#renderTrim}
+     */
+    @Overwrite
+    @SuppressWarnings("JavadocReference")
+    private void renderElytraTrims(MatrixStack matrices, VertexConsumerProvider provider, LivingEntity entity, ItemStack stack, int light, float alpha) {
+        if (!ConfigState.cancelRender(ConfigState.RenderType.TRIMS, entity)) {
+            World world = entity.getWorld();
+            ArmorTrim trim = ArmorTrim.getTrim(world.getRegistryManager(), stack).orElse(null);
+            if (trim != null) {
+                List<Color> palette = PaletteHelper.getPalette(trim.getMaterial().value().ingredient().value());
+                for(int i = 0; i < 8; i++) {
+                    Sprite sprite = getTrimSprite(trim, i);
+                    VertexConsumer vertexConsumer = sprite.getTextureSpecificVertexConsumer(ItemRenderer.getDirectItemGlintConsumer(provider, ELYTRA_LAYER.apply(TexturedRenderLayers.ARMOR_TRIMS_ATLAS_TEXTURE), false, stack.hasGlint()));
+                    Color colour = palette.get(i);
+                    elytra.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, colour.getRed() / 255f, colour.getGreen() / 255f, colour.getBlue() / 255f, 1.0F);
+                }
+            }
+        }
     }
 
-    @Inject(method = "renderElytraTrims", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/texture/Sprite;getTextureSpecificVertexConsumer(Lnet/minecraft/client/render/VertexConsumer;)Lnet/minecraft/client/render/VertexConsumer;"), cancellable = true)
-    private void checkWhitelist(MatrixStack matrices, VertexConsumerProvider provider, LivingEntity entity, ItemStack stack, int light, float alpha, CallbackInfo ci, @Share("trim") LocalRef<Item> trimLocalRef) {
-        if(!AllTheTrims.isUsedAsMaterial(trimLocalRef.get()) && AllTheTrims.notWhitelisted(trimLocalRef.get())) ci.cancel();
-    }
-
-    @ModifyArgs(method = "renderElytraTrims", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/entity/model/ElytraEntityModel;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"))
-    private void renderATTtrim(Args args, @Share("trim") LocalRef<Item> trimLocalRef) {
-        Item material = trimLocalRef.get();
-        if(material == null) return;
-        if(AllTheTrims.isUsedAsMaterial(material)) return;
-
-        Color colour = ImageUtil.getAverageColour(material);
-        args.set(4, colour.getRed() / 255f);
-        args.set(5, colour.getGreen() / 255f);
-        args.set(6, colour.getBlue() / 255f);
+    private Sprite getTrimSprite(ArmorTrim trim, int index) {
+        String material = trim.getMaterial().value().assetName();
+        Identifier identifier = trim.getPattern().value().assetId().withPath((path) -> "trims/models/elytra/" + path + "_" + index + "_" + material);
+        return this.atlas.getSprite(identifier);
     }
 }

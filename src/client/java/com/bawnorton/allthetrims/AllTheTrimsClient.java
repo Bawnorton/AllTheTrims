@@ -2,26 +2,28 @@ package com.bawnorton.allthetrims;
 
 import com.bawnorton.allthetrims.compat.Compat;
 import com.bawnorton.allthetrims.compat.client.YACLImpl;
-import com.bawnorton.allthetrims.util.ImageUtil;
+import com.bawnorton.allthetrims.util.PaletteHelper;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.ColorProviderRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.item.DyeableArmorItem;
-import net.minecraft.item.Equipment;
-import net.minecraft.item.Item;
+import net.minecraft.item.*;
 import net.minecraft.item.trim.ArmorTrim;
+import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
+import net.minecraft.util.math.MathHelper;
 
 import java.awt.*;
 import java.net.URI;
-import java.util.Optional;
+import java.util.*;
+import java.util.List;
 
 public class AllTheTrimsClient implements ClientModInitializer {
 
@@ -38,25 +40,34 @@ public class AllTheTrimsClient implements ClientModInitializer {
 			DynamicRegistryManager registryManager = networkHandler.getRegistryManager();
 			Optional<ArmorTrim> optionalTrim = ArmorTrim.getTrim(registryManager, stack);
 			if(optionalTrim.isEmpty()) {
-				if(stack.getItem() instanceof DyeableArmorItem dyeableArmorItem) {
-					return tintIndex == 0 ? dyeableArmorItem.getColor(stack) : -1;
-				}
+				if(stack.getItem() instanceof DyeableArmorItem dyeableArmorItem) return tintIndex == 0 ? dyeableArmorItem.getColor(stack) : -1;
 				return -1;
 			}
 
-			Item material = optionalTrim.get().getMaterial().value().ingredient().value();
-			Color colour = ImageUtil.getAverageColour(material);
+			ArmorTrimMaterial trimMaterial = optionalTrim.get().getMaterial().value();
+			Item trimItem = trimMaterial.ingredient().value();
+			String assetName =  trimMaterial.assetName();
+			if(stack.getItem() instanceof ArmorItem armourItem) {
+				ItemStack[] itemStacks = armourItem.getMaterial().getRepairIngredient().getMatchingStacks();
+				List<Item> items = Arrays.stream(itemStacks).map(ItemStack::getItem).toList();
+				if (items.contains(trimItem)) {
+					assetName += "_darker";
+				}
+			}
+			List<Color> palette;
+			Identifier trimAssetId = new Identifier(Registries.ITEM.getId(trimItem).getNamespace(), assetName);
+			if(PaletteHelper.paletteExists(trimAssetId)) {
+				palette = PaletteHelper.getPalette(trimAssetId);
+			} else {
+				palette = PaletteHelper.getPalette(trimItem);
+			}
 			if(stack.getItem() instanceof DyeableArmorItem dyeableArmorItem) {
-				if(tintIndex == 0) {
-					return dyeableArmorItem.getColor(stack);
-				}
-				if(tintIndex == 2) {
-					return colour.getRGB();
-				}
+				if(tintIndex == 0) return dyeableArmorItem.getColor(stack);
+				if(tintIndex >= 2) return palette.get(MathHelper.clamp(6 - tintIndex, 0, palette.size() - 1)).getRGB();
 				return -1;
 			}
 
-			return tintIndex == 1 ? colour.getRGB() : -1;
+			return tintIndex >= 1 ? palette.get(MathHelper.clamp(5 - tintIndex, 0, palette.size() - 1)).getRGB() : -1;
 		}, Registries.ITEM.stream().filter(item -> item instanceof Equipment).toArray(Item[]::new));
 	}
 

@@ -6,9 +6,10 @@
   "client": [
     "ArmorFeatureRendererMixin",
     "ArmorTrimMaterialMixin",
-    "AtlasLoaderMixin",
     "BakedModelManagerMixin",
     "ExtraElytraFeatureRendererMixin",
+    "ItemModelGeneratorMixin",
+    "NamespaceResourceManagerMixin",
     "PalettedPermutationsAtlasSourceMixin"
   ],
   "injectors": {

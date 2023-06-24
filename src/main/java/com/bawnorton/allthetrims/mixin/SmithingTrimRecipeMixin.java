@@ -16,12 +16,12 @@ public abstract class SmithingTrimRecipeMixin {
     @ModifyExpressionValue(method = "testAddition", at = @At(value = "INVOKE", target = "Lnet/minecraft/recipe/Ingredient;test(Lnet/minecraft/item/ItemStack;)Z"))
     private boolean checkWhitelist(boolean original, ItemStack stack) {
         Item material = stack.getItem();
-        return original && (!AllTheTrims.notWhitelisted(material) || AllTheTrims.isUsedAsMaterial(material));
+        return original && (!AllTheTrims.notWhitelisted(material));
     }
 
     @ModifyExpressionValue(method = "matches", at = @At(value = "INVOKE", target = "Lnet/minecraft/recipe/Ingredient;test(Lnet/minecraft/item/ItemStack;)Z", ordinal = 2))
     private boolean checkWhitelist(boolean original, Inventory inventory, World world) {
         Item material = inventory.getStack(2).getItem();
-        return original && (!AllTheTrims.notWhitelisted(material) || AllTheTrims.isUsedAsMaterial(material));
+        return original && (!AllTheTrims.notWhitelisted(material));
     }
 }

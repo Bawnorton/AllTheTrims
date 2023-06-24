@@ -5,6 +5,8 @@ import com.bawnorton.allthetrims.config.Config;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.commons.io.IOUtils;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -12,6 +14,19 @@ import java.io.Writer;
 import java.nio.file.Path;
 
 public abstract class DebugHelper {
+    static {
+        try {
+            Path gameDir = FabricLoader.getInstance().getGameDir();
+            File debugDir = gameDir.resolve("att-debug").toFile();
+            if(debugDir.exists()) {
+                debugDir.delete();
+            }
+            debugDir.mkdirs();
+        } catch (Exception e) {
+            AllTheTrims.LOGGER.error("Failed to create debug directory", e);
+        }
+    }
+
     public static void createDebugFile(String directory, String filename, String content) {
         if(!Config.getInstance().debug) return;
         try {
@@ -26,6 +41,36 @@ public abstract class DebugHelper {
             writer.close();
         } catch (IOException e) {
             AllTheTrims.LOGGER.error("Failed to create debug file: " + filename, e);
+        }
+    }
+
+    public static void saveLayeredTexture(BufferedImage image, String path) {
+        if(!Config.getInstance().debug) return;
+        try {
+            Path gameDir = FabricLoader.getInstance().getGameDir();
+            File debugDir = gameDir.resolve("att-debug").resolve("textures").toFile();
+            debugDir.mkdirs();
+            File debugFile = debugDir.toPath().resolve(path.replace("/", "_")).toFile();
+            debugFile.createNewFile();
+
+            ImageIO.write(image, "png", debugFile);
+        } catch (IOException e) {
+            AllTheTrims.LOGGER.error("Failed to create debug image: " + path, e);
+        }
+    }
+
+    public static void savePalette(BufferedImage image, String path) {
+        if(!Config.getInstance().debug) return;
+        try {
+            Path gameDir = FabricLoader.getInstance().getGameDir();
+            File debugDir = gameDir.resolve("att-debug").resolve("palettes").toFile();
+            debugDir.mkdirs();
+            File debugFile = debugDir.toPath().resolve(path.replace("/", "_")).toFile();
+            debugFile.createNewFile();
+
+            ImageIO.write(image, "png", debugFile);
+        } catch (IOException e) {
+            AllTheTrims.LOGGER.error("Failed to create debug image: " + path, e);
         }
     }
 }

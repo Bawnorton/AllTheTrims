@@ -22,14 +22,6 @@ public abstract class SimpleRegistryMixin {
         if (tagEntries.containsKey(ItemTags.TRIM_MATERIALS)) {
             tagEntries = new HashMap<>(tagEntries);
             List<RegistryEntry<T>> entries = new ArrayList<>(tagEntries.get(ItemTags.TRIM_MATERIALS));
-            if(!AllTheTrims.checkedUsedMaterials) {
-                AllTheTrims.checkedUsedMaterials = true;
-                for(RegistryEntry<T> entry : entries) {
-                    if(entry.value() instanceof Item item) {
-                        AllTheTrims.addUsedAsMaterial(item);
-                    }
-                }
-            }
             entries.addAll(Registries.ITEM.stream().map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item)).toList());
             tagEntries.put((TagKey<T>) ItemTags.TRIM_MATERIALS, entries);
             tagEntries = Collections.unmodifiableMap(tagEntries);

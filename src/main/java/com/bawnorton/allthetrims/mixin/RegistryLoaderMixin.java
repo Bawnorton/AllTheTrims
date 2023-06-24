@@ -45,7 +45,7 @@ public abstract class RegistryLoaderMixin {
                             "#FFFFFF",
                             escape(item.getName().getString()), escape(Text.translatable("text.allthetrims.material").getString()),
                             itemId,
-                            0.00001
+                            0.099f
                     );
             Resource resource = new Resource(first.getValue().getPack(), () -> IOUtils.toInputStream(resourceString, "UTF-8"));
             Identifier resourceId = new Identifier(itemId.getNamespace(), "trim_material/" + itemId.getPath() + ".json");
