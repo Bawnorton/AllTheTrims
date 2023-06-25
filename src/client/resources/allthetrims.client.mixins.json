@@ -7,17 +7,17 @@
     "ArmorFeatureRendererMixin",
     "ArmorTrimMaterialMixin",
     "BakedModelManagerMixin",
-    "elytratrims.ExtraElytraFeatureRendererMixin",
-    "betterend.HumanoidArmorRendererMixin",
     "ItemModelGeneratorMixin",
     "NamespaceResourceManagerMixin",
-    "PalettedPermutationsAtlasSourceMixin"
+    "PalettedPermutationsAtlasSourceMixin",
+    "betterend.HumanoidArmorRendererMixin",
+    "elytratrims.ExtraElytraFeatureRendererMixin",
+    "betterend.PatternsHelperMixin",
+    "betterend.CustomModelBakeryMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "mixins": [
-    "betterend.CustomModelBakeryMixin",
-    "betterend.PatternsHelperMixin"
   ]
 }

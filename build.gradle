@@ -14,6 +14,9 @@ repositories {
 	maven {
 		url = "https://jitpack.io"
 	}
+	maven {
+		url = "https://maven.enjarai.nl/releases"
+	}
 	exclusiveContent {
 		forRepository {
 			maven {
@@ -41,24 +44,28 @@ loom {
 }
 
 dependencies {
-	// To change the versions see the gradle.properties file
+	// minecraft/fabric
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 
-	// Fabric API. This is technically optional, but you probably want it anyway.
+	// fabric API
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
+	// mixin extras
+	include(implementation(annotationProcessor(clientAnnotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}"))))
+
+	// mod compats
 	modImplementation("maven.modrinth:elytra-trims:${project.elytra_trims_version}")
 	modImplementation("maven.modrinth:yacl:${project.yacl_version}")
 	modImplementation("maven.modrinth:modmenu:${project.modmenu_version}")
 	modImplementation("maven.modrinth:betterend:${project.betterend_version}")
-	modImplementation("com.github.quiqueck:BCLib:${project.bclib_version}") {
-		transitive = false
-	}
-	modImplementation(fileTree(dir: "libs", include: ["*.jar"]))
+	modImplementation("maven.modrinth:show-me-your-skin:${project.show_me_your_skin_version}")
 
-	include(implementation(annotationProcessor(clientAnnotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${project.mixin_extras_version}"))))
+	// mod compats dependencies
+	modImplementation("nl.enjarai:cicada-lib:${project.cicada_version}") { exclude group: "net.fabricmc.fabric-api" }
+	modImplementation("com.github.quiqueck:BCLib:${project.bclib_version}") { transitive = false }
+	modImplementation(fileTree(dir: "libs", include: ["*.jar"])) // wunderlib 1.1.2 with mapping conflict resolved
 }
 
 processResources {

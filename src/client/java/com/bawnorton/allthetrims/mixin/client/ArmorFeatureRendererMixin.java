@@ -1,8 +1,8 @@
 package com.bawnorton.allthetrims.mixin.client;
 
+import com.bawnorton.allthetrims.compat.Compat;
 import com.bawnorton.allthetrims.util.PaletteHelper;
 import net.minecraft.client.render.OverlayTexture;
-import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
@@ -50,9 +50,9 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extend
         for(int i = 0; i < 8; i++) {
             String layerPath = path.replace(assetName, i + "_" + assetName);
             Sprite sprite = armorTrimsAtlas.getSprite(modelId.withPath(layerPath));
-            VertexConsumer vertexConsumer = sprite.getTextureSpecificVertexConsumer(vertexConsumers.getBuffer(TexturedRenderLayers.getArmorTrims()));
+            VertexConsumer vertexConsumer = sprite.getTextureSpecificVertexConsumer(vertexConsumers.getBuffer(Compat.getTrimRenderLayer()));
             Color colour = palette.get(i);
-            model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, colour.getRed() / 255f, colour.getGreen() / 255f, colour.getBlue() / 255f, 1.0F);
+            model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, colour.getRed() / 255f, colour.getGreen() / 255f, colour.getBlue() / 255f, Compat.getTrimTransparency());
         }
     }
 }
