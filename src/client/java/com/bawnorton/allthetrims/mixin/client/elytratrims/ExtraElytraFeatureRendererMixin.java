@@ -1,5 +1,6 @@
-package com.bawnorton.allthetrims.mixin.client;
+package com.bawnorton.allthetrims.mixin.client.elytratrims;
 
+import com.bawnorton.allthetrims.mixin.client.ArmorFeatureRendererMixin;
 import com.bawnorton.allthetrims.util.PaletteHelper;
 import dev.kikugie.elytratrims.config.ConfigState;
 import dev.kikugie.elytratrims.render.ExtraElytraFeatureRenderer;

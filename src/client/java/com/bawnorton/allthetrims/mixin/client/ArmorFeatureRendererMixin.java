@@ -35,8 +35,6 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extend
      */
     @Overwrite
     private void renderTrim(ArmorMaterial material, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, A model, boolean leggings) {
-        Identifier modelId = leggings ? trim.getLeggingsModelId(material) : trim.getGenericModelId(material);
-        String path = modelId.getPath();
         ArmorTrimMaterial trimMaterial = trim.getMaterial().value();
         Item trimItem = trimMaterial.ingredient().value();
         String assetName =  trimMaterial.assetName();
@@ -47,6 +45,8 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extend
         } else {
             palette = PaletteHelper.getPalette(trimItem);
         }
+        Identifier modelId = leggings ? trim.getLeggingsModelId(material) : trim.getGenericModelId(material);
+        String path = modelId.getPath();
         for(int i = 0; i < 8; i++) {
             String layerPath = path.replace(assetName, i + "_" + assetName);
             Sprite sprite = armorTrimsAtlas.getSprite(modelId.withPath(layerPath));

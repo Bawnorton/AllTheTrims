@@ -35,6 +35,8 @@ public abstract class BakedModelManagerMixin {
         });
         for (Equipment equipment : equipmentSet) {
             Identifier equipmentId = Registries.ITEM.getId((Item) equipment);
+            if(equipmentId.getNamespace().equals("betterend")) continue; // Better End dynamically generates models elsewhere. See betterend package
+
             Identifier resourceId = new Identifier(equipmentId.getNamespace(), "models/item/" + equipmentId.getPath() + ".json");
             String armourType = switch (equipment.getSlotType()) {
                 case HEAD -> "helmet";

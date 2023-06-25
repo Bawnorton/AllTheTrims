@@ -16,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import java.util.Iterator;
 import java.util.Map;
 
-@Debug(export = true)
 @Mixin(RegistryLoader.class)
 public abstract class RegistryLoaderMixin {
     // pure cursedness

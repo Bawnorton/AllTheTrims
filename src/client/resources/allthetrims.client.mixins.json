@@ -7,7 +7,8 @@
     "ArmorFeatureRendererMixin",
     "ArmorTrimMaterialMixin",
     "BakedModelManagerMixin",
-    "ExtraElytraFeatureRendererMixin",
+    "elytratrims.ExtraElytraFeatureRendererMixin",
+    "betterend.HumanoidArmorRendererMixin",
     "ItemModelGeneratorMixin",
     "NamespaceResourceManagerMixin",
     "PalettedPermutationsAtlasSourceMixin"
@@ -16,5 +17,7 @@
     "defaultRequire": 1
   },
   "mixins": [
+    "betterend.CustomModelBakeryMixin",
+    "betterend.PatternsHelperMixin"
   ]
 }
