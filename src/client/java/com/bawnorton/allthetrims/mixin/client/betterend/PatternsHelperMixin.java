@@ -6,6 +6,7 @@ import com.bawnorton.allthetrims.json.JsonHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.Equipment;
 import net.minecraft.registry.Registries;
@@ -38,7 +39,7 @@ public abstract class PatternsHelperMixin {
             AllTheTrims.LOGGER.warn("Item " + noInv + "'s slot type is not an armour slot type, skipping");
             return original;
         }
-        if (equipment instanceof ElytraItem && !Compat.isElytraTrimsLoaded()) {
+        if (equipment instanceof ElytraItem && !FabricLoader.getInstance().isModLoaded("elytratrims")) {
             AllTheTrims.LOGGER.warn("Item " + noInv + " is an elytra, but elytratrims is not loaded, skipping");
             return original;
         }
