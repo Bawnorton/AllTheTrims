@@ -6,10 +6,6 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.TexturedRenderLayers;
 
 public abstract class Compat {
-    public static boolean isElytraTrimsLoaded() {
-        return FabricLoader.getInstance().isModLoaded("elytratrims");
-    }
-
     public static boolean isYaclLoaded() {
         return FabricLoader.getInstance().isModLoaded("yet_another_config_lib_v3");
     }

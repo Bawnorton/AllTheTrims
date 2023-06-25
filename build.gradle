@@ -61,6 +61,7 @@ dependencies {
 	modImplementation("maven.modrinth:modmenu:${project.modmenu_version}")
 	modImplementation("maven.modrinth:betterend:${project.betterend_version}")
 	modImplementation("maven.modrinth:show-me-your-skin:${project.show_me_your_skin_version}")
+	modImplementation("maven.modrinth:mythicmetals:${project.mythicmetals_version}")
 
 	// mod compats dependencies
 	modImplementation("nl.enjarai:cicada-lib:${project.cicada_version}") { exclude group: "net.fabricmc.fabric-api" }

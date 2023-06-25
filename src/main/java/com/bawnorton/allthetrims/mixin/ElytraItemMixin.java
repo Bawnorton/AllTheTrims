@@ -1,13 +1,10 @@
 package com.bawnorton.allthetrims.mixin;
 
-import com.bawnorton.allthetrims.compat.Compat;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.item.TooltipContext;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.trim.ArmorTrim;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -21,7 +18,7 @@ import java.util.Optional;
 public abstract class ElytraItemMixin extends ItemMixin {
     @Override
     protected void appendMissingElytraTrimsTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context, CallbackInfo ci) {
-        if(Compat.isElytraTrimsLoaded() || world == null) return;
+        if(FabricLoader.getInstance().isModLoaded("elytratrims") || world == null) return;
 
         Optional<ArmorTrim> trim = ArmorTrim.getTrim(world.getRegistryManager(), stack);
         if(trim.isEmpty()) return;
