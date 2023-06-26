@@ -12,7 +12,7 @@
 - Supports custom trim templates from datapacks or mods.
 - Dynamic Trim Rendering:
   - All trims are rendered dynamically, so the texture atlas is not filled with trim textures.
-  - Colour of the trim is based on the ***average*** colour of the item's texture.
+  - Colour of the trim is based on a palette gradient generated from the most vibrant to the dullest colour of the item texture.
 - No additional files or configuration required, just drop the mod in your mods folder.
 
 ### Notes:
