@@ -10,14 +10,15 @@
     "ItemModelGeneratorMixin",
     "NamespaceResourceManagerMixin",
     "PalettedPermutationsAtlasSourceMixin",
+    "betterend.CustomModelBakeryMixin",
     "betterend.HumanoidArmorRendererMixin",
-    "elytratrims.ExtraElytraFeatureRendererMixin",
     "betterend.PatternsHelperMixin",
-    "betterend.CustomModelBakeryMixin"
+    "elytratrims.ExtraElytraFeatureRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
   },
   "mixins": [
+    "mythicmetals.MythicMetalsClientMixin"
   ]
 }

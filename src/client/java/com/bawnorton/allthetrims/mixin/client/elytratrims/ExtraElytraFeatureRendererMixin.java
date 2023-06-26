@@ -1,6 +1,5 @@
 package com.bawnorton.allthetrims.mixin.client.elytratrims;
 
-import com.bawnorton.allthetrims.mixin.client.ArmorFeatureRendererMixin;
 import com.bawnorton.allthetrims.util.PaletteHelper;
 import dev.kikugie.elytratrims.config.ConfigState;
 import dev.kikugie.elytratrims.render.ExtraElytraFeatureRenderer;
@@ -30,11 +29,9 @@ public abstract class ExtraElytraFeatureRendererMixin {
 
     /**
      * @author Bawnorton
-     * @reason Completely replace the renderTrim method to render all the dynamic layers
-     * <br>See {@link ArmorFeatureRendererMixin#renderTrim}
+     * @reason See {@link com.bawnorton.allthetrims.mixin.client.ArmorFeatureRendererMixin}
      */
     @Overwrite
-    @SuppressWarnings("JavadocReference")
     private void renderElytraTrims(MatrixStack matrices, VertexConsumerProvider provider, LivingEntity entity, ItemStack stack, int light, float alpha) {
         if (!ConfigState.cancelRender(ConfigState.RenderType.TRIMS, entity)) {
             World world = entity.getWorld();
