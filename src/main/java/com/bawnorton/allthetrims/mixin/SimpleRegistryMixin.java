@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import java.util.*;
+import java.util.function.Predicate;
 
 @Mixin(SimpleRegistry.class)
 public abstract class SimpleRegistryMixin {
@@ -27,7 +28,7 @@ public abstract class SimpleRegistryMixin {
         if (tagEntries.containsKey(ItemTags.TRIMMABLE_ARMOR)) {
             tagEntries = new HashMap<>(tagEntries);
             List<RegistryEntry<T>> entries = new ArrayList<>(tagEntries.get(ItemTags.TRIMMABLE_ARMOR));
-            entries.addAll(Registries.ITEM.stream().filter(item -> item instanceof Equipment).map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item)).toList());
+            entries.addAll(Registries.ITEM.stream().filter(item -> item instanceof Equipment equipment && equipment.getSlotType().isArmorSlot()).map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item)).toList());
             tagEntries.put((TagKey<T>) ItemTags.TRIMMABLE_ARMOR, entries);
             tagEntries = Collections.unmodifiableMap(tagEntries);
         }
