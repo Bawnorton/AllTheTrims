@@ -1,7 +1,10 @@
 package com.bawnorton.allthetrims.mixin;
 
+import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.json.JsonHelper;
 import com.bawnorton.allthetrims.util.DebugHelper;
 import com.bawnorton.allthetrims.util.TrimMaterialHelper;
+import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.RegistryLoader;
@@ -9,7 +12,6 @@ import net.minecraft.resource.Resource;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.apache.commons.io.IOUtils;
-import org.spongepowered.asm.mixin.Debug;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
@@ -29,28 +31,26 @@ public abstract class RegistryLoaderMixin {
 
         TrimMaterialHelper.loopTrimMaterials((item) -> {
             Identifier itemId = Registries.ITEM.getId(item);
-            String resourceString =
-                            """
-                                    {
-                                      "asset_name": "att-blank",
-                                      "description": {
-                                        "color": "%s",
-                                        "translate": "%s %s"
-                                      },
-                                      "ingredient": "%s",
-                                      "item_model_index": %f
-                                    }
-                            """.formatted(
-                            "#FFFFFF",
-                            escape(item.getName().getString()), escape(Text.translatable("text.allthetrims.material").getString()),
-                            itemId,
-                            0.099f
-                    );
-            Resource resource = new Resource(first.getValue().getPack(), () -> IOUtils.toInputStream(resourceString, "UTF-8"));
+
+            JsonObject resourceJson = new JsonObject();
+            try {
+                resourceJson.addProperty("asset_name", "att-blank");
+                JsonObject description = new JsonObject();
+                description.addProperty("color", "#FFFFFF");
+                description.addProperty("translate", escape(item.getName().getString()) + " " + escape(Text.translatable("text.allthetrims.material").getString()));
+                resourceJson.add("description", description);
+                resourceJson.addProperty("ingredient", itemId.toString());
+                resourceJson.addProperty("item_model_index", 0.099);
+            } catch (RuntimeException e) {
+                AllTheTrims.LOGGER.error("Failed to generate trim material JSON for " + itemId, e);
+                return;
+            }
+
+            Resource resource = new Resource(first.getValue().getPack(), () -> IOUtils.toInputStream(resourceJson.toString(), "UTF-8"));
             Identifier resourceId = new Identifier(itemId.getNamespace(), "trim_material/" + itemId.getPath() + ".json");
             original.put(resourceId, resource);
 
-            DebugHelper.createDebugFile("trim_materials", itemId + ".json", resourceString);
+            DebugHelper.createDebugFile("trim_materials", itemId + ".json", resourceJson.toString());
         });
         return original;
     }
