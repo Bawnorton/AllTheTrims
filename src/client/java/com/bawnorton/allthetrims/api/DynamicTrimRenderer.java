@@ -1,4 +1,4 @@
-package com.bawnorton.allthetrims.render;
+package com.bawnorton.allthetrims.api;
 
 import com.bawnorton.allthetrims.compat.Compat;
 import com.bawnorton.allthetrims.util.PaletteHelper;

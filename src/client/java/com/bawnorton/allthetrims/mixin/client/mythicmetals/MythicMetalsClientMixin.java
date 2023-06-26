@@ -1,6 +1,6 @@
 package com.bawnorton.allthetrims.mixin.client.mythicmetals;
 
-import com.bawnorton.allthetrims.render.DynamicTrimRenderer;
+import com.bawnorton.allthetrims.api.DynamicTrimRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.util.math.MatrixStack;
