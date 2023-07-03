@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "com.bawnorton.allthetrims.mixin.fabric",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "mixins": [
+    "ElytraItemMixin",
+    "ItemMixin",
+    "client.ArmorTrimMixin",
+    "client.betterend.CustomModelBakeryMixin",
+    "client.betterend.HumanoidArmorRendererMixin",
+    "client.betterend.PatternsHelperMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
