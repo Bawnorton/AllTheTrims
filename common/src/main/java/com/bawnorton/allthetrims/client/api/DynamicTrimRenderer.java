@@ -9,7 +9,6 @@ import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.trim.ArmorTrim;
@@ -27,7 +26,7 @@ public abstract class DynamicTrimRenderer {
         armorTrimsAtlas = atlas;
     }
 
-    public static <T extends LivingEntity, A extends BipedEntityModel<T>> void renderTrim(ArmorMaterial material, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, A model, boolean leggings) {
+    public static void renderTrim(ArmorMaterial material, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, BipedEntityModel<?> model, boolean leggings) {
         ArmorTrimMaterial trimMaterial = trim.getMaterial().value();
         Item trimItem = trimMaterial.ingredient().value();
         String assetName =  trimMaterial.assetName();

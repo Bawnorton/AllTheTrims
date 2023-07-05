@@ -5,11 +5,10 @@ import com.bawnorton.allthetrims.Compat;
 import com.bawnorton.allthetrims.json.JsonHelper;
 import com.bawnorton.allthetrims.util.DebugHelper;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.render.model.BakedModelManager;
-import net.minecraft.item.DyeableArmorItem;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
@@ -28,6 +27,7 @@ import java.util.Set;
 
 @Mixin(BakedModelManager.class)
 public abstract class BakedModelManagerMixin {
+    @SuppressWarnings("unused")
     @ModifyExpressionValue(method = "method_45895(Lnet/minecraft/resource/ResourceManager;)Ljava/util/Map;", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ResourceFinder;findResources(Lnet/minecraft/resource/ResourceManager;)Ljava/util/Map;"))
     private static Map<Identifier, Resource> addTrimModels(Map<Identifier, Resource> original) {
         Set<Equipment> equipmentSet = new HashSet<>();
@@ -64,7 +64,7 @@ public abstract class BakedModelManagerMixin {
                 continue;
             }
             try (BufferedReader reader = resource.getReader()) {
-                JsonObject model = JsonHelper.fromJson(reader, JsonObject.class);
+                JsonObject model = JsonHelper.fromJsonReader(reader, JsonObject.class);
                 if (!model.has("textures")) {
                     AllTheTrims.LOGGER.warn("Item " + equipmentId + "'s model does not have a textures parameter, skipping");
                     continue;
@@ -76,6 +76,7 @@ public abstract class BakedModelManagerMixin {
                     continue;
                 }
 
+                //noinspection DuplicatedCode
                 String baseTexture = textures.get("layer0").getAsString();
                 JsonArray overrides = new JsonArray();
                 model.add("overrides", overrides);
@@ -86,52 +87,36 @@ public abstract class BakedModelManagerMixin {
                 attOverride.add("predicate", predicate);
                 overrides.add(attOverride);
 
-                String overrideResourceString;
-                if (equipment instanceof DyeableArmorItem) {
-                    overrideResourceString = """
-                            {
-                               "parent": "minecraft:item/generated",
-                               "textures": {
-                                 "layer0": "%1$s",
-                                 "layer1": "%1$s_overlay",
-                                 "layer2": "minecraft:trims/items/%2$s_trim_0_att-blank",
-                                 "layer3": "minecraft:trims/items/%2$s_trim_1_att-blank",
-                                 "layer4": "minecraft:trims/items/%2$s_trim_2_att-blank",
-                                 "layer5": "minecraft:trims/items/%2$s_trim_3_att-blank",
-                                 "layer6": "minecraft:trims/items/%2$s_trim_4_att-blank",
-                                 "layer7": "minecraft:trims/items/%2$s_trim_5_att-blank",
-                                 "layer8": "minecraft:trims/items/%2$s_trim_6_att-blank",
-                                 "layer9": "minecraft:trims/items/%2$s_trim_7_att-blank"
-                               }
-                            }
-                            """.formatted(baseTexture, armourType);
-                } else {
-                    overrideResourceString = """
-                            {
-                              "parent": "minecraft:item/generated",
-                              "textures": {
-                                "layer0": "%1$s",
-                                "layer1": "minecraft:trims/items/%2$s_trim_0_att-blank",
-                                "layer2": "minecraft:trims/items/%2$s_trim_1_att-blank",
-                                "layer3": "minecraft:trims/items/%2$s_trim_2_att-blank",
-                                "layer4": "minecraft:trims/items/%2$s_trim_3_att-blank",
-                                "layer5": "minecraft:trims/items/%2$s_trim_4_att-blank",
-                                "layer6": "minecraft:trims/items/%2$s_trim_5_att-blank",
-                                "layer7": "minecraft:trims/items/%2$s_trim_6_att-blank",
-                                "layer8": "minecraft:trims/items/%2$s_trim_7_att-blank"
-                              }
-                            }
-                            """.formatted(baseTexture, armourType);
+                JsonObject overrideResourceJson = new JsonObject();
+                overrideResourceJson.addProperty("parent", model.get("parent").getAsString());
+                JsonObject overrideTextures = new JsonObject();
+                overrideTextures.addProperty("layer0", baseTexture);
+
+                int layer = 1;
+                int trimCount = 0;
+                boolean reachedEnd = false;
+                while(true) {
+                    JsonElement layerElement = textures.get("layer" + layer);
+                    if(layerElement == null) reachedEnd = true;
+                    else overrideTextures.add("layer" + layer, layerElement);
+
+                    if(reachedEnd) {
+                        overrideTextures.addProperty("layer" + layer, "minecraft:trims/items/" + armourType + "_trim_" + trimCount + "_att-blank");
+                        if(trimCount == 7) break;
+                        trimCount++;
+                    }
+                    layer++;
                 }
+                overrideResourceJson.add("textures", overrideTextures);
 
                 Identifier baseId = new Identifier(baseTexture);
                 Identifier overrideResourceModelId = baseId.withPath("models/" + baseId.getPath() + "_att-blank_trim.json");
-                Resource overrideResource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(overrideResourceString, "UTF-8"));
+                Resource overrideResource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonHelper.toJsonString(overrideResourceJson), "UTF-8"));
                 original.put(overrideResourceModelId, overrideResource);
-                DebugHelper.createDebugFile("models", equipmentId + "_att-blank_trim.json", overrideResourceString);
+                DebugHelper.createDebugFile("models", equipmentId + "_att-blank_trim.json", JsonHelper.toJsonString(overrideResourceJson));
 
-                resource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonHelper.toJson(model), "UTF-8"));
-                DebugHelper.createDebugFile("models", equipmentId + ".json", JsonHelper.toJson(model));
+                resource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonHelper.toJsonString(model), "UTF-8"));
+                DebugHelper.createDebugFile("models", equipmentId + ".json", JsonHelper.toJsonString(model));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }

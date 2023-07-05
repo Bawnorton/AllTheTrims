@@ -1,7 +1,12 @@
 package com.bawnorton.allthetrims.forge;
 
 import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.client.AllTheTrimsClient;
+import com.bawnorton.allthetrims.client.implementation.YACLImpl;
+import com.bawnorton.allthetrims.forge.client.AllTheTrimsForgeClient;
 import dev.architectury.platform.forge.EventBuses;
+import net.minecraftforge.client.ConfigScreenHandler;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
@@ -10,5 +15,6 @@ public class AllTheTrimsForge {
     public AllTheTrimsForge() {
         EventBuses.registerModEventBus(AllTheTrims.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
         AllTheTrims.init();
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(AllTheTrimsForgeClient::init);
     }
 }

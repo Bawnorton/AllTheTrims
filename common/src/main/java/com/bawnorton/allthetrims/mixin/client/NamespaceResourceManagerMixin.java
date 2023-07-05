@@ -28,7 +28,7 @@ public abstract class NamespaceResourceManagerMixin {
         List<Resource> newResources = new ArrayList<>();
         for (Resource resource : original) {
             try (BufferedReader reader = resource.getReader()) {
-                JsonObject atlas = JsonHelper.fromJson(reader, JsonObject.class);
+                JsonObject atlas = JsonHelper.fromJsonReader(reader, JsonObject.class);
                 if(!atlas.has("sources")) return original;
 
                 JsonArray sources = atlas.getAsJsonArray("sources");
@@ -46,9 +46,9 @@ public abstract class NamespaceResourceManagerMixin {
                     permutations.addProperty("att-blank", "trims/color_palettes/blank");
                     sourceJson.add("permutations", permutations);
                 }
-                newResources.add(new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonHelper.toJson(atlas), "UTF-8")));
+                newResources.add(new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonHelper.toJsonString(atlas), "UTF-8")));
 
-                DebugHelper.createDebugFile("atlases", resource.getResourcePackName() + "_armour_trims.json", JsonHelper.toJson(atlas));
+                DebugHelper.createDebugFile("atlases", resource.getResourcePackName() + "_armour_trims.json", JsonHelper.toJsonString(atlas));
             } catch (RuntimeException | IOException e) {
                 AllTheTrims.LOGGER.error("Failed to modify trim atlas: " + identifier);
                 return original;

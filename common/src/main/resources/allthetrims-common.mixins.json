@@ -12,7 +12,7 @@
   ],
   "mixins": [
     "RegistryLoaderMixin",
-    "SimpleRegistryMixin",
+    "DataPackContentsMixin",
     "SmithingScreenHandlerMixin",
     "SmithingTrimRecipeMixin",
     "client.ArmorTrimMaterialMixin",

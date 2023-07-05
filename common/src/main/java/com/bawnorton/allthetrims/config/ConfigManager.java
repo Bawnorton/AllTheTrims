@@ -4,7 +4,7 @@ import com.bawnorton.allthetrims.AllTheTrims;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
-import net.fabricmc.loader.api.FabricLoader;
+import dev.architectury.platform.Platform;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,7 +12,7 @@ import java.nio.file.Path;
 
 public class ConfigManager {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    private static final Path configPath = FabricLoader.getInstance().getConfigDir().resolve("allthetrims.json");
+    private static final Path configPath = Platform.getConfigFolder().resolve("allthetrims.json");
 
     public static void loadConfig() {
         Config config = load();

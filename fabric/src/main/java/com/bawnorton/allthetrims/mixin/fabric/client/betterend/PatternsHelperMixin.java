@@ -20,6 +20,7 @@ import java.util.Optional;
 @Pseudo
 @Mixin(value = PatternsHelper.class, remap = false)
 public abstract class PatternsHelperMixin {
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     @ModifyReturnValue(method = "createItemGenerated", at = @At("RETURN"))
     private static Optional<String> addTrimsToArmourItems(Optional<String> original, Identifier identifier) {
         if(original.isEmpty()) return original;
@@ -43,7 +44,7 @@ public abstract class PatternsHelperMixin {
             return original;
         }
 
-        JsonObject model = JsonHelper.fromJson(original.get(), JsonObject.class);
+        JsonObject model = JsonHelper.fromJsonString(original.get(), JsonObject.class);
         if (!model.has("textures")) {
             AllTheTrims.LOGGER.warn("Item " + noInv + "'s model does not have a textures parameter, skipping");
             return original;
@@ -55,6 +56,7 @@ public abstract class PatternsHelperMixin {
             return original;
         }
 
+        //noinspection DuplicatedCode
         String baseTexture = textures.get("layer0").getAsString();
         JsonArray overrides = new JsonArray();
         model.add("overrides", overrides);
@@ -65,6 +67,6 @@ public abstract class PatternsHelperMixin {
         attOverride.add("predicate", predicate);
         overrides.add(attOverride);
 
-        return Optional.of(JsonHelper.toJson(model));
+        return Optional.of(JsonHelper.toJsonString(model));
     }
 }

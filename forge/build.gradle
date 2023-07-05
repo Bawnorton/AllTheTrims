@@ -36,7 +36,7 @@ dependencies {
     implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:${rootProject.mixin_extras_version}"))
     implementation(include("com.github.llamalad7.mixinextras:mixinextras-forge:${rootProject.mixin_extras_version}"))
 
-    // compats
+    // config
     modImplementation("dev.isxander.yacl:yet-another-config-lib-forge:${rootProject.yacl_version}")
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }

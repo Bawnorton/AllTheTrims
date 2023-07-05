@@ -16,11 +16,11 @@ public abstract class Compat {
 
     @ExpectPlatform
     public static RenderLayer getTrimRenderLayer() {
-        throw new AssertionError();
+        return null;
     }
 
     @ExpectPlatform
     public static float getTrimTransparency() {
-        throw new AssertionError();
+        return 0;
     }
 }

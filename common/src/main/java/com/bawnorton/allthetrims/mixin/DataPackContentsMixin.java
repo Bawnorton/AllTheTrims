@@ -1,22 +1,23 @@
 package com.bawnorton.allthetrims.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.item.Equipment;
 import net.minecraft.registry.Registries;
-import net.minecraft.registry.SimpleRegistry;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagKey;
+import net.minecraft.server.DataPackContents;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import java.util.*;
 
-@Mixin(SimpleRegistry.class)
-public abstract class SimpleRegistryMixin {
+@Mixin(DataPackContents.class)
+public abstract class DataPackContentsMixin {
     @SuppressWarnings("unchecked")
-    @ModifyVariable(method = "populateTags", at = @At("LOAD"), index = 1, argsOnly = true)
-    private <T> Map<TagKey<T>, List<RegistryEntry<T>>> addAllItemsToTrimMaterialTag(Map<TagKey<T>, List<RegistryEntry<T>>> tagEntries) {
+    @ModifyExpressionValue(method = "repopulateTags", at = @At(value = "INVOKE", target = "Ljava/util/stream/Stream;collect(Ljava/util/stream/Collector;)Ljava/lang/Object;"))
+    private static <T> Object addAllItemsToTrimmableMaterialsAndAllEquipmentToTrimmableArmourTags(Object tagEntriesObj) {
+        Map<TagKey<T>, List<RegistryEntry<T>>> tagEntries = (Map<TagKey<T>, List<RegistryEntry<T>>>) tagEntriesObj;
         if (tagEntries.containsKey(ItemTags.TRIM_MATERIALS)) {
             tagEntries = new HashMap<>(tagEntries);
             List<RegistryEntry<T>> entries = new ArrayList<>(tagEntries.get(ItemTags.TRIM_MATERIALS));

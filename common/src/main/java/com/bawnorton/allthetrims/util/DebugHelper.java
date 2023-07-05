@@ -2,7 +2,7 @@ package com.bawnorton.allthetrims.util;
 
 import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.config.Config;
-import net.fabricmc.loader.api.FabricLoader;
+import dev.architectury.platform.Platform;
 import org.apache.commons.io.IOUtils;
 
 import javax.imageio.ImageIO;
@@ -16,7 +16,7 @@ import java.nio.file.Path;
 public abstract class DebugHelper {
     static {
         try {
-            Path gameDir = FabricLoader.getInstance().getGameDir();
+            Path gameDir = Platform.getGameFolder();
             File debugDir = gameDir.resolve("att-debug").toFile();
             if(debugDir.exists()) {
                 debugDir.delete();
@@ -30,7 +30,7 @@ public abstract class DebugHelper {
     public static void createDebugFile(String directory, String filename, String content) {
         if(!Config.getInstance().debug) return;
         try {
-            Path gameDir = FabricLoader.getInstance().getGameDir();
+            Path gameDir = Platform.getGameFolder();
             File debugDir = gameDir.resolve("att-debug").resolve(directory).toFile();
             debugDir.mkdirs();
             File debugFile = debugDir.toPath().resolve(filename.replace("/", "_")).toFile();
@@ -47,7 +47,7 @@ public abstract class DebugHelper {
     public static void saveLayeredTexture(BufferedImage image, String path) {
         if(!Config.getInstance().debug) return;
         try {
-            Path gameDir = FabricLoader.getInstance().getGameDir();
+            Path gameDir = Platform.getGameFolder();
             File debugDir = gameDir.resolve("att-debug").resolve("textures").toFile();
             debugDir.mkdirs();
             File debugFile = debugDir.toPath().resolve(path.replace("/", "_")).toFile();
@@ -62,7 +62,7 @@ public abstract class DebugHelper {
     public static void savePalette(BufferedImage image, String path) {
         if(!Config.getInstance().debug) return;
         try {
-            Path gameDir = FabricLoader.getInstance().getGameDir();
+            Path gameDir = Platform.getGameFolder();
             File debugDir = gameDir.resolve("att-debug").resolve("palettes").toFile();
             debugDir.mkdirs();
             File debugFile = debugDir.toPath().resolve(path.replace("/", "_")).toFile();

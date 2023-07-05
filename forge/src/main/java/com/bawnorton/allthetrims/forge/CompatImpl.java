@@ -18,6 +18,6 @@ public class CompatImpl {
     }
 
     public static boolean isElytraTrimsLoaded() {
-        return ModList.get().isLoaded("elytratrims");
+        return ModList.get().isLoaded("elytratrims"); // not currently on forge but maybe someday it will be ported ¯\_(ツ)_/¯
     }
 }
