@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.Overwrite;
 @Mixin(value = ArmorFeatureRenderer.class, priority = 1500)
 public abstract class ArmorFeatureRendererMixin {
     /**
-     * Forge uses a <a href="https://github.com/MinecraftForge/MinecraftForge/blob/ccbc697bad9b689fbb44cb1de090a0650c8925bc/patches/minecraft/net/minecraft/client/renderer/entity/layers/HumanoidArmorLayer.java.patch#L57-L62">hacky bridge</a> that changes the signature of the method
+     * Forge uses a <a href="https://github.com/MinecraftForge/MinecraftForge/blob/ccbc697bad9b689fbb44cb1de090a0650c8925bc/patches/minecraft/net/minecraft/client/renderer/entity/layers/HumanoidArmorLayer.java.patch#L48-L55">hacky bridge</a> that changes the signature of the method
      * @author Bawnorton
      * @reason Completely replace the renderTrim method to render all the dynamic layers
      */
