@@ -11,11 +11,11 @@
     "client.PalettedPermutationsAtlasSourceMixin"
   ],
   "mixins": [
-    "RegistryLoaderMixin",
     "DataPackContentsMixin",
+    "RegistryLoaderMixin",
     "SmithingScreenHandlerMixin",
     "SmithingTrimRecipeMixin",
-    "client.ArmorTrimMaterialMixin",
+    "client.ArmorTrimMixin",
     "client.NamespaceResourceManagerMixin"
   ],
   "injectors": {
