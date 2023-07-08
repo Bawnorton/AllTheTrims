@@ -12,7 +12,8 @@
     "client.ArmorTrimMixin",
     "client.betterend.CustomModelBakeryMixin",
     "client.betterend.HumanoidArmorRendererMixin",
-    "client.betterend.PatternsHelperMixin"
+    "client.betterend.PatternsHelperMixin",
+    "client.mythicmetals.MythicMetalsClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1
