@@ -12,7 +12,9 @@ import nourl.mythicmetals.MythicMetalsClient;
 import nourl.mythicmetals.armor.HallowedArmor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.Pseudo;
 
+@Pseudo
 @Mixin(value = MythicMetalsClient.class, remap = false)
 public abstract class MythicMetalsClientMixin {
     /**
