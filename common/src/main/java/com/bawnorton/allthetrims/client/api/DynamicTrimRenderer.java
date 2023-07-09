@@ -11,6 +11,7 @@ import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.item.trim.ArmorTrim;
 import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.registry.Registries;
@@ -25,6 +26,8 @@ public abstract class DynamicTrimRenderer {
     public static void setAtlas(SpriteAtlasTexture atlas) {
         armorTrimsAtlas = atlas;
     }
+
+    private static float degree = 0;
 
     public static void renderTrim(ArmorMaterial material, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, BipedEntityModel<?> model, boolean leggings) {
         ArmorTrimMaterial trimMaterial = trim.getMaterial().value();
@@ -44,7 +47,14 @@ public abstract class DynamicTrimRenderer {
             Sprite sprite = armorTrimsAtlas.getSprite(modelId.withPath(layerPath));
             VertexConsumer vertexConsumer = sprite.getTextureSpecificVertexConsumer(vertexConsumers.getBuffer(Compat.getTrimRenderLayer()));
             Color colour = palette.get(i);
+            if(trimItem == Items.AIR) {
+                colour = Color.getHSBColor(degree / 360f, 1f, 1f);
+            }
             model.render(matrices, vertexConsumer, light, OverlayTexture.DEFAULT_UV, colour.getRed() / 255f, colour.getGreen() / 255f, colour.getBlue() / 255f, Compat.getTrimTransparency());
+        }
+        degree += 0.1;
+        if(degree >= 360) {
+            degree = 0;
         }
     }
 }
