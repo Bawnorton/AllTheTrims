@@ -1,5 +1,6 @@
 package com.bawnorton.allthetrims.mixin.fabric.client.elytratrims;
 
+import com.bawnorton.allthetrims.annotation.ConditionalMixin;
 import com.bawnorton.allthetrims.client.util.PaletteHelper;
 import dev.kikugie.elytratrims.config.ConfigState;
 import dev.kikugie.elytratrims.render.ExtraElytraFeatureRenderer;
@@ -20,8 +21,8 @@ import java.awt.*;
 import java.util.List;
 import java.util.function.Function;
 
-@Pseudo
 @Mixin(value = ExtraElytraFeatureRenderer.class, remap = false)
+@ConditionalMixin(modid = "elytratrims")
 public abstract class ExtraElytraFeatureRendererMixin {
     @Shadow @Final private ElytraEntityModel<?> elytra;
     @Shadow @Final private static Function<Identifier, RenderLayer> ELYTRA_LAYER;

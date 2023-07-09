@@ -8,12 +8,10 @@
     "client.elytratrims.ExtraElytraFeatureRendererMixin"
   ],
   "mixins": [
-    "ElytraItemMixin",
-    "ItemMixin",
     "client.ArmorTrimMixin",
-    "client.betterend.CustomModelBakeryMixin",
-    "client.betterend.HumanoidArmorRendererMixin",
-    "client.betterend.PatternsHelperMixin",
+    "client.bclib.CustomModelBakeryMixin",
+    "client.bclib.HumanoidArmorRendererMixin",
+    "client.bclib.PatternsHelperMixin",
     "client.mythicmetals.MythicMetalsClientMixin"
   ],
   "injectors": {

@@ -1,6 +1,7 @@
-package com.bawnorton.allthetrims.mixin.fabric.client.betterend;
+package com.bawnorton.allthetrims.mixin.fabric.client.bclib;
 
 import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.annotation.ConditionalMixin;
 import com.bawnorton.allthetrims.json.JsonHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -12,13 +13,12 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import org.betterx.bclib.client.models.PatternsHelper;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.Optional;
 
-@Pseudo
 @Mixin(value = PatternsHelper.class, remap = false)
+@ConditionalMixin(modid = "bclib")
 public abstract class PatternsHelperMixin {
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     @ModifyReturnValue(method = "createItemGenerated", at = @At("RETURN"))

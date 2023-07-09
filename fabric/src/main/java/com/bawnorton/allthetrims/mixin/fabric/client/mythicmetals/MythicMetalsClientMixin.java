@@ -1,5 +1,6 @@
 package com.bawnorton.allthetrims.mixin.fabric.client.mythicmetals;
 
+import com.bawnorton.allthetrims.annotation.ConditionalMixin;
 import com.bawnorton.allthetrims.client.api.DynamicTrimRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
@@ -12,10 +13,9 @@ import nourl.mythicmetals.MythicMetalsClient;
 import nourl.mythicmetals.armor.HallowedArmor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Pseudo;
 
-@Pseudo
 @Mixin(value = MythicMetalsClient.class, remap = false)
+@ConditionalMixin(modid = "mythicmetals")
 public abstract class MythicMetalsClientMixin {
     /**
      * @author Bawnorton

@@ -18,6 +18,6 @@ public abstract class ArmorFeatureRendererMixin {
      */
     @Overwrite
     private void renderTrim(ArmorMaterial material, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, BipedEntityModel<?> model, boolean leggings) {
-        DynamicTrimRenderer.renderTrim(material, matrices, vertexConsumers, light, trim, (BipedEntityModel<?>) model, leggings);
+        DynamicTrimRenderer.renderTrim(material, matrices, vertexConsumers, light, trim, model, leggings);
     }
 }

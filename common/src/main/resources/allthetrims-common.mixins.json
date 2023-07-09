@@ -12,6 +12,8 @@
   ],
   "mixins": [
     "DataPackContentsMixin",
+    "ElytraItemMixin",
+    "ItemMixin",
     "RegistryLoaderMixin",
     "SmithingScreenHandlerMixin",
     "SmithingTrimRecipeMixin",

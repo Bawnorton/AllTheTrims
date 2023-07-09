@@ -1,6 +1,7 @@
-package com.bawnorton.allthetrims.mixin.fabric.client.betterend;
+package com.bawnorton.allthetrims.mixin.fabric.client.bclib;
 
 import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.annotation.ConditionalMixin;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.client.render.model.UnbakedModel;
 import net.minecraft.client.render.model.json.JsonUnbakedModel;
@@ -13,7 +14,6 @@ import org.betterx.bclib.client.models.CustomModelBakery;
 import org.betterx.bclib.interfaces.ItemModelProvider;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -23,8 +23,8 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
-@Pseudo
 @Mixin(value = CustomModelBakery.class, remap = false)
+@ConditionalMixin(modid = "bclib")
 public abstract class CustomModelBakeryMixin {
     @Shadow @Final private Map<Identifier, UnbakedModel> models;
 
