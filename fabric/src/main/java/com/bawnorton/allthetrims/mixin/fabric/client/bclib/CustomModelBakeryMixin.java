@@ -70,34 +70,34 @@ public abstract class CustomModelBakeryMixin {
                                "textures": {
                                  "layer0": "%1$s",
                                  "layer1": "%1$s_overlay",
-                                 "layer2": "minecraft:trims/items/%2$s_trim_0_att-blank",
-                                 "layer3": "minecraft:trims/items/%2$s_trim_1_att-blank",
-                                 "layer4": "minecraft:trims/items/%2$s_trim_2_att-blank",
-                                 "layer5": "minecraft:trims/items/%2$s_trim_3_att-blank",
-                                 "layer6": "minecraft:trims/items/%2$s_trim_4_att-blank",
-                                 "layer7": "minecraft:trims/items/%2$s_trim_5_att-blank",
-                                 "layer8": "minecraft:trims/items/%2$s_trim_6_att-blank",
-                                 "layer9": "minecraft:trims/items/%2$s_trim_7_att-blank"
+                                 "layer2": "minecraft:trims/items/%2$s_trim_0_%3$s",
+                                 "layer3": "minecraft:trims/items/%2$s_trim_1_%3$s",
+                                 "layer4": "minecraft:trims/items/%2$s_trim_2_%3$s",
+                                 "layer5": "minecraft:trims/items/%2$s_trim_3_%3$s",
+                                 "layer6": "minecraft:trims/items/%2$s_trim_4_%3$s",
+                                 "layer7": "minecraft:trims/items/%2$s_trim_5_%3$s",
+                                 "layer8": "minecraft:trims/items/%2$s_trim_6_%3$s",
+                                 "layer9": "minecraft:trims/items/%2$s_trim_7_%3$s"
                                }
                             }
-                            """.formatted(itemID.withPrefixedPath("item/"), armourType);
+                            """.formatted(itemID.withPrefixedPath("item/"), armourType, AllTheTrims.TRIM_ASSET_NAME);
             } else {
                 overrideResourceString = """
                             {
                               "parent": "minecraft:item/generated",
                               "textures": {
                                 "layer0": "%1$s",
-                                "layer1": "minecraft:trims/items/%2$s_trim_0_att-blank",
-                                "layer2": "minecraft:trims/items/%2$s_trim_1_att-blank",
-                                "layer3": "minecraft:trims/items/%2$s_trim_2_att-blank",
-                                "layer4": "minecraft:trims/items/%2$s_trim_3_att-blank",
-                                "layer5": "minecraft:trims/items/%2$s_trim_4_att-blank",
-                                "layer6": "minecraft:trims/items/%2$s_trim_5_att-blank",
-                                "layer7": "minecraft:trims/items/%2$s_trim_6_att-blank",
-                                "layer8": "minecraft:trims/items/%2$s_trim_7_att-blank"
+                                "layer1": "minecraft:trims/items/%2$s_trim_0_%3$s",
+                                "layer2": "minecraft:trims/items/%2$s_trim_1_%3$s",
+                                "layer3": "minecraft:trims/items/%2$s_trim_2_%3$s",
+                                "layer4": "minecraft:trims/items/%2$s_trim_3_%3$s",
+                                "layer5": "minecraft:trims/items/%2$s_trim_4_%3$s",
+                                "layer6": "minecraft:trims/items/%2$s_trim_5_%3$s",
+                                "layer7": "minecraft:trims/items/%2$s_trim_6_%3$s",
+                                "layer8": "minecraft:trims/items/%2$s_trim_7_%3$s"
                               }
                             }
-                            """.formatted(itemID.withPrefixedPath("item/"), armourType);
+                            """.formatted(itemID.withPrefixedPath("item/"), armourType, AllTheTrims.TRIM_ASSET_NAME);
             }
             models.put(overrideId.get(), JsonUnbakedModel.deserialize(overrideResourceString));
         }

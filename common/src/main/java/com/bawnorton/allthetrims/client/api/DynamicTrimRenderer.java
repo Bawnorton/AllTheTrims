@@ -28,19 +28,11 @@ public abstract class DynamicTrimRenderer {
 
     public static void renderTrim(ArmorMaterial material, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, BipedEntityModel<?> model, boolean leggings) {
         ArmorTrimMaterial trimMaterial = trim.getMaterial().value();
-        Item trimItem = trimMaterial.ingredient().value();
         String assetName =  trimMaterial.assetName();
-        Identifier trimAssetId = new Identifier(Registries.ITEM.getId(trimItem).getNamespace(), assetName);
-        List<Color> palette;
-        if(PaletteHelper.paletteExists(trimAssetId)) {
-            palette = PaletteHelper.WHITE_PALETTE;
-        } else {
-            palette = PaletteHelper.getPalette(trimItem);
-        }
+        List<Color> palette = PaletteHelper.getPalette(trimMaterial.ingredient().value());
         Identifier modelId = leggings ? trim.getLeggingsModelId(material) : trim.getGenericModelId(material);
-        String path = modelId.getPath();
         for(int i = 0; i < 8; i++) {
-            String layerPath = path.replace(assetName, i + "_" + assetName);
+            String layerPath = modelId.getPath().replace(assetName, i + "_" + assetName);
             Sprite sprite = armorTrimsAtlas.getSprite(modelId.withPath(layerPath));
             VertexConsumer vertexConsumer = sprite.getTextureSpecificVertexConsumer(vertexConsumers.getBuffer(Compat.getTrimRenderLayer()));
             Color colour = palette.get(i);

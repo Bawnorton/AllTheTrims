@@ -76,14 +76,18 @@ public abstract class BakedModelManagerMixin {
                     continue;
                 }
 
-                //noinspection DuplicatedCode
                 String baseTexture = textures.get("layer0").getAsString();
-                JsonArray overrides = new JsonArray();
-                model.add("overrides", overrides);
+                JsonArray overrides;
+                if (model.has("overrides")) {
+                    overrides = model.get("overrides").getAsJsonArray();
+                } else {
+                    overrides = new JsonArray();
+                    model.add("overrides", overrides);
+                }
                 JsonObject attOverride = new JsonObject();
-                attOverride.addProperty("model", baseTexture + "_att-blank_trim");
+                attOverride.addProperty("model", baseTexture + "_" + AllTheTrims.TRIM_ASSET_NAME + "_trim");
                 JsonObject predicate = new JsonObject();
-                predicate.addProperty("trim_type", 0.099);
+                predicate.addProperty("trim_type", "dynamic");
                 attOverride.add("predicate", predicate);
                 overrides.add(attOverride);
 
@@ -101,7 +105,7 @@ public abstract class BakedModelManagerMixin {
                     else overrideTextures.add("layer" + layer, layerElement);
 
                     if(reachedEnd) {
-                        overrideTextures.addProperty("layer" + layer, "minecraft:trims/items/" + armourType + "_trim_" + trimCount + "_att-blank");
+                        overrideTextures.addProperty("layer" + layer, "minecraft:trims/items/" + armourType + "_trim_" + trimCount + "_" + AllTheTrims.TRIM_ASSET_NAME);
                         if(trimCount == 7) break;
                         trimCount++;
                     }
@@ -110,10 +114,10 @@ public abstract class BakedModelManagerMixin {
                 overrideResourceJson.add("textures", overrideTextures);
 
                 Identifier baseId = new Identifier(baseTexture);
-                Identifier overrideResourceModelId = baseId.withPath("models/" + baseId.getPath() + "_att-blank_trim.json");
+                Identifier overrideResourceModelId = baseId.withPath("models/" + baseId.getPath() + "_" + AllTheTrims.TRIM_ASSET_NAME + "_trim.json");
                 Resource overrideResource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonHelper.toJsonString(overrideResourceJson), "UTF-8"));
                 original.put(overrideResourceModelId, overrideResource);
-                DebugHelper.createDebugFile("models", equipmentId + "_att-blank_trim.json", JsonHelper.toJsonString(overrideResourceJson));
+                DebugHelper.createDebugFile("models", equipmentId + "_" + AllTheTrims.TRIM_ASSET_NAME + "_trim.json", JsonHelper.toJsonString(overrideResourceJson));
 
                 resource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonHelper.toJsonString(model), "UTF-8"));
                 DebugHelper.createDebugFile("models", equipmentId + ".json", JsonHelper.toJsonString(model));

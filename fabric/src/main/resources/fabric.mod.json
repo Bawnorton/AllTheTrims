@@ -30,7 +30,6 @@
     "allthetrims.mixins.json",
     "allthetrims-common.mixins.json"
   ],
-  "accessWidener": "allthetrims.accesswidener",
   "depends": {
     "fabricloader": ">=0.14.21",
     "minecraft": "~1.20",

@@ -33,13 +33,13 @@ public abstract class RegistryLoaderMixin {
 
             JsonObject resourceJson = new JsonObject();
             try {
-                resourceJson.addProperty("asset_name", "att-blank");
+                resourceJson.addProperty("asset_name", AllTheTrims.TRIM_ASSET_NAME);
                 JsonObject description = new JsonObject();
                 description.addProperty("color", "#FFFFFF");
                 description.addProperty("translate", escape(item.getName().getString()) + " " + escape(Text.translatable("text.allthetrims.material").getString()));
                 resourceJson.add("description", description);
                 resourceJson.addProperty("ingredient", itemId.toString());
-                resourceJson.addProperty("item_model_index", 0.099);
+                resourceJson.addProperty("item_model_index", Float.MAX_VALUE);
             } catch (RuntimeException e) {
                 AllTheTrims.LOGGER.error("Failed to generate trim material JSON for " + itemId, e);
                 return;

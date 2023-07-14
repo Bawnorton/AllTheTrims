@@ -43,7 +43,7 @@ public abstract class NamespaceResourceManagerMixin {
                     if(!type.equals("paletted_permutations")) continue;
 
                     JsonObject permutations = new JsonObject();
-                    permutations.addProperty("att-blank", "trims/color_palettes/blank");
+                    permutations.addProperty(AllTheTrims.TRIM_ASSET_NAME, "trims/color_palettes/blank");
                     sourceJson.add("permutations", permutations);
                 }
                 newResources.add(new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonHelper.toJsonString(atlas), "UTF-8")));

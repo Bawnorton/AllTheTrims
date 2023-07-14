@@ -10,24 +10,26 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.ConfirmScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.item.*;
+import net.minecraft.item.DyeableArmorItem;
+import net.minecraft.item.Equipment;
+import net.minecraft.item.Item;
 import net.minecraft.item.trim.ArmorTrim;
 import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
 import net.minecraft.screen.ScreenTexts;
 import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.MathHelper;
 
 import java.awt.*;
 import java.net.URI;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 public class AllTheTrimsClient {
+    public static final ThreadLocal<String> MATERIAL = new ThreadLocal<>();
+
     public static void init() {
         AllTheTrims.LOGGER.info("Initializing AllTheTrims Client");
 
@@ -47,20 +49,9 @@ public class AllTheTrimsClient {
             ArmorTrimMaterial trimMaterial = optionalTrim.get().getMaterial().value();
             Item trimItem = trimMaterial.ingredient().value();
             String assetName =  trimMaterial.assetName();
-            if(stack.getItem() instanceof ArmorItem armourItem) {
-                ItemStack[] itemStacks = armourItem.getMaterial().getRepairIngredient().getMatchingStacks();
-                List<Item> items = Arrays.stream(itemStacks).map(ItemStack::getItem).toList();
-                if (items.contains(trimItem)) {
-                    assetName += "_darker";
-                }
-            }
-            List<Color> palette;
-            Identifier trimAssetId = new Identifier(Registries.ITEM.getId(trimItem).getNamespace(), assetName);
-            if(PaletteHelper.paletteExists(trimAssetId)) {
-                palette = PaletteHelper.getPalette(trimAssetId);
-            } else {
-                palette = PaletteHelper.getPalette(trimItem);
-            }
+            if(!assetName.equals(AllTheTrims.TRIM_ASSET_NAME)) return -1;
+
+            List<Color> palette = PaletteHelper.getPalette(trimItem);
             if(stack.getItem() instanceof DyeableArmorItem dyeableArmorItem) {
                 if(tintIndex == 0) return dyeableArmorItem.getColor(stack);
                 if(tintIndex >= 2) {
@@ -71,7 +62,7 @@ public class AllTheTrimsClient {
 
             if(tintIndex < 1) return -1;
             Color color = palette.get(MathHelper.clamp(6 - tintIndex, 0, palette.size() - 1));
-            if(tintIndex == 1) return ImageUtil.changeBrightness(color, 0.6f).getRGB();
+            if(tintIndex == 1) return ImageUtil.changeBrightness(color, 0.5f).getRGB();
             if(tintIndex == 2) return ImageUtil.changeBrightness(color, 0.75f).getRGB();
             if(tintIndex == 3) return ImageUtil.changeBrightness(color, 0.9f).getRGB();
             return color.getRGB();

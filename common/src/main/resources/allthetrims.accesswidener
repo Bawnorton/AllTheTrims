@@ -3,3 +3,7 @@ accessible field net/minecraft/client/texture/SpriteContents image Lnet/minecraf
 accessible class net/minecraft/client/texture/atlas/PalettedPermutationsAtlasSource$PalettedSpriteRegion
 accessible field net/minecraft/client/render/model/ModelLoader ITEM_MODEL_GENERATOR Lnet/minecraft/client/render/model/json/ItemModelGenerator;
 accessible method net/minecraft/client/texture/Sprite <init> (Lnet/minecraft/util/Identifier;Lnet/minecraft/client/texture/SpriteContents;IIII)V
+accessible class net/minecraft/client/render/model/json/ModelOverride$Deserializer
+accessible class net/minecraft/client/render/model/json/ModelOverrideList$BakedOverride
+accessible class net/minecraft/client/render/model/json/ModelOverrideList$InlinedCondition
+accessible field net/minecraft/client/render/model/json/ModelOverrideList$BakedOverride conditions [Lnet/minecraft/client/render/model/json/ModelOverrideList$InlinedCondition;

@@ -33,14 +33,15 @@ dependencies {
     modImplementation("com.terraformersmc:modmenu:${project.modmenu_version}")
 
     // compats
+//    modCompileOnly("maven.modrinth:biome-makeover:${project.biome_makeover_version}")
     modCompileOnly("maven.modrinth:elytra-trims:${project.elytra_trims_version}")
     modCompileOnly("maven.modrinth:show-me-your-skin:${project.show_me_your_skin_version}")
     modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cardinal_components_version}")
     modCompileOnly("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cardinal_components_version}")
     modCompileOnly("nl.enjarai:cicada-lib:${project.cicada_version}") { exclude group: "net.fabricmc.fabric-api" }
     modCompileOnly("io.wispforest:owo-lib:${project.owo_version}")
-    modCompileOnly("maven.modrinth:betterend:${project.betterend_version}")
     modCompileOnly("maven.modrinth:mythicmetals:${project.mythic_metals_version}")
+    modCompileOnly("maven.modrinth:betterend:${project.betterend_version}")
     modCompileOnly("com.github.quiqueck:BCLib:${project.bclib_version}") { transitive false }
     modCompileOnly(fileTree(dir: "libs", include: ["*.jar"])) // wunderlib 1.1.3 with mapping conflict resolved
 

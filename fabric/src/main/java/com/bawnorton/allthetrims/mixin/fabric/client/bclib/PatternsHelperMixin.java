@@ -56,12 +56,16 @@ public abstract class PatternsHelperMixin {
             return original;
         }
 
-        //noinspection DuplicatedCode
         String baseTexture = textures.get("layer0").getAsString();
-        JsonArray overrides = new JsonArray();
-        model.add("overrides", overrides);
+        JsonArray overrides;
+        if (model.has("overrides")) {
+            overrides = model.get("overrides").getAsJsonArray();
+        } else {
+            overrides = new JsonArray();
+            model.add("overrides", overrides);
+        }
         JsonObject attOverride = new JsonObject();
-        attOverride.addProperty("model", baseTexture + "_att-blank_trim");
+        attOverride.addProperty("model", baseTexture + "_" + AllTheTrims.TRIM_ASSET_NAME + " +_trim");
         JsonObject predicate = new JsonObject();
         predicate.addProperty("trim_type", 0.099);
         attOverride.add("predicate", predicate);

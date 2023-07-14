@@ -6,8 +6,15 @@
   "plugin": "com.bawnorton.allthetrims.AllTheTrimsMixinConfigPlugin",
   "client": [
     "client.ArmorFeatureRendererMixin",
+    "client.ArmorTrimMixin",
     "client.BakedModelManagerMixin",
     "client.ItemModelGeneratorMixin",
+    "client.ModelOverrideListMixin",
+    "client.ModelOverrideListMixin$InlinedConditionMixin",
+    "client.ModelOverrideMixin",
+    "client.ModelOverrideMixin$ConditionMixin",
+    "client.ModelOverrideMixin$DeserializerMixin",
+    "client.NamespaceResourceManagerMixin",
     "client.PalettedPermutationsAtlasSourceMixin"
   ],
   "mixins": [
@@ -16,9 +23,7 @@
     "ItemMixin",
     "RegistryLoaderMixin",
     "SmithingScreenHandlerMixin",
-    "SmithingTrimRecipeMixin",
-    "client.ArmorTrimMixin",
-    "client.NamespaceResourceManagerMixin"
+    "SmithingTrimRecipeMixin"
   ],
   "injectors": {
     "defaultRequire": 1
