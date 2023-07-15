@@ -3,6 +3,7 @@ package com.bawnorton.allthetrims.mixin.fabric.client.bclib;
 import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.annotation.ConditionalMixin;
 import com.bawnorton.allthetrims.json.JsonHelper;
+import com.bawnorton.allthetrims.util.DebugHelper;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
@@ -65,12 +66,13 @@ public abstract class PatternsHelperMixin {
             model.add("overrides", overrides);
         }
         JsonObject attOverride = new JsonObject();
-        attOverride.addProperty("model", baseTexture + "_" + AllTheTrims.TRIM_ASSET_NAME + " +_trim");
+        attOverride.addProperty("model", baseTexture + "_" + AllTheTrims.TRIM_ASSET_NAME + "_trim");
         JsonObject predicate = new JsonObject();
-        predicate.addProperty("trim_type", 0.099);
+        predicate.addProperty("trim_type", "dynamic");
         attOverride.add("predicate", predicate);
         overrides.add(attOverride);
 
+        DebugHelper.createDebugFile("bclib", noInv + ".json", JsonHelper.toJsonString(model));
         return Optional.of(JsonHelper.toJsonString(model));
     }
 }

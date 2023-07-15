@@ -38,6 +38,7 @@ public abstract class HumanoidArmorRendererMixin {
         });
     }
 
+    @Unique
     private void renderTrim(ArmorMaterial material, LivingEntity entity, EquipmentSlot slot, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, BipedEntityModel<LivingEntity> model) {
         // TODO: Implement
         // can't use vanilla trim rendering system as the model is a different size

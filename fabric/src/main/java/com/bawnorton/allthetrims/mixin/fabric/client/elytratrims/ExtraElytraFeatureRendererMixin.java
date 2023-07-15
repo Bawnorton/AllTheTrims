@@ -49,6 +49,7 @@ public abstract class ExtraElytraFeatureRendererMixin {
         }
     }
 
+    @Unique
     private Sprite getTrimSprite(ArmorTrim trim, int index) {
         String material = trim.getMaterial().value().assetName();
         Identifier identifier = trim.getPattern().value().assetId().withPath((path) -> "trims/models/elytra/" + path + "_" + index + "_" + material);
