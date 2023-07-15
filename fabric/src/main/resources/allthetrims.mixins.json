@@ -5,11 +5,12 @@
   "minVersion": "0.8",
   "client": [
     "client.ArmorFeatureRendererMixin",
-    "client.elytratrims.ExtraElytraFeatureRendererMixin",
     "client.ArmorTrimMixin",
+    "client.ModelOverrideListMixin",
     "client.bclib.CustomModelBakeryMixin",
     "client.bclib.HumanoidArmorRendererMixin",
     "client.bclib.PatternsHelperMixin",
+    "client.elytratrims.ExtraElytraFeatureRendererMixin",
     "client.mythicmetals.MythicMetalsClientMixin"
   ],
   "mixins": [
