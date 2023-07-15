@@ -10,10 +10,8 @@ import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ArmorMaterial;
-import net.minecraft.item.Item;
 import net.minecraft.item.trim.ArmorTrim;
 import net.minecraft.item.trim.ArmorTrimMaterial;
-import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 
 import java.awt.*;
@@ -24,6 +22,10 @@ public abstract class DynamicTrimRenderer {
 
     public static void setAtlas(SpriteAtlasTexture atlas) {
         armorTrimsAtlas = atlas;
+    }
+
+    public static SpriteAtlasTexture getAtlas() {
+        return armorTrimsAtlas;
     }
 
     public static void renderTrim(ArmorMaterial material, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, BipedEntityModel<?> model, boolean leggings) {

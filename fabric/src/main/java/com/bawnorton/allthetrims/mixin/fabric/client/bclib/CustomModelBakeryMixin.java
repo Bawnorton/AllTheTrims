@@ -101,7 +101,7 @@ public abstract class CustomModelBakeryMixin {
                         }
                         """.formatted(itemID.withPrefixedPath("item/"), armourType, AllTheTrims.TRIM_ASSET_NAME);
         }
-        DebugHelper.createDebugFile("bclib", "betterend:" + overrideId.get().getPath().substring(5) + ".json", overrideResourceString);
+        DebugHelper.createDebugFile("bclib", overrideId.get().getNamespace() + ":" + overrideId.get().getPath().substring(5) + ".json", overrideResourceString);
         models.put(overrideId.get(), JsonUnbakedModel.deserialize(overrideResourceString));
     }
 }
