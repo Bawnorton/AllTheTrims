@@ -33,7 +33,7 @@ public abstract class DebugHelper {
             Path gameDir = Platform.getGameFolder();
             File debugDir = gameDir.resolve("att-debug").resolve(directory).toFile();
             debugDir.mkdirs();
-            File debugFile = debugDir.toPath().resolve(filename.replace("/", "_")).toFile();
+            File debugFile = debugDir.toPath().resolve(filename.replace("/", "_").replace(":", "_")).toFile();
             debugFile.createNewFile();
 
             Writer writer = new FileWriter(debugFile);
@@ -50,7 +50,7 @@ public abstract class DebugHelper {
             Path gameDir = Platform.getGameFolder();
             File debugDir = gameDir.resolve("att-debug").resolve("textures").toFile();
             debugDir.mkdirs();
-            File debugFile = debugDir.toPath().resolve(path.replace("/", "_")).toFile();
+            File debugFile = debugDir.toPath().resolve(path.replace("/", "_").replace(":", "_")).toFile();
             debugFile.createNewFile();
 
             ImageIO.write(image, "png", debugFile);
@@ -65,7 +65,7 @@ public abstract class DebugHelper {
             Path gameDir = Platform.getGameFolder();
             File debugDir = gameDir.resolve("att-debug").resolve("palettes").toFile();
             debugDir.mkdirs();
-            File debugFile = debugDir.toPath().resolve(path.replace("/", "_")).toFile();
+            File debugFile = debugDir.toPath().resolve(path.replace("/", "_").replace(":", "_")).toFile();
             debugFile.createNewFile();
 
             ImageIO.write(image, "png", debugFile);

@@ -12,6 +12,7 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.apache.commons.io.IOUtils;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.Iterator;
@@ -36,7 +37,7 @@ public abstract class RegistryLoaderMixin {
                 resourceJson.addProperty("asset_name", AllTheTrims.TRIM_ASSET_NAME);
                 JsonObject description = new JsonObject();
                 description.addProperty("color", "#FFFFFF");
-                description.addProperty("translate", escape(item.getName().getString()) + " " + escape(Text.translatable("text.allthetrims.material").getString()));
+                description.addProperty("translate", allTheTrims$escape(item.getName().getString()) + " " + allTheTrims$escape(Text.translatable("text.allthetrims.material").getString()));
                 resourceJson.add("description", description);
                 resourceJson.addProperty("ingredient", itemId.toString());
                 resourceJson.addProperty("item_model_index", Float.MAX_VALUE);
@@ -54,7 +55,8 @@ public abstract class RegistryLoaderMixin {
         return original;
     }
 
-    private static String escape(String string) {
+    @Unique
+    private static String allTheTrims$escape(String string) {
         return string.replace("\"", "\\\"");
     }
 }
