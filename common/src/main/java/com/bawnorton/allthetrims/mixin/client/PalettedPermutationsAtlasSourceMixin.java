@@ -67,7 +67,10 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
         if (original.isPresent()) return original;
 
         String path = identifier.getPath();
-        Identifier originalIdentifier = identifier.withPath(path.substring(0, path.lastIndexOf('_')) + ".png");
+        int pathEnd = path.lastIndexOf('_');
+        Identifier originalIdentifier = pathEnd > 0
+                ? identifier.withPath(path.substring(0, pathEnd) + ".png")
+                : identifier;
         Optional<Resource> optionalResource = instance.getResource(originalIdentifier);
         if (optionalResource.isEmpty()) return optionalResource;
 
