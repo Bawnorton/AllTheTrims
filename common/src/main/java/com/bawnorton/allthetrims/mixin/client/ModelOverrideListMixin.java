@@ -29,7 +29,7 @@ public abstract class ModelOverrideListMixin {
         @Inject(method = "<init>", at = @At("RETURN"))
         private void setMaterial(CallbackInfo ci) {
             this.allTheTrims$material = MATERIAL.get();
-            MATERIAL.set(null);
+            MATERIAL.remove();
         }
 
         @Override

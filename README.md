@@ -13,7 +13,7 @@
 - Dynamic Trim Rendering:
   - All trims are rendered dynamically, so the texture atlas is not filled with trim textures.
   - Colour of the trim is based on a palette gradient generated from the most vibrant to the dullest colour of the item texture.
-- No additional files or configuration required, just drop the mod in your mods folder.
+- No additional files or configuration required, just drop the mod in your mods' folder.
 
 ### Notes:
 - This adds over 500,000 new armour trim combinations to just the vanilla game, with a couple of armour mods and content mods this number jumps to over a million with minimal effect on load times.

@@ -2,7 +2,6 @@ package com.bawnorton.allthetrims.mixin.fabric.client;
 
 import com.bawnorton.allthetrims.annotation.ConditionalMixin;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.trim.ArmorTrim;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

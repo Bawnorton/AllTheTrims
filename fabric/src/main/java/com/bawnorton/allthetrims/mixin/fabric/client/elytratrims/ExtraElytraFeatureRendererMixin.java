@@ -1,7 +1,6 @@
 package com.bawnorton.allthetrims.mixin.fabric.client.elytratrims;
 
 import com.bawnorton.allthetrims.annotation.ConditionalMixin;
-import com.bawnorton.allthetrims.client.api.DynamicTrimRenderer;
 import com.bawnorton.allthetrims.client.util.PaletteHelper;
 import dev.kikugie.elytratrims.config.ConfigState;
 import dev.kikugie.elytratrims.render.ExtraElytraFeatureRenderer;

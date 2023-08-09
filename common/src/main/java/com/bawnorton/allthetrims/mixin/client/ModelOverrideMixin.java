@@ -26,7 +26,7 @@ public abstract class ModelOverrideMixin {
         @Inject(method = "<init>", at = @At("RETURN"))
         private void setMaterial(Identifier type, float threshold, CallbackInfo ci) {
             this.allTheTrims$material = MATERIAL.get();
-            MATERIAL.set(null);
+            MATERIAL.remove();
         }
 
         @Unique

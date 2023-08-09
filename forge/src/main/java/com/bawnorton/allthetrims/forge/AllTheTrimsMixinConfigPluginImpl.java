@@ -1,7 +1,6 @@
 package com.bawnorton.allthetrims.forge;
 
 import com.bawnorton.allthetrims.AllTheTrimsMixinConfigPlugin;
-import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.loading.LoadingModList;
 import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
 import org.objectweb.asm.tree.ClassNode;

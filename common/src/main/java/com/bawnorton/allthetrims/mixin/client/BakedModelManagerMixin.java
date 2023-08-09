@@ -87,7 +87,7 @@ public abstract class BakedModelManagerMixin {
                 JsonObject attOverride = new JsonObject();
                 attOverride.addProperty("model", baseTexture + "_" + AllTheTrims.TRIM_ASSET_NAME + "_trim");
                 JsonObject predicate = new JsonObject();
-                predicate.addProperty("trim_type", "dynamic");
+                predicate.addProperty("trim_type", AllTheTrims.TRIM_ASSET_NAME);
                 attOverride.add("predicate", predicate);
                 overrides.add(attOverride);
 
