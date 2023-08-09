@@ -1,7 +1,6 @@
 package com.bawnorton.allthetrims.mixin.fabric.client.elytratrims;
 
 import com.bawnorton.allthetrims.annotation.ConditionalMixin;
-import com.bawnorton.allthetrims.client.api.DynamicTrimRenderer;
 import com.bawnorton.allthetrims.client.util.PaletteHelper;
 import dev.kikugie.elytratrims.config.ConfigState;
 import dev.kikugie.elytratrims.render.ExtraElytraFeatureRenderer;
@@ -29,14 +28,13 @@ import java.util.function.Function;
 @Mixin(value = ExtraElytraFeatureRenderer.class, remap = false)
 @ConditionalMixin(modid = "elytratrims")
 public abstract class ExtraElytraFeatureRendererMixin {
-    @Shadow @Final private ElytraEntityModel<?> elytra;
     @Shadow @Final private static Function<Identifier, RenderLayer> ELYTRA_LAYER;
     @Shadow @Final private SpriteAtlasTexture atlas;
 
     @Shadow protected abstract Sprite getTrimSprite(ArmorTrim trim);
 
     @Inject(method = "renderElytraTrims", at = @At("HEAD"), cancellable = true)
-    private void renderElytraTrims(MatrixStack matrices, VertexConsumerProvider provider, LivingEntity entity, ItemStack stack, int light, float alpha, CallbackInfo ci) {
+    private void renderElytraTrims(ElytraEntityModel<?> elytra, MatrixStack matrices, VertexConsumerProvider provider, LivingEntity entity, ItemStack stack, int light, float alpha, CallbackInfo ci) {
         if (ConfigState.cancelRender(ConfigState.RenderType.TRIMS, entity)) return;
 
         World world = entity.getWorld();
