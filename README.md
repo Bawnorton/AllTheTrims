@@ -26,3 +26,4 @@
 
 ### Credits:
 - [Andrew6rant](https://github.com/Andrew6rant) for the item model colouring.
+- [KikuGie](https://github.com/kikugie) for maintaining elytra trim compatibility.
