@@ -41,10 +41,10 @@ public class AllTheTrimsMixinConfigPlugin implements IMixinConfigPlugin {
                     String modid = Annotations.getValue(node, "modid");
                     boolean applyIfPresent = Annotations.getValue(node, "applyIfPresent", Boolean.TRUE);
                     if(isModLoaded(modid)) {
-                        AllTheTrims.LOGGER.info("AllTheTrimsMixinPlugin: " + className + " is" + (applyIfPresent ? " " : " not ") + "being applied because " + modid + " is loaded");
+                        AllTheTrims.LOGGER.debug("AllTheTrimsMixinPlugin: " + className + " is" + (applyIfPresent ? " " : " not ") + "being applied because " + modid + " is loaded");
                         return applyIfPresent;
                     } else {
-                        AllTheTrims.LOGGER.info("AllTheTrimsMixinPlugin: " + className + " is" + (!applyIfPresent ? " " : " not ") + "being applied because " + modid + " is not loaded");
+                        AllTheTrims.LOGGER.debug("AllTheTrimsMixinPlugin: " + className + " is" + (!applyIfPresent ? " " : " not ") + "being applied because " + modid + " is not loaded");
                         return !applyIfPresent;
                     }
                 }

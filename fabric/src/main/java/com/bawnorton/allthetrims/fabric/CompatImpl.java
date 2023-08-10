@@ -27,4 +27,8 @@ public class CompatImpl {
         if (isShowMeYourSkinLoaded()) return ShowMeYourSkinCompat.getTrimRenderLayer();
         return TexturedRenderLayers.getArmorTrims();
     }
+
+    public static boolean isDynamicTrimLoaded() {
+        return FabricLoader.getInstance().isModLoaded("dynamictrim");
+    }
 }

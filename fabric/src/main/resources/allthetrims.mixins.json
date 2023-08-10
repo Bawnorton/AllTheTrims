@@ -6,7 +6,6 @@
   "client": [
     "client.ArmorFeatureRendererMixin",
     "client.ArmorTrimMixin",
-    "client.ModelOverrideListMixin",
     "client.bclib.CustomModelBakeryMixin",
     "client.bclib.HumanoidArmorRendererMixin",
     "client.bclib.PatternsHelperMixin",

@@ -23,4 +23,9 @@ public abstract class Compat {
     public static float getTrimTransparency() {
         return 0;
     }
+
+    @ExpectPlatform
+    public static boolean isDynamicTrimLoaded() {
+        throw new AssertionError();
+    }
 }

@@ -26,4 +26,8 @@ public class LogWrapper {
     public void error(String message, Object... args) {
         logger.error(prefix + " " + message, args);
     }
+
+    public void debug(String message, Object... args) {
+        logger.debug(prefix + " " + message, args);
+    }
 }
