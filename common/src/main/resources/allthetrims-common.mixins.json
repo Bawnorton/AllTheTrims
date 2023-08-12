@@ -23,7 +23,8 @@
     "ItemMixin",
     "RegistryLoaderMixin",
     "SmithingScreenHandlerMixin",
-    "SmithingTrimRecipeMixin"
+    "SmithingTrimRecipeMixin",
+    "client.immersivearmors.LayerPieceMixin"
   ],
   "injectors": {
     "defaultRequire": 1

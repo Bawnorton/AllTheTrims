@@ -16,8 +16,11 @@ dependencies {
     // mixin extras
     implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:${rootProject.mixin_extras_version}"))
 
-    // compats
+    // config
     modImplementation("dev.isxander.yacl:yet-another-config-lib-common:${rootProject.yacl_version}")
+
+    // compats
+    modCompileOnly("maven.modrinth:immersive-armors:${rootProject.immersive_armors_version}")
 }
 
 publishing {
