@@ -13,7 +13,10 @@ import net.minecraft.client.texture.atlas.PalettedPermutationsAtlasSource;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
+import org.slf4j.Logger;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -27,11 +30,13 @@ import java.util.List;
 import java.util.*;
 import java.util.function.IntUnaryOperator;
 import java.util.function.Supplier;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 @Mixin(PalettedPermutationsAtlasSource.class)
 public abstract class PalettedPermutationsAtlasSourceMixin {
-    @ModifyArg(method = "method_48487", at = @At(value = "INVOKE", target = "Lcom/mojang/datafixers/Products$P3;apply(Lcom/mojang/datafixers/kinds/Applicative;Lcom/mojang/datafixers/util/Function3;)Lcom/mojang/datafixers/kinds/App;"), index = 1)
+    @ModifyArg(method = "method_48487", at = @At(value = "INVOKE", target = "Lcom/mojang/datafixers/Products$P3;apply(Lcom/mojang/datafixers/kinds/Applicative;Lcom/mojang/datafixers/util/Function3;)Lcom/mojang/datafixers/kinds/App;", remap = false), index = 1)
     private static <R> Function3<List<Identifier>, Identifier, Map<String, Identifier>, R> createDynamicTrimPermutation(Function3<List<Identifier>, Identifier, Map<String, Identifier>, R> function) {
         return (textures, paletteKey, palettedPermutations) -> {
             if (!paletteKey.getPath().contains("trim_palette")) return function.apply(textures, paletteKey, palettedPermutations);
@@ -74,7 +79,13 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
         Optional<Resource> optionalResource = instance.getResource(originalIdentifier);
         if (optionalResource.isEmpty()) return optionalResource;
 
-        int layer = Integer.parseInt(String.valueOf(path.charAt(path.length() - "x.png".length())));
+        Pattern pattern = Pattern.compile("\\d+(?![\\d\\D]*\\d)");
+        Matcher matcher = pattern.matcher(path);
+        if (!matcher.find()) {
+            AllTheTrims.LOGGER.warn("Failed to find layer number in " + path);
+            return optionalResource;
+        }
+        int layer = Integer.parseInt(matcher.group());
         Resource resource = optionalResource.get();
         try (InputStream inputStream = resource.getInputStream()) {
             BufferedImage bufferedImage = ImageIO.read(inputStream);
