@@ -14,10 +14,12 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.Identifier;
 import org.betterx.bclib.client.models.PatternsHelper;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.injection.At;
 
 import java.util.Optional;
 
+@Pseudo
 @Mixin(value = PatternsHelper.class, remap = false)
 @ConditionalMixin(modid = "bclib")
 public abstract class PatternsHelperMixin {

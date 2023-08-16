@@ -1,5 +1,6 @@
 package com.bawnorton.allthetrims.mixin.fabric.client;
 
+import com.bawnorton.allthetrims.annotation.ConditionalMixin;
 import com.bawnorton.allthetrims.client.api.DynamicTrimRenderer;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.feature.ArmorFeatureRenderer;
@@ -18,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = ArmorFeatureRenderer.class, priority = 1500)
+@ConditionalMixin(modid = "frostiful", applyIfPresent = false)
 public abstract class ArmorFeatureRendererMixin {
     @Shadow @Final private SpriteAtlasTexture armorTrimsAtlas;
 

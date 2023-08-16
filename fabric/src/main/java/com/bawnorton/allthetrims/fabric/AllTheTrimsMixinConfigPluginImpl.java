@@ -2,10 +2,19 @@ package com.bawnorton.allthetrims.fabric;
 
 import com.bawnorton.allthetrims.AllTheTrimsMixinConfigPlugin;
 import net.fabricmc.loader.api.FabricLoader;
+import org.objectweb.asm.Type;
+import org.objectweb.asm.tree.AnnotationNode;
 import org.objectweb.asm.tree.ClassNode;
+import org.objectweb.asm.tree.MethodNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
+import org.spongepowered.asm.mixin.transformer.meta.MixinMerged;
+import org.spongepowered.asm.service.IClassBytecodeProvider;
+import org.spongepowered.asm.service.IMixinService;
+import org.spongepowered.asm.service.MixinService;
+import org.spongepowered.tools.agent.MixinAgent;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 

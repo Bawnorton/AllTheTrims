@@ -18,6 +18,10 @@ public class CompatImpl {
         return FabricLoader.getInstance().isModLoaded("showmeyourskin");
     }
 
+    public static boolean isFrostifulLoaded() {
+        return FabricLoader.getInstance().isModLoaded("frostiful");
+    }
+
     public static float getTrimTransparency() {
         if (isShowMeYourSkinLoaded()) return ShowMeYourSkinCompat.getTrimTransparency();
         return 1.0F;

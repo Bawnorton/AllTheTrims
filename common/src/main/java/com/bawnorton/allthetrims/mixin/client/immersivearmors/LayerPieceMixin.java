@@ -13,11 +13,13 @@ import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.trim.ArmorTrim;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@Pseudo
 @Mixin(LayerPiece.class)
 @ConditionalMixin(modid = "immersive_armors")
 public abstract class LayerPieceMixin {

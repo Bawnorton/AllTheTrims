@@ -25,6 +25,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.function.Function;
 
+@Pseudo
 @Mixin(value = ExtraElytraFeatureRenderer.class, remap = false)
 @ConditionalMixin(modid = "elytratrims")
 public abstract class ExtraElytraFeatureRendererMixin {

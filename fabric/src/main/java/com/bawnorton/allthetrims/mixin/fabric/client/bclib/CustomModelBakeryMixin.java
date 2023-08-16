@@ -15,6 +15,7 @@ import org.betterx.bclib.client.models.CustomModelBakery;
 import org.betterx.bclib.interfaces.ItemModelProvider;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Pseudo;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,6 +25,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
+@Pseudo
 @Mixin(value = CustomModelBakery.class, remap = false)
 @ConditionalMixin(modid = "bclib")
 public abstract class CustomModelBakeryMixin {
