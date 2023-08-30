@@ -2,7 +2,7 @@ package com.bawnorton.allthetrims.mixin.fabric.client.elytratrims;
 
 import com.bawnorton.allthetrims.annotation.ConditionalMixin;
 import com.bawnorton.allthetrims.client.util.PaletteHelper;
-import dev.kikugie.elytratrims.config.ConfigState;
+import dev.kikugie.elytratrims.config.RenderConfig;
 import dev.kikugie.elytratrims.render.ExtraElytraFeatureRenderer;
 import net.minecraft.client.render.*;
 import net.minecraft.client.render.entity.model.ElytraEntityModel;
@@ -36,7 +36,7 @@ public abstract class ExtraElytraFeatureRendererMixin {
 
     @Inject(method = "renderElytraTrims", at = @At("HEAD"), cancellable = true)
     private void renderElytraTrims(ElytraEntityModel<?> elytra, MatrixStack matrices, VertexConsumerProvider provider, LivingEntity entity, ItemStack stack, int light, float alpha, CallbackInfo ci) {
-        if (ConfigState.cancelRender(ConfigState.RenderType.TRIMS, entity)) return;
+        if (ExtraElytraFeatureRenderer.cancelRender(RenderConfig.RenderType.TRIMS, entity)) return;
 
         World world = entity.getWorld();
         ArmorTrim trim = ArmorTrim.getTrim(world.getRegistryManager(), stack).orElse(null);
