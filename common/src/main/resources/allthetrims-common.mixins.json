@@ -15,7 +15,8 @@
     "client.ModelOverrideMixin$ConditionMixin",
     "client.ModelOverrideMixin$DeserializerMixin",
     "client.NamespaceResourceManagerMixin",
-    "client.PalettedPermutationsAtlasSourceMixin"
+    "client.PalettedPermutationsAtlasSourceMixin",
+    "client.immersivearmors.LayerPieceMixin"
   ],
   "mixins": [
     "DataPackContentsMixin",
@@ -24,7 +25,6 @@
     "RegistryLoaderMixin",
     "SmithingScreenHandlerMixin",
     "SmithingTrimRecipeMixin",
-    "client.immersivearmors.LayerPieceMixin"
   ],
   "injectors": {
     "defaultRequire": 1

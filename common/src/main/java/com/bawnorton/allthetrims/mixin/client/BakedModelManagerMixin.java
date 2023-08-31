@@ -50,14 +50,7 @@ public abstract class BakedModelManagerMixin {
                 AllTheTrims.LOGGER.warn("Item " + equipmentId + "'s slot type is not an armour slot type, skipping");
                 continue;
             }
-            if(Registries.ITEM.get(equipmentId) instanceof ElytraItem) {
-                if(Compat.isElytraTrimsLoaded()) {
-                    armourType = "elytra";
-                } else {
-                    AllTheTrims.LOGGER.warn("Item " + equipmentId + " is an elytra, but elytratrims is not loaded, skipping");
-                    continue;
-                }
-            }
+
             Resource resource = original.get(resourceId);
             if(resource == null) {
                 AllTheTrims.LOGGER.warn("Could not find resource " + resourceId + " for item " + equipmentId + ", skipping");

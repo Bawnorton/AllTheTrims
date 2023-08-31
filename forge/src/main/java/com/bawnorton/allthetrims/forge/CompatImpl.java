@@ -17,10 +17,6 @@ public class CompatImpl {
         return 1.0F;
     }
 
-    public static boolean isElytraTrimsLoaded() {
-        return ModList.get().isLoaded("elytratrims"); // not currently on forge but maybe someday it will be ported ¯\_(ツ)_/¯
-    }
-
     public static boolean isDynamicTrimLoaded() {
         return ModList.get().isLoaded("dynamictrim");
     }

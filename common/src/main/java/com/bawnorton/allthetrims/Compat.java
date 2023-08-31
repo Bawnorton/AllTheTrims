@@ -10,11 +10,6 @@ public abstract class Compat {
     }
 
     @ExpectPlatform
-    public static boolean isElytraTrimsLoaded() {
-        throw new AssertionError();
-    }
-
-    @ExpectPlatform
     public static RenderLayer getTrimRenderLayer() {
         return null;
     }

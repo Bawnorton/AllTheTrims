@@ -10,16 +10,8 @@ public class CompatImpl {
         return FabricLoader.getInstance().isModLoaded("yet_another_config_lib_v3");
     }
 
-    public static boolean isElytraTrimsLoaded() {
-        return FabricLoader.getInstance().isModLoaded("elytratrims");
-    }
-
     public static boolean isShowMeYourSkinLoaded() {
         return FabricLoader.getInstance().isModLoaded("showmeyourskin");
-    }
-
-    public static boolean isFrostifulLoaded() {
-        return FabricLoader.getInstance().isModLoaded("frostiful");
     }
 
     public static float getTrimTransparency() {

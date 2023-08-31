@@ -10,7 +10,6 @@
     "client.bclib.CustomModelBakeryMixin",
     "client.bclib.HumanoidArmorRendererMixin",
     "client.bclib.PatternsHelperMixin",
-    "client.elytratrims.ExtraElytraFeatureRendererMixin",
     "client.frostiful.ArmorFeatureRendererMixin",
     "client.mythicmetals.MythicMetalsClientMixin"
   ],

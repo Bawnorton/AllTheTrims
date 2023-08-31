@@ -1,5 +1,8 @@
 ## Changelog
 
+## 3.2.5
+- Migrate elytra trim support over to elytra trims as att's internals change less
+
 ## 3.2.4
 - Improve support for Frostiful
 - Improve dynamic trim api
