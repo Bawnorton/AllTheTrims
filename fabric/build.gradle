@@ -26,8 +26,9 @@ dependencies {
     // Remove the next line if you don't want to depend on the API
     modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
 
-    // mixin extras
+    // mixin addons
     include(implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${rootProject.mixin_extras_version}")))
+    include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:${rootProject.mixin_squared_version}")))
 
     // config
     modImplementation("dev.isxander.yacl:yet-another-config-lib-fabric:${rootProject.yacl_version}")
