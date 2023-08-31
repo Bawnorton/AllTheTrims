@@ -1,5 +1,9 @@
 ## Changelog
 
+## 3.2.4
+- Improve support for Frostiful
+- Improve dynamic trim api
+
 ## 3.2.3
 - Add support for Frostiful
 - Stop missing class log spam
