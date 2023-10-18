@@ -10,15 +10,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-public class ConfigManager {
+public abstract class ConfigManager {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
     private static final Path configPath = Platform.getConfigFolder().resolve("allthetrims.json");
 
     public static void loadConfig() {
         Config config = load();
 
-        if(config.ignoreWhitelist == null) config.ignoreWhitelist = true;
-        if(config.debug == null) config.debug = false;
+        if (config.debug == null) config.debug = false;
 
         Config.update(config);
         save();

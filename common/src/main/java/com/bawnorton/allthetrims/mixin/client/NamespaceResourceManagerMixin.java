@@ -23,24 +23,24 @@ import java.util.List;
 public abstract class NamespaceResourceManagerMixin {
     @ModifyReturnValue(method = "getAllResources", at = @At("RETURN"))
     private List<Resource> replaceTrimMaterials(List<Resource> original, Identifier identifier) {
-        if(!identifier.toString().contains("armour_trims")) return original;
+        if (!identifier.toString().contains("armour_trims")) return original;
 
         List<Resource> newResources = new ArrayList<>();
         for (Resource resource : original) {
             try (BufferedReader reader = resource.getReader()) {
                 JsonObject atlas = JsonHelper.fromJsonReader(reader, JsonObject.class);
-                if(!atlas.has("sources")) return original;
+                if (!atlas.has("sources")) return original;
 
                 JsonArray sources = atlas.getAsJsonArray("sources");
-                if(sources.size() == 0) return original;
+                if (sources.isEmpty()) return original;
 
-                for(JsonElement source: sources) {
-                    if(!(source instanceof JsonObject sourceJson)) continue;
-                    if(!sourceJson.has("permutations")) continue;
-                    if(!sourceJson.has("type")) continue;
+                for (JsonElement source : sources) {
+                    if (!(source instanceof JsonObject sourceJson)) continue;
+                    if (!sourceJson.has("permutations")) continue;
+                    if (!sourceJson.has("type")) continue;
 
                     String type = sourceJson.get("type").getAsString();
-                    if(!type.equals("paletted_permutations")) continue;
+                    if (!type.equals("paletted_permutations")) continue;
 
                     JsonObject permutations = new JsonObject();
                     permutations.addProperty(AllTheTrims.TRIM_ASSET_NAME, "trims/color_palettes/blank");

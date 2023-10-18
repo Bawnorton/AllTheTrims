@@ -9,7 +9,7 @@ import nl.enjarai.showmeyourskin.util.MixinContext;
 public abstract class ShowMeYourSkinCompat {
     public static float getTrimTransparency() {
         ArmorContext context = MixinContext.ARMOR.getContext();
-        if(context != null) {
+        if (context != null) {
             return context.getApplicableTrimTransparency();
         } else {
             return 1.0F;

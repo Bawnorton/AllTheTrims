@@ -13,10 +13,7 @@ import net.minecraft.client.texture.atlas.PalettedPermutationsAtlasSource;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
-import org.slf4j.Logger;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -39,7 +36,8 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
     @ModifyArg(method = "method_48487", at = @At(value = "INVOKE", target = "Lcom/mojang/datafixers/Products$P3;apply(Lcom/mojang/datafixers/kinds/Applicative;Lcom/mojang/datafixers/util/Function3;)Lcom/mojang/datafixers/kinds/App;", remap = false), index = 1)
     private static <R> Function3<List<Identifier>, Identifier, Map<String, Identifier>, R> createDynamicTrimPermutation(Function3<List<Identifier>, Identifier, Map<String, Identifier>, R> function) {
         return (textures, paletteKey, palettedPermutations) -> {
-            if (!paletteKey.getPath().contains("trim_palette")) return function.apply(textures, paletteKey, palettedPermutations);
+            if (!paletteKey.getPath().contains("trim_palette"))
+                return function.apply(textures, paletteKey, palettedPermutations);
 
             List<Identifier> newTextures = new ArrayList<>(textures.size() * 9);
             for (Identifier texture : textures) {
@@ -62,7 +60,8 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
             PaletteHelper.putPalette(identifier.withPath(path), PaletteHelper.existingResourceToPalette(optionalResource.get()));
             return optionalResource;
         }
-        return Optional.of(new Resource(MinecraftClient.getInstance().getDefaultResourcePack(), () -> ImageUtil.toInputStream(ImageUtil.newBlankPaletteImage())));
+        return Optional.of(new Resource(MinecraftClient.getInstance()
+                                            .getDefaultResourcePack(), () -> ImageUtil.toInputStream(ImageUtil.newBlankPaletteImage())));
     }
 
     @Redirect(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ResourceManager;getResource(Lnet/minecraft/util/Identifier;)Ljava/util/Optional;"))
@@ -73,9 +72,7 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
 
         String path = identifier.getPath();
         int pathEnd = path.lastIndexOf('_');
-        Identifier originalIdentifier = pathEnd > 0
-                ? identifier.withPath(path.substring(0, pathEnd) + ".png")
-                : identifier;
+        Identifier originalIdentifier = pathEnd > 0 ? identifier.withPath(path.substring(0, pathEnd) + ".png") : identifier;
         Optional<Resource> optionalResource = instance.getResource(originalIdentifier);
         if (optionalResource.isEmpty()) return optionalResource;
 

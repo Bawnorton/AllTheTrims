@@ -5,7 +5,8 @@
   "minVersion": "0.8",
   "plugin": "com.bawnorton.allthetrims.forge.AllTheTrimsMixinConfigPluginImpl",
   "client": [
-    "client.ArmorFeatureRendererMixin"
+    "client.ArmorFeatureRendererMixin",
+    "client.rei.DefaultClientPluginMixin"
   ],
   "mixins": [
   ],

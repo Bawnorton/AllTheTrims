@@ -22,11 +22,12 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Pseudo
-@Debug(export = true)
 @Mixin(value = ArmorFeatureRenderer.class, priority = 1500)
 @ConditionalMixin(modid = "frostiful")
 public abstract class ArmorFeatureRendererMixin {
-    @Shadow @Final private SpriteAtlasTexture armorTrimsAtlas;
+    @Shadow
+    @Final
+    private SpriteAtlasTexture armorTrimsAtlas;
 
     @Unique
     private SpriteAtlasTexture allthetrims$frostiful$customArmorTrimsAtlas;
@@ -40,7 +41,7 @@ public abstract class ArmorFeatureRendererMixin {
     @Inject(method = "@MixinSquared:Handler", at = @At(value = "INVOKE", target = "net/minecraft/client/texture/Sprite.getTextureSpecificVertexConsumer (Lnet/minecraft/client/render/VertexConsumer;)Lnet/minecraft/client/render/VertexConsumer;"), cancellable = true)
     private void renderFrostifulDynamicTrim(ArmorMaterial material, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, BipedEntityModel<?> model, boolean leggings, CallbackInfo original, CallbackInfo ci) {
         Sprite sprite = allthetrims$frostiful$customArmorTrimsAtlas.getSprite(leggings ? trim.getLeggingsModelId(material) : trim.getGenericModelId(material));
-        if(sprite.getContents().getId().equals(MissingSprite.getMissingSpriteId())) {
+        if (sprite.getContents().getId().equals(MissingSprite.getMissingSpriteId())) {
             DynamicTrimRenderer.renderTrim(material, matrices, vertexConsumers, light, trim, model, leggings, allthetrims$frostiful$customArmorTrimsAtlas, FTexturedRenderLayers.ARMOR_TRIMS_RENDER_LAYER);
             original.cancel();
             ci.cancel();
@@ -50,7 +51,7 @@ public abstract class ArmorFeatureRendererMixin {
     @TargetHandler(mixin = "com.github.thedeathlycow.frostiful.mixins.client.ArmorFeatureRendererMixin", name = "renderCustomTrim")
     @Inject(method = "@MixinSquared:Handler", at = @At("HEAD"), cancellable = true)
     private void renderDynamicTrim(ArmorMaterial material, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, BipedEntityModel<?> model, boolean leggings, CallbackInfo original, CallbackInfo ci) {
-        if(!trim.getPattern().isIn(FTrimTags.CUSTOM_PATTERNS)) {
+        if (!trim.getPattern().isIn(FTrimTags.CUSTOM_PATTERNS)) {
             Sprite sprite = armorTrimsAtlas.getSprite(leggings ? trim.getLeggingsModelId(material) : trim.getGenericModelId(material));
             if (sprite.getContents().getId().equals(MissingSprite.getMissingSpriteId())) {
                 DynamicTrimRenderer.renderTrim(material, matrices, vertexConsumers, light, trim, model, leggings);

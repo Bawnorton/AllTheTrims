@@ -21,14 +21,20 @@ public abstract class DataPackContentsMixin {
         if (tagEntries.containsKey(ItemTags.TRIM_MATERIALS)) {
             tagEntries = new HashMap<>(tagEntries);
             List<RegistryEntry<T>> entries = new ArrayList<>(tagEntries.get(ItemTags.TRIM_MATERIALS));
-            entries.addAll(Registries.ITEM.stream().map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item)).toList());
+            entries.addAll(Registries.ITEM.stream()
+                               .map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item))
+                               .toList());
             tagEntries.put((TagKey<T>) ItemTags.TRIM_MATERIALS, entries);
             tagEntries = Collections.unmodifiableMap(tagEntries);
         }
         if (tagEntries.containsKey(ItemTags.TRIMMABLE_ARMOR)) {
             tagEntries = new HashMap<>(tagEntries);
             List<RegistryEntry<T>> entries = new ArrayList<>(tagEntries.get(ItemTags.TRIMMABLE_ARMOR));
-            entries.addAll(Registries.ITEM.stream().filter(item -> item instanceof Equipment equipment && equipment.getSlotType().isArmorSlot()).map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item)).toList());
+            entries.addAll(Registries.ITEM.stream()
+                               .filter(item -> item instanceof Equipment equipment && equipment.getSlotType()
+                                   .isArmorSlot())
+                               .map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item))
+                               .toList());
             tagEntries.put((TagKey<T>) ItemTags.TRIMMABLE_ARMOR, entries);
             tagEntries = Collections.unmodifiableMap(tagEntries);
         }

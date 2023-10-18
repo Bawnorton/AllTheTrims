@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.*;
 
 public abstract class PaletteHelper {
+    public static final List<Color> WHITE_PALETTE;
     private static final Map<Identifier, List<Color>> PALETTES = new HashMap<>();
     private static final List<Color> BLANK_PALETTE;
-    public static final List<Color> WHITE_PALETTE;
 
     static {
         BLANK_PALETTE = new ArrayList<>();
@@ -56,14 +56,16 @@ public abstract class PaletteHelper {
 
         Sprite sprite = model.getParticleSprite();
         if (sprite == null) {
-            AllTheTrims.LOGGER.warn("Model of item " + item.getName().getString() + " has no particle sprite, using blank palette");
+            AllTheTrims.LOGGER.warn("Model of item " + item.getName()
+                .getString() + " has no particle sprite, using blank palette");
             putPalette(identifier, BLANK_PALETTE);
             return BLANK_PALETTE;
         }
 
         SpriteContents content = sprite.getContents();
         if (content.getDistinctFrameCount().count() <= 0) {
-            AllTheTrims.LOGGER.warn("Sprite of item " + item.getName().getString() + " has no frames, using blank palette");
+            AllTheTrims.LOGGER.warn("Sprite of item " + item.getName()
+                .getString() + " has no frames, using blank palette");
             putPalette(identifier, BLANK_PALETTE);
             return BLANK_PALETTE;
         }
@@ -94,12 +96,7 @@ public abstract class PaletteHelper {
                     int pixel = image.getColor(x, y);
                     int a = pixel >> 24 & 0xFF;
                     if (a >= 5) {
-                        int[] argb = new int[4];
-                        argb[0] = a;
-                        argb[1] = (pixel & 0xFF);
-                        argb[2] = (pixel >> 8 & 0xFF);
-                        argb[3] = (pixel >> 16 & 0xFF);
-                        Color colour = new Color(ColorHelper.Argb.getArgb(argb[0], argb[1], argb[2], argb[3]), true);
+                        Color colour = extractColour(pixel, a);
                         colourMap.put(colour, colourMap.getOrDefault(colour, 0) + 1);
                     }
                 }
@@ -110,14 +107,14 @@ public abstract class PaletteHelper {
 
         private static List<Color> removeGreys(List<Color> colours) {
             List<Color> greys = new ArrayList<>();
-            for(Color colour : colours) {
+            for (Color colour : colours) {
                 float[] hsb = Color.RGBtoHSB(colour.getRed(), colour.getGreen(), colour.getBlue(), null);
                 if (hsb[1] < 0.2) {
                     greys.add(colour);
                 }
             }
             colours.removeAll(greys);
-            if(colours.size() == 0) return greys;
+            if (colours.isEmpty()) return greys;
             return colours;
         }
 
@@ -155,26 +152,30 @@ public abstract class PaletteHelper {
         }
 
         public static List<Color> toPalette(NativeImage image) {
-            if(image.getWidth() != 8 || image.getHeight() != 1) {
+            if (image.getWidth() != 8 || image.getHeight() != 1) {
                 AllTheTrims.LOGGER.warn("Palette image is not 8x1 pixels, using blank palette");
                 return BLANK_PALETTE;
             }
 
             List<Color> palette = new ArrayList<>();
-            for(int x = 0; x < image.getWidth(); x++) {
+            for (int x = 0; x < image.getWidth(); x++) {
                 int pixel = image.getColor(x, 0);
                 int a = pixel >> 24 & 0xFF;
                 if (a >= 5) {
-                    int[] argb = new int[4];
-                    argb[0] = a;
-                    argb[1] = (pixel & 0xFF);
-                    argb[2] = (pixel >> 8 & 0xFF);
-                    argb[3] = (pixel >> 16 & 0xFF);
-                    Color colour = new Color(ColorHelper.Argb.getArgb(argb[0], argb[1], argb[2], argb[3]), true);
+                    Color colour = extractColour(pixel, a);
                     palette.add(colour);
                 }
             }
             return palette;
+        }
+
+        private static Color extractColour(int pixel, int alpha) {
+            int[] argb = new int[4];
+            argb[0] = alpha;
+            argb[1] = (pixel & 0xFF);
+            argb[2] = (pixel >> 8 & 0xFF);
+            argb[3] = (pixel >> 16 & 0xFF);
+            return new Color(ColorHelper.Argb.getArgb(argb[0], argb[1], argb[2], argb[3]), true);
         }
     }
 }

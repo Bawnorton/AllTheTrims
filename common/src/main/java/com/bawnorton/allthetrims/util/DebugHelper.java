@@ -13,12 +13,13 @@ import java.io.IOException;
 import java.io.Writer;
 import java.nio.file.Path;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public abstract class DebugHelper {
     static {
         try {
             Path gameDir = Platform.getGameFolder();
             File debugDir = gameDir.resolve("att-debug").toFile();
-            if(debugDir.exists()) {
+            if (debugDir.exists()) {
                 debugDir.delete();
             }
             debugDir.mkdirs();
@@ -28,7 +29,7 @@ public abstract class DebugHelper {
     }
 
     public static void createDebugFile(String directory, String filename, String content) {
-        if(!Config.getInstance().debug) return;
+        if (!Config.getInstance().debug) return;
         try {
             Path gameDir = Platform.getGameFolder();
             File debugDir = gameDir.resolve("att-debug").resolve(directory).toFile();
@@ -45,7 +46,7 @@ public abstract class DebugHelper {
     }
 
     public static void saveLayeredTexture(BufferedImage image, String path) {
-        if(!Config.getInstance().debug) return;
+        if (!Config.getInstance().debug) return;
         try {
             Path gameDir = Platform.getGameFolder();
             File debugDir = gameDir.resolve("att-debug").resolve("textures").toFile();
@@ -60,7 +61,7 @@ public abstract class DebugHelper {
     }
 
     public static void savePalette(BufferedImage image, String path) {
-        if(!Config.getInstance().debug) return;
+        if (!Config.getInstance().debug) return;
         try {
             Path gameDir = Platform.getGameFolder();
             File debugDir = gameDir.resolve("att-debug").resolve("palettes").toFile();

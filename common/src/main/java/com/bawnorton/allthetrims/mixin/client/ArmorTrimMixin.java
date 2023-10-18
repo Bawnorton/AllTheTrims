@@ -1,6 +1,5 @@
 package com.bawnorton.allthetrims.mixin.client;
 
-import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.util.ImageUtil;
 import com.bawnorton.allthetrims.client.util.PaletteHelper;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -14,7 +13,6 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -36,13 +34,13 @@ public abstract class ArmorTrimMixin {
         ArmorTrimMaterial material = trim.getMaterial().value();
         RegistryEntry<Item> ingredient = material.ingredient();
         String assetName = material.assetName();
-        if(AllTheTrims.notWhitelisted(ingredient.value())) return Text.translatable("item.allthetrims.materials.unavailable").setStyle(original.getStyle().withColor(Formatting.RED));
         Item trimItem = ingredient.value();
         Identifier trimAssetId = new Identifier(Registries.ITEM.getId(trimItem).getNamespace(), assetName);
-        if(PaletteHelper.paletteExists(trimAssetId)) {
+        if (PaletteHelper.paletteExists(trimAssetId)) {
             return original;
         } else {
-            Style style = original.getStyle().withColor(ImageUtil.getAverageColour(PaletteHelper.getPalette(trimItem)).getRGB());
+            Style style = original.getStyle()
+                .withColor(ImageUtil.getAverageColour(PaletteHelper.getPalette(trimItem)).getRGB());
             return Text.literal(original.getString()).setStyle(style);
         }
     }

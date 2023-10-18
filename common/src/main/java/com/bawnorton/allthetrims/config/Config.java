@@ -5,6 +5,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class Config {
     private static Config INSTANCE;
+    @Expose
+    @SerializedName("debug")
+    public Boolean debug = false;
 
     public static Config getInstance() {
         if (INSTANCE == null) INSTANCE = new Config();
@@ -15,19 +18,8 @@ public class Config {
         INSTANCE = config;
     }
 
-    @Expose
-    @SerializedName("ignore_whitelist")
-    public Boolean ignoreWhitelist = true;
-
-    @Expose
-    @SerializedName("debug")
-    public Boolean debug = false;
-
-
     @Override
     public String toString() {
-        return "Config{" +
-                "ignoreWhitelist=" + ignoreWhitelist +
-                '}';
+        return "Config{" + "debug=" + debug + '}';
     }
 }

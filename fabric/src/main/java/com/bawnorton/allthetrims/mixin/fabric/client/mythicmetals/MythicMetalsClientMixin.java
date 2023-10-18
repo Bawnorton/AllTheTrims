@@ -27,8 +27,9 @@ public abstract class MythicMetalsClientMixin {
     private static void lambda$registerArmorRenderer$10(EquipmentSlot slot, HallowedArmor armor, VertexConsumerProvider vertexConsumer, ItemStack stack, BipedEntityModel<?> model, MatrixStack matrices, int light, ArmorTrim trim, CallbackInfo ci) {
         boolean leggings = slot == EquipmentSlot.LEGS;
         ArmorMaterial material = armor.getMaterial();
-        Sprite sprite = DynamicTrimRenderer.getAtlas().getSprite(leggings ? trim.getLeggingsModelId(material) : trim.getGenericModelId(material));
-        if(sprite.getContents().getId().equals(MissingSprite.getMissingSpriteId())) {
+        Sprite sprite = DynamicTrimRenderer.getAtlas()
+            .getSprite(leggings ? trim.getLeggingsModelId(material) : trim.getGenericModelId(material));
+        if (sprite.getContents().getId().equals(MissingSprite.getMissingSpriteId())) {
             DynamicTrimRenderer.renderTrim(material, matrices, vertexConsumer, light, trim, model, leggings);
             ci.cancel();
         }

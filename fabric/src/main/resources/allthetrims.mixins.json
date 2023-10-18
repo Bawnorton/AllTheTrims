@@ -11,7 +11,8 @@
     "client.bclib.HumanoidArmorRendererMixin",
     "client.bclib.PatternsHelperMixin",
     "client.frostiful.ArmorFeatureRendererMixin",
-    "client.mythicmetals.MythicMetalsClientMixin"
+    "client.mythicmetals.MythicMetalsClientMixin",
+    "client.rei.DefaultClientPluginMixin"
   ],
   "mixins": [
   ],

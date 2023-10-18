@@ -1,7 +1,6 @@
 package com.bawnorton.allthetrims.mixin.client;
 
 import com.bawnorton.allthetrims.AllTheTrims;
-import com.bawnorton.allthetrims.Compat;
 import com.bawnorton.allthetrims.json.JsonHelper;
 import com.bawnorton.allthetrims.util.DebugHelper;
 import com.google.gson.JsonArray;
@@ -9,7 +8,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.render.model.BakedModelManager;
-import net.minecraft.item.ElytraItem;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -36,7 +34,8 @@ public abstract class BakedModelManagerMixin {
         });
         for (Equipment equipment : equipmentSet) {
             Identifier equipmentId = Registries.ITEM.getId((Item) equipment);
-            if(equipmentId.getNamespace().equals("betterend")) continue; // Better End dynamically generates models elsewhere. See betterend package
+            if (equipmentId.getNamespace().equals("betterend"))
+                continue; // Better End dynamically generates models elsewhere. See betterend package
 
             Identifier resourceId = new Identifier(equipmentId.getNamespace(), "models/item/" + equipmentId.getPath() + ".json");
             String armourType = switch (equipment.getSlotType()) {
@@ -52,7 +51,7 @@ public abstract class BakedModelManagerMixin {
             }
 
             Resource resource = original.get(resourceId);
-            if(resource == null) {
+            if (resource == null) {
                 AllTheTrims.LOGGER.warn("Could not find resource " + resourceId + " for item " + equipmentId + ", skipping");
                 continue;
             }
@@ -92,14 +91,14 @@ public abstract class BakedModelManagerMixin {
                 int layer = 1;
                 int trimCount = 0;
                 boolean reachedEnd = false;
-                while(true) {
+                while (true) {
                     JsonElement layerElement = textures.get("layer" + layer);
-                    if(layerElement == null) reachedEnd = true;
+                    if (layerElement == null) reachedEnd = true;
                     else overrideTextures.add("layer" + layer, layerElement);
 
-                    if(reachedEnd) {
+                    if (reachedEnd) {
                         overrideTextures.addProperty("layer" + layer, "minecraft:trims/items/" + armourType + "_trim_" + trimCount + "_" + AllTheTrims.TRIM_ASSET_NAME);
-                        if(trimCount == 7) break;
+                        if (trimCount == 7) break;
                         trimCount++;
                     }
                     layer++;

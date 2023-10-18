@@ -11,8 +11,8 @@ import java.util.ArrayList;
 public abstract class ItemModelGeneratorMixin {
     @ModifyExpressionValue(method = "<clinit>", at = @At(value = "INVOKE", target = "Lcom/google/common/collect/Lists;newArrayList([Ljava/lang/Object;)Ljava/util/ArrayList;"))
     private static ArrayList<String> increaseLayerCount(ArrayList<String> original) {
-        for(int i = 5; i < 20; i++) { // should cover all possible armour / trim layers
-            if(original.contains("layer" + i)) {
+        for (int i = 5; i < 20; i++) { // should cover all possible armour / trim layers
+            if (original.contains("layer" + i)) {
                 continue;
             }
             original.add("layer" + i);

@@ -44,7 +44,7 @@ public abstract class ImageUtil {
         int red = 0;
         int green = 0;
         int blue = 0;
-        for(Color colour : colours) {
+        for (Color colour : colours) {
             red += colour.getRed();
             green += colour.getGreen();
             blue += colour.getBlue();
@@ -60,13 +60,13 @@ public abstract class ImageUtil {
         }
         List<Color> sortedColours = new ArrayList<>(uniqueColours);
         sortedColours.sort(Comparator.comparingInt(Color::getRGB));
-        if(index >= sortedColours.size()) index = sortedColours.size() - 1;
+        if (index >= sortedColours.size()) index = sortedColours.size() - 1;
         return sortedColours.get(index);
     }
 
     public static BufferedImage removeOtherColours(BufferedImage bufferedImage, Color includeColour) {
         BufferedImage maskedImage = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        for(int x = 0; x < bufferedImage.getWidth(); x++) {
+        for (int x = 0; x < bufferedImage.getWidth(); x++) {
             for (int y = 0; y < bufferedImage.getHeight(); y++) {
                 Color colour = new Color(bufferedImage.getRGB(x, y), true);
                 if (colour.equals(includeColour)) {

@@ -37,7 +37,9 @@ public abstract class RegistryLoaderMixin {
                 resourceJson.addProperty("asset_name", AllTheTrims.TRIM_ASSET_NAME);
                 JsonObject description = new JsonObject();
                 description.addProperty("color", "#FFFFFF");
-                description.addProperty("translate", allTheTrims$escape(item.getName().getString()) + " " + allTheTrims$escape(Text.translatable("text.allthetrims.material").getString()));
+                description.addProperty("translate", allTheTrims$escape(item.getName()
+                                                                            .getString()) + " " + allTheTrims$escape(Text.translatable("text.allthetrims.material")
+                                                                                                                         .getString()));
                 resourceJson.add("description", description);
                 resourceJson.addProperty("ingredient", itemId.toString());
                 resourceJson.addProperty("item_model_index", Float.MAX_VALUE);
@@ -46,7 +48,8 @@ public abstract class RegistryLoaderMixin {
                 return;
             }
 
-            Resource resource = new Resource(first.getValue().getPack(), () -> IOUtils.toInputStream(resourceJson.toString(), "UTF-8"));
+            Resource resource = new Resource(first.getValue()
+                                                 .getPack(), () -> IOUtils.toInputStream(resourceJson.toString(), "UTF-8"));
             Identifier resourceId = new Identifier(itemId.getNamespace(), "trim_material/" + itemId.getPath() + ".json");
             original.put(resourceId, resource);
 

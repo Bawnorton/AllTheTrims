@@ -26,7 +26,7 @@ public abstract class PatternsHelperMixin {
     @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     @ModifyReturnValue(method = "createItemGenerated", at = @At("RETURN"))
     private static Optional<String> addTrimsToArmourItems(Optional<String> original, Identifier identifier) {
-        if(original.isEmpty()) return original;
+        if (original.isEmpty()) return original;
 
         Identifier noInv = identifier.withPath(identifier.getPath().replace("#inventory", ""));
         if (!(Registries.ITEM.get(noInv) instanceof Equipment equipment)) return original;

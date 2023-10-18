@@ -8,8 +8,8 @@
     "Bawnorton"
   ],
   "contact": {
-    "homepage": "https://github.com/Benjamin-Norton/AllTheTrims",
-    "sources": "https://github.com/Benjamin-Norton",
+    "homepage": "https://github.com/Benjamin-Norton",
+    "sources": "https://github.com/Benjamin-Norton/AllTheTrims",
     "issues": "https://github.com/Benjamin-Norton/AllTheTrims/issues"
   },
   "license": "CC0-1.0",
@@ -24,6 +24,15 @@
     ],
     "modmenu": [
       "com.bawnorton.allthetrims.fabric.client.implementation.ModMenuImpl"
+    ],
+    "jei_mod_plugin": [
+      "com.bawnorton.allthetrims.client.implementation.jei.JeiPluginImpl"
+    ],
+    "rei_client": [
+      "com.bawnorton.allthetrims.client.implementation.rei.ReiPluginImpl"
+    ],
+    "emi": [
+      "com.bawnorton.allthetrims.client.implementation.emi.EmiPluginImpl"
     ]
   },
   "mixins": [

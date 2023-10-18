@@ -42,8 +42,8 @@ public abstract class ModelOverrideMixin {
             try {
                 return original.call(value, name);
             } catch (JsonSyntaxException e) {
-                if(!name.equals("trim_type")) throw e;
-                if(!value.isJsonPrimitive()) throw e;
+                if (!name.equals("trim_type")) throw e;
+                if (!value.isJsonPrimitive()) throw e;
 
                 JsonPrimitive primitive = value.getAsJsonPrimitive();
                 MATERIAL.set(primitive.getAsString());

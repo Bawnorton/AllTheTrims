@@ -31,7 +31,9 @@ public abstract class HumanoidArmorRendererMixin {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lorg/betterx/bclib/client/render/HumanoidArmorRenderer;renderModel(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/client/render/entity/model/BipedEntityModel;Lnet/minecraft/util/Identifier;FFF)V", shift = At.Shift.AFTER))
     private void renderTrims(MatrixStack matrices, VertexConsumerProvider buffer, ItemStack stack, LivingEntity entity, EquipmentSlot slot, int light, BipedEntityModel<LivingEntity> parentModel, CallbackInfo ci) {
-        if(armorTrimsAtlas == null) armorTrimsAtlas = MinecraftClient.getInstance().getBakedModelManager().getAtlas(TexturedRenderLayers.ARMOR_TRIMS_ATLAS_TEXTURE);
+        if (armorTrimsAtlas == null) armorTrimsAtlas = MinecraftClient.getInstance()
+            .getBakedModelManager()
+            .getAtlas(TexturedRenderLayers.ARMOR_TRIMS_ATLAS_TEXTURE);
 
         ArmorItem armourItem = (ArmorItem) stack.getItem();
         ArmorMaterial material = armourItem.getMaterial();

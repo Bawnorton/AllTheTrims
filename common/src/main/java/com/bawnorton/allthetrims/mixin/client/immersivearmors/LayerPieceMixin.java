@@ -23,12 +23,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(LayerPiece.class)
 @ConditionalMixin(modid = "immersive_armors")
 public abstract class LayerPieceMixin {
-    @Shadow @Final protected SpriteAtlasTexture armorTrimsAtlas;
+    @Shadow
+    @Final
+    protected SpriteAtlasTexture armorTrimsAtlas;
 
     @Inject(method = "renderTrim", at = @At("HEAD"), cancellable = true)
     private void renderDynamicTrim(ArmorMaterial material, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, BipedEntityModel<?> model, boolean leggings, CallbackInfo ci) {
         Sprite sprite = armorTrimsAtlas.getSprite(leggings ? trim.getLeggingsModelId(material) : trim.getGenericModelId(material));
-        if(sprite.getContents().getId().equals(MissingSprite.getMissingSpriteId())) {
+        if (sprite.getContents().getId().equals(MissingSprite.getMissingSpriteId())) {
             DynamicTrimRenderer.renderTrim(material, matrices, vertexConsumers, light, trim, model, leggings);
             ci.cancel();
         }

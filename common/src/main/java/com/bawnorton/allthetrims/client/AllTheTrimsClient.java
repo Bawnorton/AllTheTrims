@@ -31,7 +31,7 @@ public class AllTheTrimsClient {
     public static final ThreadLocal<String> MATERIAL = new ThreadLocal<>();
 
     public static void init() {
-        AllTheTrims.LOGGER.info("Initializing AllTheTrims Client");
+        AllTheTrims.LOGGER.debug("Initializing AllTheTrims Client");
 
         //Andrew6rant https://github.com/Andrew6rant provided the proof of concept code for this
         //noinspection SuspiciousToArrayCall
@@ -41,30 +41,31 @@ public class AllTheTrimsClient {
 
             DynamicRegistryManager registryManager = networkHandler.getRegistryManager();
             Optional<ArmorTrim> optionalTrim = ArmorTrim.getTrim(registryManager, stack);
-            if(optionalTrim.isEmpty()) {
-                if(stack.getItem() instanceof DyeableArmorItem dyeableArmorItem) return tintIndex == 0 ? dyeableArmorItem.getColor(stack) : -1;
+            if (optionalTrim.isEmpty()) {
+                if (stack.getItem() instanceof DyeableArmorItem dyeableArmorItem)
+                    return tintIndex == 0 ? dyeableArmorItem.getColor(stack) : -1;
                 return -1;
             }
 
             ArmorTrimMaterial trimMaterial = optionalTrim.get().getMaterial().value();
             Item trimItem = trimMaterial.ingredient().value();
-            String assetName =  trimMaterial.assetName();
-            if(!assetName.equals(AllTheTrims.TRIM_ASSET_NAME)) return -1;
+            String assetName = trimMaterial.assetName();
+            if (!assetName.equals(AllTheTrims.TRIM_ASSET_NAME)) return -1;
 
             List<Color> palette = PaletteHelper.getPalette(trimItem);
-            if(stack.getItem() instanceof DyeableArmorItem dyeableArmorItem) {
-                if(tintIndex == 0) return dyeableArmorItem.getColor(stack);
-                if(tintIndex >= 2) {
+            if (stack.getItem() instanceof DyeableArmorItem dyeableArmorItem) {
+                if (tintIndex == 0) return dyeableArmorItem.getColor(stack);
+                if (tintIndex >= 2) {
                     return palette.get(MathHelper.clamp(6 - tintIndex, 0, palette.size() - 1)).getRGB();
                 }
                 return -1;
             }
 
-            if(tintIndex < 1) return -1;
+            if (tintIndex < 1) return -1;
             Color color = palette.get(MathHelper.clamp(6 - tintIndex, 0, palette.size() - 1));
-            if(tintIndex == 1) return ImageUtil.changeBrightness(color, 0.5f).getRGB();
-            if(tintIndex == 2) return ImageUtil.changeBrightness(color, 0.75f).getRGB();
-            if(tintIndex == 3) return ImageUtil.changeBrightness(color, 0.9f).getRGB();
+            if (tintIndex == 1) return ImageUtil.changeBrightness(color, 0.5f).getRGB();
+            if (tintIndex == 2) return ImageUtil.changeBrightness(color, 0.75f).getRGB();
+            if (tintIndex == 3) return ImageUtil.changeBrightness(color, 0.9f).getRGB();
             return color.getRGB();
         }, Registries.ITEM.stream().filter(item -> item instanceof Equipment).toArray(Item[]::new));
     }

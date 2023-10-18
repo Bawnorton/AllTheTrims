@@ -16,6 +16,37 @@ import java.util.List;
 import java.util.Set;
 
 public class AllTheTrimsMixinConfigPlugin implements IMixinConfigPlugin {
+    public static boolean testClass(String className) {
+        try {
+            List<AnnotationNode> annotationNodes = MixinService.getService()
+                .getBytecodeProvider()
+                .getClassNode(className).visibleAnnotations;
+            if (annotationNodes == null) return true;
+
+            for (AnnotationNode node : annotationNodes) {
+                if (node.desc.equals(Type.getDescriptor(ConditionalMixin.class))) {
+                    String modid = Annotations.getValue(node, "modid");
+                    boolean applyIfPresent = Annotations.getValue(node, "applyIfPresent", Boolean.TRUE);
+                    if (isModLoaded(modid)) {
+                        AllTheTrims.LOGGER.debug("AllTheTrimsMixinPlugin: " + className + " is" + (applyIfPresent ? " " : " not ") + "being applied because " + modid + " is loaded");
+                        return applyIfPresent;
+                    } else {
+                        AllTheTrims.LOGGER.debug("AllTheTrimsMixinPlugin: " + className + " is" + (!applyIfPresent ? " " : " not ") + "being applied because " + modid + " is not loaded");
+                        return !applyIfPresent;
+                    }
+                }
+            }
+        } catch (ClassNotFoundException | IOException e) {
+            throw new RuntimeException(e);
+        }
+        return true;
+    }
+
+    @ExpectPlatform
+    private static boolean isModLoaded(String modid) {
+        throw new AssertionError();
+    }
+
     @Override
     public void onLoad(String mixinPackage) {
         MixinExtrasBootstrap.init();
@@ -29,30 +60,6 @@ public class AllTheTrimsMixinConfigPlugin implements IMixinConfigPlugin {
     @Override
     public boolean shouldApplyMixin(String targetName, String className) {
         return testClass(className);
-    }
-
-    public static boolean testClass(String className) {
-        try {
-            List<AnnotationNode> annotationNodes = MixinService.getService().getBytecodeProvider().getClassNode(className).visibleAnnotations;
-            if(annotationNodes == null) return true;
-
-            for(AnnotationNode node: annotationNodes) {
-                if(node.desc.equals(Type.getDescriptor(ConditionalMixin.class))) {
-                    String modid = Annotations.getValue(node, "modid");
-                    boolean applyIfPresent = Annotations.getValue(node, "applyIfPresent", Boolean.TRUE);
-                    if(isModLoaded(modid)) {
-                        AllTheTrims.LOGGER.debug("AllTheTrimsMixinPlugin: " + className + " is" + (applyIfPresent ? " " : " not ") + "being applied because " + modid + " is loaded");
-                        return applyIfPresent;
-                    } else {
-                        AllTheTrims.LOGGER.debug("AllTheTrimsMixinPlugin: " + className + " is" + (!applyIfPresent ? " " : " not ") + "being applied because " + modid + " is not loaded");
-                        return !applyIfPresent;
-                    }
-                }
-            }
-        } catch (ClassNotFoundException | IOException e) {
-            throw new RuntimeException(e);
-        }
-        return true;
     }
 
     @Override
@@ -73,10 +80,5 @@ public class AllTheTrimsMixinConfigPlugin implements IMixinConfigPlugin {
     @Override
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {
 
-    }
-
-    @ExpectPlatform
-    private static boolean isModLoaded(String modid) {
-        throw new AssertionError();
     }
 }

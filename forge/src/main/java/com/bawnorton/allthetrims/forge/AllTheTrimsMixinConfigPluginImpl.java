@@ -11,6 +11,16 @@ import java.util.List;
 import java.util.Set;
 
 public class AllTheTrimsMixinConfigPluginImpl implements IMixinConfigPlugin {
+    public static boolean isModLoaded(String modid) {
+        List<ModInfo> mods = LoadingModList.get().getMods();
+        for (ModInfo mod : mods) {
+            if (mod.getModId().equals(modid)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public void onLoad(String s) {
 
@@ -44,15 +54,5 @@ public class AllTheTrimsMixinConfigPluginImpl implements IMixinConfigPlugin {
     @Override
     public void postApply(String s, ClassNode classNode, String s1, IMixinInfo iMixinInfo) {
 
-    }
-
-    public static boolean isModLoaded(String modid) {
-        List<ModInfo> mods = LoadingModList.get().getMods();
-        for(ModInfo mod : mods) {
-            if(mod.getModId().equals(modid)) {
-                return true;
-            }
-        }
-        return false;
     }
 }

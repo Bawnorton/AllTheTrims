@@ -13,6 +13,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 public class AllTheTrimsForgeClient {
     public static void init(FMLClientSetupEvent event) {
         AllTheTrimsClient.init();
-        ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((client, screen) -> YACLImpl.getScreen(screen)));
+        ModLoadingContext.get()
+            .registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((client, screen) -> YACLImpl.getScreen(screen)));
     }
 }

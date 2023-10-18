@@ -11,7 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 public abstract class SmithingScreenHandlerMixin {
     @ModifyReturnValue(method = "getSlotFor", at = @At("RETURN"))
     private int correctTemplateSlot(int original, ItemStack stack) {
-        if(stack.isIn(ItemTags.TRIM_TEMPLATES) || stack.getItem().getTranslationKey().contains("smithing_template")) return 0;
+        if (stack.isIn(ItemTags.TRIM_TEMPLATES) || stack.getItem().getTranslationKey().contains("smithing_template"))
+            return 0;
         return original;
     }
 }

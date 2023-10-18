@@ -21,12 +21,12 @@ import java.util.List;
 public abstract class DynamicTrimRenderer {
     private static SpriteAtlasTexture armorTrimsAtlas;
 
-    public static void setAtlas(SpriteAtlasTexture atlas) {
-        armorTrimsAtlas = atlas;
-    }
-
     public static SpriteAtlasTexture getAtlas() {
         return armorTrimsAtlas;
+    }
+
+    public static void setAtlas(SpriteAtlasTexture atlas) {
+        armorTrimsAtlas = atlas;
     }
 
     public static void renderTrim(ArmorMaterial material, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, BipedEntityModel<?> model, boolean leggings) {
@@ -39,10 +39,10 @@ public abstract class DynamicTrimRenderer {
 
     public static void renderTrim(ArmorMaterial material, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, BipedEntityModel<?> model, boolean leggings, SpriteAtlasTexture atlas, RenderLayer layer) {
         ArmorTrimMaterial trimMaterial = trim.getMaterial().value();
-        String assetName =  trimMaterial.assetName();
+        String assetName = trimMaterial.assetName();
         List<Color> palette = PaletteHelper.getPalette(trimMaterial.ingredient().value());
         Identifier modelId = leggings ? trim.getLeggingsModelId(material) : trim.getGenericModelId(material);
-        for(int i = 0; i < 8; i++) {
+        for (int i = 0; i < 8; i++) {
             String layerPath = modelId.getPath().replace(assetName, i + "_" + assetName);
             Sprite sprite = atlas.getSprite(modelId.withPath(layerPath));
             VertexConsumer vertexConsumer = sprite.getTextureSpecificVertexConsumer(vertexConsumers.getBuffer(layer));

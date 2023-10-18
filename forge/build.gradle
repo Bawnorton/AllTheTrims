@@ -46,6 +46,17 @@ dependencies {
     // compats
     modImplementation(fileTree(dir: "libs", include: ["*.jar"]))
 
+    // jei
+    modCompileOnlyApi("mezz.jei:jei-${rootProject.minecraft_version}-common-api:${rootProject.jei_version}")
+    modCompileOnlyApi("mezz.jei:jei-${rootProject.minecraft_version}-forge-api:${rootProject.jei_version}")
+
+    // rei
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-forge:${rootProject.rei_version}")
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-forge:${rootProject.rei_version}")
+
+    // emi
+    modCompileOnly("dev.emi:emi-forge:${rootProject.emi_version}:api")
+
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 }

@@ -21,12 +21,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = ArmorFeatureRenderer.class, priority = 1500)
 @ConditionalMixin(modid = "frostiful", applyIfPresent = false)
 public abstract class ArmorFeatureRendererMixin {
-    @Shadow @Final private SpriteAtlasTexture armorTrimsAtlas;
+    @Shadow
+    @Final
+    private SpriteAtlasTexture armorTrimsAtlas;
 
     @Inject(method = "renderTrim", at = @At("HEAD"), cancellable = true)
     private void renderDynamicTrim(ArmorMaterial material, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, BipedEntityModel<?> model, boolean leggings, CallbackInfo ci) {
         Sprite sprite = armorTrimsAtlas.getSprite(leggings ? trim.getLeggingsModelId(material) : trim.getGenericModelId(material));
-        if(sprite.getContents().getId().equals(MissingSprite.getMissingSpriteId())) {
+        if (sprite.getContents().getId().equals(MissingSprite.getMissingSpriteId())) {
             DynamicTrimRenderer.renderTrim(material, matrices, vertexConsumers, light, trim, model, leggings);
             ci.cancel();
         }

@@ -22,6 +22,19 @@ dependencies {
 
     // compats
     modCompileOnly("maven.modrinth:immersive-armors:${rootProject.immersive_armors_version}")
+
+    // jei
+    modCompileOnly("mezz.jei:jei-${rootProject.minecraft_version}-fabric:${rootProject.jei_version}") {
+        transitive = false
+    }
+
+    // rei
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api:${rootProject.rei_version}")
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin:${rootProject.rei_version}")
+
+    // emi
+    modCompileOnly("dev.emi:emi-xplat-intermediary:${rootProject.emi_version}:api")
+    modCompileOnly("dev.emi:emi-xplat-intermediary:${rootProject.emi_version}")
 }
 
 publishing {

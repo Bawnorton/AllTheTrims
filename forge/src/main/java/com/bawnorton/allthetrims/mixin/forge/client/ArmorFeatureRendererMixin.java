@@ -30,7 +30,7 @@ public abstract class ArmorFeatureRendererMixin {
     @Inject(method = "renderTrim(Lnet/minecraft/item/ArmorMaterial;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/trim/ArmorTrim;Lnet/minecraft/client/model/Model;Z)V", at = @At("HEAD"), cancellable = true)
     private void renderDynamicTrim(ArmorMaterial material, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, ArmorTrim trim, Model model, boolean leggings, CallbackInfo ci) {
         Sprite sprite = armorTrimsAtlas.getSprite(leggings ? trim.getLeggingsModelId(material) : trim.getGenericModelId(material));
-        if(sprite.getContents().getId().equals(MissingSprite.getMissingSpriteId())) {
+        if (sprite.getContents().getId().equals(MissingSprite.getMissingSpriteId())) {
             DynamicTrimRenderer.renderTrim(material, matrices, vertexConsumers, light, trim, (BipedEntityModel<?>) model, leggings);
             ci.cancel();
         }

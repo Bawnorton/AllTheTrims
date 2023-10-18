@@ -16,7 +16,10 @@
     "client.ModelOverrideMixin$DeserializerMixin",
     "client.NamespaceResourceManagerMixin",
     "client.PalettedPermutationsAtlasSourceMixin",
-    "client.immersivearmors.LayerPieceMixin"
+    "client.emi.VanillaPluginMixin",
+    "client.immersivearmors.LayerPieceMixin",
+    "client.invoker.emi.VanillaPluginInvoker",
+    "client.jei.SmithingRecipeCategoryMixin"
   ],
   "mixins": [
     "DataPackContentsMixin",
@@ -24,7 +27,7 @@
     "ItemMixin",
     "RegistryLoaderMixin",
     "SmithingScreenHandlerMixin",
-    "SmithingTrimRecipeMixin",
+    "accessor.SmithingTrimRecipeAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
