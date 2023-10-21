@@ -50,17 +50,17 @@ public class AllTheTrimsClient {
             ArmorTrimMaterial trimMaterial = optionalTrim.get().getMaterial().value();
             Item trimItem = trimMaterial.ingredient().value();
             String assetName = trimMaterial.assetName();
-            if (!assetName.equals(AllTheTrims.TRIM_ASSET_NAME)) return -1;
 
             List<Color> palette = PaletteHelper.getPalette(trimItem);
             if (stack.getItem() instanceof DyeableArmorItem dyeableArmorItem) {
                 if (tintIndex == 0) return dyeableArmorItem.getColor(stack);
-                if (tintIndex >= 2) {
+                if (tintIndex >= 2 && assetName.equals(AllTheTrims.TRIM_ASSET_NAME)) {
                     return palette.get(MathHelper.clamp(6 - tintIndex, 0, palette.size() - 1)).getRGB();
                 }
                 return -1;
             }
 
+            if (!assetName.equals(AllTheTrims.TRIM_ASSET_NAME)) return -1;
             if (tintIndex < 1) return -1;
             Color color = palette.get(MathHelper.clamp(6 - tintIndex, 0, palette.size() - 1));
             if (tintIndex == 1) return ImageUtil.changeBrightness(color, 0.5f).getRGB();

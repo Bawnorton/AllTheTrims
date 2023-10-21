@@ -1,11 +1,14 @@
 ## Changelog
 
-## 3.3.1
-- Improve compatibility
-- Fix built-in / added trim materials from being replaced with dynamic ones
+## 3.3.2
+- Fix incorrect colouring on dyeable armour when used with built-in trim materials
 
 <details>
 <summary>Older Versions</summary>
+
+## 3.3.1
+- Improve compatibility
+- Fix built-in / added trim materials from being replaced with dynamic ones
 
 ## 3.3.0
 - Add support for REI, EMI and JEI
