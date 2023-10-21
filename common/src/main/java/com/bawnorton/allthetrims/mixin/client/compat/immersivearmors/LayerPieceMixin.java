@@ -1,4 +1,4 @@
-package com.bawnorton.allthetrims.mixin.client.immersivearmors;
+package com.bawnorton.allthetrims.mixin.client.compat.immersivearmors;
 
 import com.bawnorton.allthetrims.annotation.ConditionalMixin;
 import com.bawnorton.allthetrims.client.api.DynamicTrimRenderer;

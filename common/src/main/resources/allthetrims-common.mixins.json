@@ -16,10 +16,10 @@
     "client.ModelOverrideMixin$DeserializerMixin",
     "client.NamespaceResourceManagerMixin",
     "client.PalettedPermutationsAtlasSourceMixin",
-    "client.emi.VanillaPluginMixin",
-    "client.immersivearmors.LayerPieceMixin",
-    "client.invoker.emi.VanillaPluginInvoker",
-    "client.jei.SmithingRecipeCategoryMixin"
+    "client.compat.emi.VanillaPluginMixin",
+    "client.compat.immersivearmors.LayerPieceMixin",
+    "client.compat.jei.SmithingRecipeCategoryMixin",
+    "client.invoker.emi.VanillaPluginInvoker"
   ],
   "mixins": [
     "DataPackContentsMixin",

@@ -5,6 +5,8 @@ import com.bawnorton.allthetrims.client.util.ImageUtil;
 import com.bawnorton.allthetrims.client.util.PaletteHelper;
 import com.bawnorton.allthetrims.util.DebugHelper;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.llamalad7.mixinextras.sugar.Share;
 import com.llamalad7.mixinextras.sugar.ref.LocalRef;
 import com.mojang.datafixers.util.Function3;
@@ -16,7 +18,6 @@ import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
-import org.spongepowered.asm.mixin.injection.Redirect;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -60,15 +61,14 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
             PaletteHelper.putPalette(identifier.withPath(path), PaletteHelper.existingResourceToPalette(optionalResource.get()));
             return optionalResource;
         }
-        return Optional.of(new Resource(MinecraftClient.getInstance()
-                                            .getDefaultResourcePack(), () -> ImageUtil.toInputStream(ImageUtil.newBlankPaletteImage())));
+        return Optional.of(new Resource(MinecraftClient.getInstance().getDefaultResourcePack(), () -> ImageUtil.toInputStream(ImageUtil.newBlankPaletteImage())));
     }
 
-    @Redirect(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ResourceManager;getResource(Lnet/minecraft/util/Identifier;)Ljava/util/Optional;"))
-    private Optional<Resource> getLayeredTrimResource(ResourceManager instance, Identifier identifier, @Share("identifier") LocalRef<Identifier> identifierRef) {
+    @WrapOperation(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ResourceManager;getResource(Lnet/minecraft/util/Identifier;)Ljava/util/Optional;"))
+    private Optional<Resource> getLayeredTrimResource(ResourceManager instance, Identifier identifier, Operation<Optional<Resource>> original, @Share("identifier") LocalRef<Identifier> identifierRef) {
         identifierRef.set(identifier);
-        Optional<Resource> original = instance.getResource(identifier);
-        if (original.isPresent()) return original;
+        Optional<Resource> originalResource = original.call(instance, identifier);
+        if (originalResource.isPresent()) return originalResource;
 
         String path = identifier.getPath();
         int pathEnd = path.lastIndexOf('_');

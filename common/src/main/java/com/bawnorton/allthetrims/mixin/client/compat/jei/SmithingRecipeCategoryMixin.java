@@ -1,4 +1,4 @@
-package com.bawnorton.allthetrims.mixin.client.jei;
+package com.bawnorton.allthetrims.mixin.client.compat.jei;
 
 import com.bawnorton.allthetrims.client.implementation.jei.JeiPluginImpl;
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;

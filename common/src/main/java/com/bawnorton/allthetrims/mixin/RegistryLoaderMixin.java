@@ -1,6 +1,7 @@
 package com.bawnorton.allthetrims.mixin;
 
 import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.json.JsonHelper;
 import com.bawnorton.allthetrims.util.DebugHelper;
 import com.bawnorton.allthetrims.util.TrimMaterialHelper;
 import com.google.gson.JsonObject;
@@ -15,8 +16,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 @Mixin(RegistryLoader.class)
 public abstract class RegistryLoaderMixin {
@@ -29,8 +34,19 @@ public abstract class RegistryLoaderMixin {
         Map.Entry<Identifier, Resource> first = original.entrySet().iterator().next();
         if (!first.getKey().getPath().contains("trim_material")) return original;
 
+        Set<Identifier> seenIngredients = new HashSet<>();
+        for (Map.Entry<Identifier, Resource> resourceEntry : original.entrySet()) {
+            try(BufferedReader reader = resourceEntry.getValue().getReader()) {
+                JsonObject trimJson = JsonHelper.fromJsonReader(reader, JsonObject.class);
+                seenIngredients.add(new Identifier(trimJson.get("ingredient").getAsString()));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
         TrimMaterialHelper.loopTrimMaterials((item) -> {
             Identifier itemId = Registries.ITEM.getId(item);
+            if (seenIngredients.contains(itemId)) return;
 
             JsonObject resourceJson = new JsonObject();
             try {

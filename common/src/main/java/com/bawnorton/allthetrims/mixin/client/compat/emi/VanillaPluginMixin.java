@@ -1,4 +1,4 @@
-package com.bawnorton.allthetrims.mixin.client.emi;
+package com.bawnorton.allthetrims.mixin.client.compat.emi;
 
 import dev.emi.emi.VanillaPlugin;
 import dev.emi.emi.api.EmiRegistry;
