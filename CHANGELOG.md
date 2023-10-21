@@ -6,6 +6,7 @@
 
 <details>
 <summary>Older Versions</summary>
+
 ## 3.3.0
 - Add support for REI, EMI and JEI
   - Splits trimming recipes into a seperate category to allow for functional recipes to be easily viewable in the smithing category
