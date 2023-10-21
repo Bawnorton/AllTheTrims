@@ -1,13 +1,16 @@
 ## Changelog
 
+## 3.3.1
+- Improve compatibility
+- Fix built-in / added trim materials from being replaced with dynamic ones
+
+<details>
+<summary>Older Versions</summary>
 ## 3.3.0
 - Add support for REI, EMI and JEI
   - Splits trimming recipes into a seperate category to allow for functional recipes to be easily viewable in the smithing category
 - Removed whitelisting
   - It was hardly used and was a pain to maintain
-
-<details>
-<summary>Older Versions</summary>
 
 ## 3.2.5
 - Migrate elytra trim support over to elytra trims as att's internals change less
