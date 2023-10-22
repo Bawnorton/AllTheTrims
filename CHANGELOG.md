@@ -1,10 +1,13 @@
 ## Changelog
 
-## 3.3.2
-- Fix incorrect colouring on dyeable armour when used with built-in trim materials
+# 3.3.3
+- Fix trim generation on modded armour that is not trimmable by default
 
 <details>
 <summary>Older Versions</summary>
+
+## 3.3.2
+- Fix incorrect colouring on dyeable armour when used with built-in trim materials
 
 ## 3.3.1
 - Improve compatibility
