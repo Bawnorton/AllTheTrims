@@ -23,4 +23,9 @@ public abstract class Compat {
     public static boolean isDynamicTrimLoaded() {
         throw new AssertionError();
     }
+
+    @ExpectPlatform
+    public static boolean isElytraTrimsLoaded() {
+        throw new AssertionError();
+    }
 }

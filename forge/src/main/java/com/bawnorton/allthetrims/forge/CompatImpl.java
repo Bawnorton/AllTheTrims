@@ -20,4 +20,8 @@ public class CompatImpl {
     public static boolean isDynamicTrimLoaded() {
         return ModList.get().isLoaded("dynamictrim");
     }
+
+    public static boolean isElytraTrimsLoaded() {
+        return ModList.get().isLoaded("elytratrims");
+    }
 }

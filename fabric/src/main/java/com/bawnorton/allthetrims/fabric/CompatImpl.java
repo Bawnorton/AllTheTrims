@@ -27,4 +27,8 @@ public class CompatImpl {
     public static boolean isDynamicTrimLoaded() {
         return FabricLoader.getInstance().isModLoaded("dynamictrim");
     }
+
+    public static boolean isElytraTrimsLoaded() {
+        return FabricLoader.getInstance().isModLoaded("elytratrims");
+    }
 }

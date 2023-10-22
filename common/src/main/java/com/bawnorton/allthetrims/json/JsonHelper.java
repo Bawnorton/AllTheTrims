@@ -1,9 +1,12 @@
 package com.bawnorton.allthetrims.json;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.google.gson.*;
 
 import java.io.BufferedReader;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 
 public class JsonHelper {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
@@ -16,8 +19,48 @@ public class JsonHelper {
         return GSON.fromJson(string, jsonObjectClass);
     }
 
-    public static String toJsonString(Object object) {
-        return GSON.toJson(object);
+    public static String toJsonString(JsonElement jsonElement) {
+        return GSON.toJson(jsonElement);
     }
 
+    public static String toJsonString(JsonRepresentable jsonRepresentable) {
+        return toJsonString(jsonRepresentable.asJson());
+    }
+
+    public static String getString(JsonObject json, String key) {
+        return json.get(key).getAsString();
+    }
+
+    public static JsonObject getObject(JsonObject json, String key) {
+        return json.get(key).getAsJsonObject();
+    }
+
+    public static Float getFloat(JsonObject json, String key) {
+        return json.get(key).getAsFloat();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Map<String, String> asStringMap(JsonObject json) {
+        return GSON.fromJson(json, Map.class);
+    }
+
+    public static <T> List<T> parseArray(JsonArray array, Function<JsonObject, T> parser) {
+        List<T> list = new ArrayList<>();
+        for (JsonElement element : array) {
+            if (!element.isJsonObject()) continue;
+            try {
+                list.add(parser.apply(element.getAsJsonObject()));
+            } catch (RuntimeException ignored) {}
+        }
+        return list;
+    }
+
+    public static <T> JsonArray serializeArray(List<T> list, Function<T, JsonObject> serializer) {
+        JsonArray array = new JsonArray();
+        for (T element : list) {
+            array.add(serializer.apply(element));
+        }
+        return array;
+
+    }
 }

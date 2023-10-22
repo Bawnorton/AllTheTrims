@@ -2,6 +2,7 @@ package com.bawnorton.allthetrims.mixin;
 
 import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.json.JsonHelper;
+import com.bawnorton.allthetrims.json.TrimMaterialJson;
 import com.bawnorton.allthetrims.util.DebugHelper;
 import com.bawnorton.allthetrims.util.TrimMaterialHelper;
 import com.google.gson.JsonObject;
@@ -18,10 +19,8 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Set;
 
 @Mixin(RegistryLoader.class)
 public abstract class RegistryLoaderMixin {
@@ -34,38 +33,28 @@ public abstract class RegistryLoaderMixin {
         Map.Entry<Identifier, Resource> first = original.entrySet().iterator().next();
         if (!first.getKey().getPath().contains("trim_material")) return original;
 
-        Set<Identifier> seenIngredients = new HashSet<>();
         for (Map.Entry<Identifier, Resource> resourceEntry : original.entrySet()) {
             try(BufferedReader reader = resourceEntry.getValue().getReader()) {
                 JsonObject trimJson = JsonHelper.fromJsonReader(reader, JsonObject.class);
-                seenIngredients.add(new Identifier(trimJson.get("ingredient").getAsString()));
+                TrimMaterialHelper.BUILTIN_TRIM_MATERIALS.add(TrimMaterialJson.fromJson(trimJson));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
 
-        TrimMaterialHelper.loopTrimMaterials((item) -> {
+        TrimMaterialHelper.forEachTrimMaterial((item, builtin) -> {
+            if(builtin) return;
+
             Identifier itemId = Registries.ITEM.getId(item);
-            if (seenIngredients.contains(itemId)) return;
-
-            JsonObject resourceJson = new JsonObject();
-            try {
-                resourceJson.addProperty("asset_name", AllTheTrims.TRIM_ASSET_NAME);
-                JsonObject description = new JsonObject();
-                description.addProperty("color", "#FFFFFF");
-                description.addProperty("translate", allTheTrims$escape(item.getName()
-                                                                            .getString()) + " " + allTheTrims$escape(Text.translatable("text.allthetrims.material")
-                                                                                                                         .getString()));
-                resourceJson.add("description", description);
-                resourceJson.addProperty("ingredient", itemId.toString());
-                resourceJson.addProperty("item_model_index", Float.MAX_VALUE);
-            } catch (RuntimeException e) {
-                AllTheTrims.LOGGER.error("Failed to generate trim material JSON for " + itemId, e);
-                return;
-            }
-
-            Resource resource = new Resource(first.getValue()
-                                                 .getPack(), () -> IOUtils.toInputStream(resourceJson.toString(), "UTF-8"));
+            TrimMaterialJson trimMaterialJson = new TrimMaterialJson(
+                AllTheTrims.TRIM_ASSET_NAME,
+                "#FFFFFF",
+                allTheTrims$escape(item.getName().getString()) + " " + allTheTrims$escape(Text.translatable("text.allthetrims.material").getString()),
+                itemId.toString(),
+                Float.MAX_VALUE
+            );
+            JsonObject resourceJson = trimMaterialJson.asJson();
+            Resource resource = new Resource(first.getValue().getPack(), () -> IOUtils.toInputStream(resourceJson.toString(), "UTF-8"));
             Identifier resourceId = new Identifier(itemId.getNamespace(), "trim_material/" + itemId.getPath() + ".json");
             original.put(resourceId, resource);
 
