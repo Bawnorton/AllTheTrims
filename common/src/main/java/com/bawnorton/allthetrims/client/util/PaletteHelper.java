@@ -102,7 +102,11 @@ public abstract class PaletteHelper {
                 }
             }
 
-            return coloursToPalette(removeGreys(new ArrayList<>(colourMap.keySet())));
+            Set<Color> colourSet = colourMap.keySet();
+            List<Color> colours = new ArrayList<>(colourSet);
+            if (colours.isEmpty()) return BLANK_PALETTE;
+
+            return coloursToPalette(removeGreys(colours));
         }
 
         private static List<Color> removeGreys(List<Color> colours) {
