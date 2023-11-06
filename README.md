@@ -21,9 +21,6 @@
 #### For Mod Developers:
 - This mod uses a Dynamic Trim Renderer that handles how the custom trim palettes are rendered on the armour, any mod that uses Fabric's Armour Renderer API to render trims will not work with this mod. See the [Wiki](https://github.com/Benjamin-Norton/AllTheTrims/wiki/Dynamic-Trim-Rendering) for more information and how to add support with this mod.
 
-#### For Modpack Developers:
-- There is a whitelist system for modpack developers to limit the trim materials avaliable to the player. See the [Wiki](https://github.com/Benjamin-Norton/AllTheTrims/wiki/Whitelisting) for more information.
-
 ### Credits:
 - [Andrew6rant](https://github.com/Andrew6rant) for the item model colouring.
 - [KikuGie](https://github.com/kikugie) for maintaining elytra trim compatibility.
