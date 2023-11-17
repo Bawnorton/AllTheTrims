@@ -1,5 +1,5 @@
 {
-  "text.allthetrims.material": "Material",
+  "text.allthetrims.material": "%s Material",
   "tooltip.elytratrims.missing": "§cRequires Elytra Trims to render trim",
   "emi.category.allthetrims.smithing": "Armour Trimming",
   "item.allthetrims.dummy_armour": "Any Armour",

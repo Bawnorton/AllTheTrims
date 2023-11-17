@@ -49,7 +49,7 @@ public abstract class RegistryLoaderMixin {
             TrimMaterialJson trimMaterialJson = new TrimMaterialJson(
                 AllTheTrims.TRIM_ASSET_NAME,
                 "#FFFFFF",
-                allTheTrims$escape(item.getName().getString()) + " " + allTheTrims$escape(Text.translatable("text.allthetrims.material").getString()),
+                Text.translatable("text.allthetrims.material", item.getName().getString()).getString(),
                 itemId.toString(),
                 Float.MAX_VALUE
             );
