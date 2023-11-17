@@ -1,6 +1,7 @@
 ## Changelog
 
 # 3.3.5
+- Fix crash when parsing incomplete material jsons
 
 <details>
 <summary>Older Versions</summary>
