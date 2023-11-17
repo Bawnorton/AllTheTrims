@@ -1,10 +1,12 @@
 ## Changelog
 
-# 3.3.4
-- Fix palette generation when resource texture is empty
+# 3.3.5
 
 <details>
 <summary>Older Versions</summary>
+
+# 3.3.4
+- Fix palette generation when resource texture is empty
 
 # 3.3.3
 - Fix trim generation on modded armour that is not trimmable by default

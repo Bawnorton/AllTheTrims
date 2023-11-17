@@ -28,8 +28,8 @@ public record TrimMaterialJson(String assetName, Description description, String
     public record Description(String colour, String translate) implements JsonRepresentable {
         public static Description fromJson(JsonObject json) {
             return new Description(
-                JsonHelper.getString(json, "color"),
-                JsonHelper.getString(json, "translate")
+                JsonHelper.getStringOrElse(json, "color", "#FFFFFF"),
+                JsonHelper.getStringOrElse(json, "translate", "no.translation.found")
             );
         }
 

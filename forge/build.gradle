@@ -116,7 +116,7 @@ publishing {
 
 publishMods {
     file = remapJar.archiveFile
-    changelog = "[Changelog](https://github.com/Benjamin-Norton/AllTheTrims/releases/tag/%s)".formatted(project.version)
+    changelog = "[Changelog](https://github.com/Bawnorton/AllTheTrims/releases/tag/%s)".formatted(project.version)
     type = STABLE
     modLoaders.add("forge")
 

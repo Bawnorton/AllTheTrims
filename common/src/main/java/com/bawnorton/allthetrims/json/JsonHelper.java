@@ -31,6 +31,12 @@ public class JsonHelper {
         return json.get(key).getAsString();
     }
 
+    public static String getStringOrElse(JsonObject json, String key, String defaultValue) {
+        JsonElement element = json.get(key);
+        if (element == null) return defaultValue;
+        return element.getAsString();
+    }
+
     public static JsonObject getObject(JsonObject json, String key) {
         return json.get(key).getAsJsonObject();
     }
