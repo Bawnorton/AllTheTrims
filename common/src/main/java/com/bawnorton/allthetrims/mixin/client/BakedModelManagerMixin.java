@@ -12,10 +12,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.render.model.BakedModelManager;
-import net.minecraft.item.ElytraItem;
-import net.minecraft.item.Equipment;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
+import net.minecraft.item.*;
 import net.minecraft.registry.Registries;
 import net.minecraft.resource.Resource;
 import net.minecraft.util.Identifier;
@@ -53,7 +50,11 @@ public abstract class BakedModelManagerMixin {
                 case MAINHAND, OFFHAND -> null;
             };
             if (armourType == null) {
-                AllTheTrims.LOGGER.warn("Item " + equipmentId + "'s slot type is not an armour slot type, skipping");
+                if(equipment instanceof ArmorItem) {
+                    AllTheTrims.LOGGER.warn("Armour Item " + equipmentId + "'s slot type is not an armour slot type, skipping");
+                } else {
+                    AllTheTrims.LOGGER.debug("Item " + equipmentId + " is not an armour item, likely expected, skipping");
+                }
                 continue;
             }
 

@@ -29,7 +29,7 @@ public record TrimMaterialJson(String assetName, Description description, String
         public static Description fromJson(JsonObject json) {
             return new Description(
                 JsonHelper.getStringOrElse(json, "color", "#FFFFFF"),
-                JsonHelper.getStringOrElse(json, "translate", "no.translation.found")
+                JsonHelper.getStringOrElse(json, "translate", "")
             );
         }
 

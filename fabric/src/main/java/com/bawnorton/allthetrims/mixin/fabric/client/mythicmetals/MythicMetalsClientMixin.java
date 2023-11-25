@@ -15,6 +15,7 @@ import nourl.mythicmetals.MythicMetalsClient;
 import nourl.mythicmetals.armor.HallowedArmor;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Pseudo;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -23,12 +24,22 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = MythicMetalsClient.class, remap = false)
 @ConditionalMixin(modid = "mythicmetals")
 public abstract class MythicMetalsClientMixin {
-    @Inject(method = "lambda$registerArmorRenderer$10", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "lambda$registerArmorRenderer$10", at = @At("HEAD"), cancellable = true, require = 0)
     private static void lambda$registerArmorRenderer$10(EquipmentSlot slot, HallowedArmor armor, VertexConsumerProvider vertexConsumer, ItemStack stack, BipedEntityModel<?> model, MatrixStack matrices, int light, ArmorTrim trim, CallbackInfo ci) {
+        handleArmorTrim(slot, armor, vertexConsumer, stack, model, matrices, light, trim, ci);
+    }
+
+    @Inject(method = "lambda$registerArmorRenderer$11", at = @At("HEAD"), cancellable = true, require = 0)
+    private static void lambda$registerArmorRenderer$11(EquipmentSlot slot, HallowedArmor armor, VertexConsumerProvider vertexConsumer, ItemStack stack, BipedEntityModel<?> model, MatrixStack matrices, int light, ArmorTrim trim, CallbackInfo ci) {
+        handleArmorTrim(slot, armor, vertexConsumer, stack, model, matrices, light, trim, ci);
+    }
+
+    @Unique
+    private static void handleArmorTrim(EquipmentSlot slot, HallowedArmor armor, VertexConsumerProvider vertexConsumer, ItemStack stack, BipedEntityModel<?> model, MatrixStack matrices, int light, ArmorTrim trim, CallbackInfo ci) {
         boolean leggings = slot == EquipmentSlot.LEGS;
         ArmorMaterial material = armor.getMaterial();
         Sprite sprite = DynamicTrimRenderer.getAtlas()
-            .getSprite(leggings ? trim.getLeggingsModelId(material) : trim.getGenericModelId(material));
+                .getSprite(leggings ? trim.getLeggingsModelId(material) : trim.getGenericModelId(material));
         if (sprite.getContents().getId().equals(MissingSprite.getMissingSpriteId())) {
             DynamicTrimRenderer.renderTrim(material, matrices, vertexConsumer, light, trim, model, leggings);
             ci.cancel();

@@ -1,10 +1,13 @@
 ## Changelog
 
-# 3.3.5
-- Fix crash when parsing incomplete material jsons
+# 3.3.6
+- Fix crash with latest version of Mythic Metals
 
 <details>
 <summary>Older Versions</summary>
+
+# 3.3.5
+- Fix crash when parsing incomplete material jsons
 
 # 3.3.4
 - Fix palette generation when resource texture is empty
