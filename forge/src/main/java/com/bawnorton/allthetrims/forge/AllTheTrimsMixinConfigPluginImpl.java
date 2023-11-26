@@ -1,8 +1,12 @@
 package com.bawnorton.allthetrims.forge;
 
 import com.bawnorton.allthetrims.AllTheTrimsMixinConfigPlugin;
+import com.bawnorton.allthetrims.util.Comparison;
 import net.minecraftforge.fml.loading.LoadingModList;
+import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
 import net.minecraftforge.fml.loading.moddiscovery.ModInfo;
+import org.apache.maven.artifact.versioning.ArtifactVersion;
+import org.apache.maven.artifact.versioning.DefaultArtifactVersion;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -19,6 +23,19 @@ public class AllTheTrimsMixinConfigPluginImpl implements IMixinConfigPlugin {
             }
         }
         return false;
+    }
+
+    public static boolean versionMatches(String modid, String versionPredicate) {
+        if(versionPredicate.isEmpty()) return true;
+
+        ModFileInfo mod = LoadingModList.get().getModFileById(modid);
+        if (mod == null) return false;
+
+        Comparison comparison = Comparison.parseComparison(versionPredicate);
+        String versionString = versionPredicate.substring(comparison.getSymbol().length());
+        DefaultArtifactVersion versionToCompare = new DefaultArtifactVersion(versionString);
+        ArtifactVersion version = mod.getFile().getJarVersion();
+        return comparison.satisfies(version.compareTo(versionToCompare));
     }
 
     @Override

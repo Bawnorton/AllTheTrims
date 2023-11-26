@@ -1,4 +1,4 @@
-package com.bawnorton.allthetrims.mixin.fabric.client;
+package com.bawnorton.allthetrims.fabric.mixin.client;
 
 import com.bawnorton.allthetrims.annotation.ConditionalMixin;
 import com.llamalad7.mixinextras.injector.WrapWithCondition;

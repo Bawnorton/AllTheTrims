@@ -10,5 +10,7 @@ import java.lang.annotation.Target;
 public @interface ConditionalMixin {
     String modid();
 
+    String version() default "";
+
     boolean applyIfPresent() default true;
 }

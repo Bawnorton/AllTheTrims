@@ -1,4 +1,4 @@
-package com.bawnorton.allthetrims.mixin.fabric.client.bclib;
+package com.bawnorton.allthetrims.fabric.mixin.client.bclib;
 
 import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.annotation.ConditionalMixin;

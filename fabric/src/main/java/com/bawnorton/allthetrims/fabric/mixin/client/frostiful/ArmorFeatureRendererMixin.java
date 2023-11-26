@@ -1,4 +1,4 @@
-package com.bawnorton.allthetrims.mixin.fabric.client.frostiful;
+package com.bawnorton.allthetrims.fabric.mixin.client.frostiful;
 
 import com.bawnorton.allthetrims.annotation.ConditionalMixin;
 import com.bawnorton.allthetrims.client.api.DynamicTrimRenderer;

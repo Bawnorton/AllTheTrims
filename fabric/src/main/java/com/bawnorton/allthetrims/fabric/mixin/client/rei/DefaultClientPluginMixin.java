@@ -1,4 +1,4 @@
-package com.bawnorton.allthetrims.mixin.fabric.client.rei;
+package com.bawnorton.allthetrims.fabric.mixin.client.rei;
 
 import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.common.display.Display;

@@ -1,6 +1,6 @@
 {
   "required": true,
-  "package": "com.bawnorton.allthetrims.mixin.fabric",
+  "package": "com.bawnorton.allthetrims.fabric.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "plugin": "com.bawnorton.allthetrims.fabric.AllTheTrimsMixinConfigPluginImpl",
@@ -11,10 +11,11 @@
     "client.bclib.HumanoidArmorRendererMixin",
     "client.bclib.PatternsHelperMixin",
     "client.frostiful.ArmorFeatureRendererMixin",
-    "client.mythicmetals.MythicMetalsClientMixin",
+    "client.mythicmetals.MythicMetalsClient018Mixin",
     "client.rei.DefaultClientPluginMixin"
   ],
   "mixins": [
+    "client.mythicmetals.MythicMetalsClient019Mixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -26,10 +26,16 @@ public class AllTheTrimsMixinConfigPlugin implements IMixinConfigPlugin {
             for (AnnotationNode node : annotationNodes) {
                 if (node.desc.equals(Type.getDescriptor(ConditionalMixin.class))) {
                     String modid = Annotations.getValue(node, "modid");
+                    String versionPredicate = Annotations.getValue(node, "version", "");
                     boolean applyIfPresent = Annotations.getValue(node, "applyIfPresent", Boolean.TRUE);
                     if (isModLoaded(modid)) {
-                        AllTheTrims.LOGGER.debug("AllTheTrimsMixinPlugin: " + className + " is" + (applyIfPresent ? " " : " not ") + "being applied because " + modid + " is loaded");
-                        return applyIfPresent;
+                        if(versionMatches(modid, versionPredicate)) {
+                            AllTheTrims.LOGGER.debug("AllTheTrimsMixinPlugin: " + className + " is" + (applyIfPresent ? " " : " not ") + "being applied because " + modid + " is loaded" + (versionPredicate.isEmpty() ? "" : " and version predicate " + versionPredicate + " is satisfied"));
+                            return applyIfPresent;
+                        } else {
+                            AllTheTrims.LOGGER.debug("AllTheTrimsMixinPlugin: " + className + " is" + (!applyIfPresent ? " " : " not ") + "being applied because " + modid + " is loaded but version predicate " + versionPredicate + " is not satisfied");
+                            return !applyIfPresent;
+                        }
                     } else {
                         AllTheTrims.LOGGER.debug("AllTheTrimsMixinPlugin: " + className + " is" + (!applyIfPresent ? " " : " not ") + "being applied because " + modid + " is not loaded");
                         return !applyIfPresent;
@@ -44,6 +50,11 @@ public class AllTheTrimsMixinConfigPlugin implements IMixinConfigPlugin {
 
     @ExpectPlatform
     private static boolean isModLoaded(String modid) {
+        throw new AssertionError();
+    }
+
+    @ExpectPlatform
+    private static boolean versionMatches(String modid, String versionPredicate) {
         throw new AssertionError();
     }
 
