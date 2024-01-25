@@ -27,12 +27,14 @@ public abstract class TrimMaterialHelper {
     }
 
     public static void forEachBuiltinTrimModelOverride(Consumer<TrimModelOverrideEntryJson> consumer) {
-        for (TrimModelOverrideEntryJson trimModelOverride: BUILTIN_TRIM_MODEL_OVERRIDES) {
+        for (TrimModelOverrideEntryJson trimModelOverride : BUILTIN_TRIM_MODEL_OVERRIDES) {
             consumer.accept(trimModelOverride);
         }
     }
 
     public static boolean isBuiltinMaterial(Item item) {
-        return BUILTIN_TRIM_MATERIALS.stream().anyMatch((material) -> material.ingredient().equals(Registries.ITEM.getId(item).toString()));
+        return BUILTIN_TRIM_MATERIALS.stream()
+                                     .anyMatch((material) -> material.ingredient()
+                                                                     .equals(Registries.ITEM.getId(item).toString()));
     }
 }

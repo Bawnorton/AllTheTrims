@@ -50,7 +50,7 @@ public abstract class BakedModelManagerMixin {
                 case MAINHAND, OFFHAND -> null;
             };
             if (armourType == null) {
-                if(equipment instanceof ArmorItem) {
+                if (equipment instanceof ArmorItem) {
                     AllTheTrims.LOGGER.warn("Armour Item " + equipmentId + "'s slot type is not an armour slot type, skipping");
                 } else {
                     AllTheTrims.LOGGER.debug("Item " + equipmentId + " is not an armour item, likely expected, skipping");
@@ -86,7 +86,7 @@ public abstract class BakedModelManagerMixin {
                     layers.add(layerElement.getAsString());
                     layer++;
                 }
-                if(layers.isEmpty()) {
+                if (layers.isEmpty()) {
                     AllTheTrims.LOGGER.warn("Item " + equipmentId + "'s model does not have any layer textures, skipping");
                     continue;
                 }
@@ -108,10 +108,10 @@ public abstract class BakedModelManagerMixin {
                     if (!modelPredicate.isFloatPredicate()) return;
 
                     float index = modelPredicate.asFloatPredicate().trimType();
-                    if(seenIndices.contains(index)) return;
+                    if (seenIndices.contains(index)) return;
 
                     String assetName = trimModelOverrideEntryJson.assetName();
-                    if(assetName == null) return;
+                    if (assetName == null) return;
 
                     overrides.add(allTheTrims$createModelOverrideElement(baseLayer, index, assetName));
                 });
@@ -121,7 +121,7 @@ public abstract class BakedModelManagerMixin {
                 // order matters when rendering, the first override in the list that matches the predicate is used
                 overrides.sort(Comparator.comparingDouble(trimModelEntryJson -> {
                     TrimModelOverrideEntryJson.ModelPredicate<?> modelPredicate = trimModelEntryJson.predicate();
-                    if(modelPredicate.isStringPredicate()) return Double.MAX_VALUE;
+                    if (modelPredicate.isStringPredicate()) return Double.MAX_VALUE;
                     return modelPredicate.asFloatPredicate().trimType();
                 }));
 
@@ -130,14 +130,14 @@ public abstract class BakedModelManagerMixin {
                 // builtin:
                 TrimMaterialHelper.forEachBuiltinTrimModelOverride(trimModelOverrideEntryJson -> {
                     //noinspection ConstantValue
-                    if(equipment instanceof ElytraItem && Compat.isElytraTrimsLoaded()) return;
+                    if (equipment instanceof ElytraItem && Compat.isElytraTrimsLoaded()) return;
 
                     TrimModelOverrideEntryJson.ModelPredicate<?> modelPredicate = trimModelOverrideEntryJson.predicate();
                     if (!modelPredicate.isFloatPredicate()) return;
 
                     float index = modelPredicate.asFloatPredicate().trimType();
                     String assetName = trimModelOverrideEntryJson.assetName();
-                    if(assetName == null) return;
+                    if (assetName == null) return;
 
                     overrideModels.add(allTheTrims$createModelOverrideResource(model, layers, armourType, assetName));
                 });
@@ -146,7 +146,7 @@ public abstract class BakedModelManagerMixin {
 
                 // add override models to resource map
                 Identifier baseId = new Identifier(baseLayer);
-                for(TrimModelOverrideResourceJson overrideModel: overrideModels) {
+                for (TrimModelOverrideResourceJson overrideModel : overrideModels) {
                     Identifier overrideModelId = baseId.withPath("models/" + baseId.getPath() + "_" + overrideModel.assetName() + "_trim.json");
                     Resource overrideResource = new Resource(resource.getPack(), () -> IOUtils.toInputStream(JsonHelper.toJsonString(overrideModel), "UTF-8"));
                     DebugHelper.createDebugFile("models", equipmentId + "_" + overrideModel.assetName() + "_trim.json", JsonHelper.toJsonString(overrideModel));
@@ -168,10 +168,10 @@ public abstract class BakedModelManagerMixin {
     @Unique
     private static void allTheTrims$correctNamespace(JsonObject json, String key, String namespace) {
         JsonElement element = json.get(key);
-        if(element == null) return;
+        if (element == null) return;
 
         String value = element.getAsString();
-        if(value.contains(":")) return;
+        if (value.contains(":")) return;
 
         json.addProperty(key, new Identifier(namespace, value).toString());
     }
@@ -184,11 +184,12 @@ public abstract class BakedModelManagerMixin {
         try (BufferedReader reader = resource.getReader()) {
             JsonObject model = JsonHelper.fromJsonReader(reader, JsonObject.class);
             JsonArray overrides = model.get("overrides").getAsJsonArray();
-            for(JsonElement override: overrides) {
+            for (JsonElement override : overrides) {
                 try {
                     TrimModelOverrideEntryJson overrideJson = TrimModelOverrideEntryJson.fromJson(override.getAsJsonObject());
                     TrimMaterialHelper.BUILTIN_TRIM_MODEL_OVERRIDES.add(overrideJson);
-                } catch (IllegalArgumentException ignored) {}
+                } catch (IllegalArgumentException ignored) {
+                }
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -199,9 +200,9 @@ public abstract class BakedModelManagerMixin {
     @NotNull
     private static Set<Float> allTheTrims$findExistingTrimOverrides(List<TrimModelOverrideEntryJson> overrides) {
         Set<Float> seenIndices = new HashSet<>();
-        for(TrimModelOverrideEntryJson overrideEntry : overrides) {
+        for (TrimModelOverrideEntryJson overrideEntry : overrides) {
             TrimModelOverrideEntryJson.ModelPredicate<?> overridePredicate = overrideEntry.predicate();
-            if(overridePredicate.isStringPredicate()) continue;
+            if (overridePredicate.isStringPredicate()) continue;
 
             Float index = overridePredicate.asFloatPredicate().trimType();
             seenIndices.add(index);
@@ -218,8 +219,8 @@ public abstract class BakedModelManagerMixin {
         for (i = 0; i < layers.size(); i++) {
             overrideTextures.addProperty("layer" + i, layers.get(i));
         }
-        if(assetName.equals(AllTheTrims.TRIM_ASSET_NAME)) {
-            for(int trimCount = 0; trimCount < 8; trimCount++, i++) {
+        if (assetName.equals(AllTheTrims.TRIM_ASSET_NAME)) {
+            for (int trimCount = 0; trimCount < 8; trimCount++, i++) {
                 overrideTextures.addProperty("layer" + i, "minecraft:trims/items/" + armourType + "_trim_" + trimCount + "_" + assetName);
             }
         } else {
@@ -233,7 +234,7 @@ public abstract class BakedModelManagerMixin {
     private static TrimModelOverrideEntryJson allTheTrims$createModelOverrideElement(String baseLayer, float index, String assetName) {
         JsonObject override = new JsonObject();
         JsonObject overridePredicate = new JsonObject();
-        if(assetName.equals(AllTheTrims.TRIM_ASSET_NAME)) {
+        if (assetName.equals(AllTheTrims.TRIM_ASSET_NAME)) {
             overridePredicate.addProperty("trim_type", assetName);
         } else {
             overridePredicate.addProperty("trim_type", index);

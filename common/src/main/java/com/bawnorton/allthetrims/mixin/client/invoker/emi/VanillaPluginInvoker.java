@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Pseudo
 @Mixin(VanillaPlugin.class)
 public interface VanillaPluginInvoker {
-    @Invoker(remap=false)
+    @Invoker(remap = false)
     static EmiRenderable invokeSimplifiedRenderer(int u, int v) {
         throw new AssertionError();
     }

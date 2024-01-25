@@ -19,8 +19,8 @@ public class AllTheTrimsMixinConfigPlugin implements IMixinConfigPlugin {
     public static boolean testClass(String className) {
         try {
             List<AnnotationNode> annotationNodes = MixinService.getService()
-                .getBytecodeProvider()
-                .getClassNode(className).visibleAnnotations;
+                                                               .getBytecodeProvider()
+                                                               .getClassNode(className).visibleAnnotations;
             if (annotationNodes == null) return true;
 
             for (AnnotationNode node : annotationNodes) {
@@ -29,7 +29,7 @@ public class AllTheTrimsMixinConfigPlugin implements IMixinConfigPlugin {
                     String versionPredicate = Annotations.getValue(node, "version", "");
                     boolean applyIfPresent = Annotations.getValue(node, "applyIfPresent", Boolean.TRUE);
                     if (isModLoaded(modid)) {
-                        if(versionMatches(modid, versionPredicate)) {
+                        if (versionMatches(modid, versionPredicate)) {
                             AllTheTrims.LOGGER.debug("AllTheTrimsMixinPlugin: " + className + " is" + (applyIfPresent ? " " : " not ") + "being applied because " + modid + " is loaded" + (versionPredicate.isEmpty() ? "" : " and version predicate " + versionPredicate + " is satisfied"));
                             return applyIfPresent;
                         } else {

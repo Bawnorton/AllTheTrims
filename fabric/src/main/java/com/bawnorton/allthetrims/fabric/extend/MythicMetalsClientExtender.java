@@ -18,7 +18,7 @@ public interface MythicMetalsClientExtender {
         boolean leggings = slot == EquipmentSlot.LEGS;
         ArmorMaterial material = armor.getMaterial();
         Sprite sprite = DynamicTrimRenderer.getAtlas()
-                .getSprite(leggings ? trim.getLeggingsModelId(material) : trim.getGenericModelId(material));
+                                           .getSprite(leggings ? trim.getLeggingsModelId(material) : trim.getGenericModelId(material));
         if (sprite.getContents().getId().equals(MissingSprite.getMissingSpriteId())) {
             DynamicTrimRenderer.renderTrim(material, matrices, vertexConsumer, light, trim, model, leggings);
             ci.cancel();

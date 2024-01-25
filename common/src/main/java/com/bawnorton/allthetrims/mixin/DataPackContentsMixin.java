@@ -22,8 +22,8 @@ public abstract class DataPackContentsMixin {
             tagEntries = new HashMap<>(tagEntries);
             List<RegistryEntry<T>> entries = new ArrayList<>(tagEntries.get(ItemTags.TRIM_MATERIALS));
             entries.addAll(Registries.ITEM.stream()
-                               .map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item))
-                               .toList());
+                                          .map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item))
+                                          .toList());
             tagEntries.put((TagKey<T>) ItemTags.TRIM_MATERIALS, entries);
             tagEntries = Collections.unmodifiableMap(tagEntries);
         }
@@ -31,10 +31,10 @@ public abstract class DataPackContentsMixin {
             tagEntries = new HashMap<>(tagEntries);
             List<RegistryEntry<T>> entries = new ArrayList<>(tagEntries.get(ItemTags.TRIMMABLE_ARMOR));
             entries.addAll(Registries.ITEM.stream()
-                               .filter(item -> item instanceof Equipment equipment && equipment.getSlotType()
-                                   .isArmorSlot())
-                               .map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item))
-                               .toList());
+                                          .filter(item -> item instanceof Equipment equipment && equipment.getSlotType()
+                                                                                                          .isArmorSlot())
+                                          .map(item -> (RegistryEntry<T>) Registries.ITEM.getEntry(item))
+                                          .toList());
             tagEntries.put((TagKey<T>) ItemTags.TRIMMABLE_ARMOR, entries);
             tagEntries = Collections.unmodifiableMap(tagEntries);
         }

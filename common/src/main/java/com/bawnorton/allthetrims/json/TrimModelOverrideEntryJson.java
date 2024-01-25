@@ -12,8 +12,8 @@ import java.util.List;
 public record TrimModelOverrideEntryJson(String model, ModelPredicate<?> predicate) implements JsonRepresentable {
     public static TrimModelOverrideEntryJson fromJson(JsonObject json) {
         return new TrimModelOverrideEntryJson(
-            JsonHelper.getString(json, "model"),
-            ModelPredicate.fromJson(JsonHelper.getObject(json, "predicate"))
+                JsonHelper.getString(json, "model"),
+                ModelPredicate.fromJson(JsonHelper.getObject(json, "predicate"))
         );
     }
 
@@ -47,7 +47,8 @@ public record TrimModelOverrideEntryJson(String model, ModelPredicate<?> predica
 
     public interface ModelPredicate<T> extends JsonRepresentable {
         static ModelPredicate<?> fromJson(JsonObject json) {
-            if(!json.has("trim_type")) throw new IllegalArgumentException("Predicate does not contain \"trim_type\": " + json);
+            if (!json.has("trim_type"))
+                throw new IllegalArgumentException("Predicate does not contain \"trim_type\": " + json);
             JsonElement element = json.get("trim_type");
             if (!(element instanceof JsonPrimitive primitive)) {
                 throw new IllegalArgumentException("\"trim_type\" is not primitive: " + json);
@@ -75,7 +76,7 @@ public record TrimModelOverrideEntryJson(String model, ModelPredicate<?> predica
         }
     }
 
-    public record StringModelPredicate(String trimType) implements ModelPredicate<String>{
+    public record StringModelPredicate(String trimType) implements ModelPredicate<String> {
         @Override
         public JsonObject asJson() {
             JsonObject json = new JsonObject();

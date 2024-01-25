@@ -14,10 +14,6 @@ public enum Comparison {
         this.symbol = symbol;
     }
 
-    public String getSymbol() {
-        return symbol;
-    }
-
     public static Comparison parseComparison(String versionPredicate) {
         if (versionPredicate.startsWith(GREATER_THAN_OR_EQUAL_TO.symbol)) {
             return GREATER_THAN_OR_EQUAL_TO;
@@ -34,6 +30,10 @@ public enum Comparison {
         } else {
             throw new IllegalArgumentException("Invalid comparison " + versionPredicate);
         }
+    }
+
+    public String getSymbol() {
+        return symbol;
     }
 
     public boolean satisfies(int compareToResult) {

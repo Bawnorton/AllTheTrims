@@ -57,7 +57,7 @@ public abstract class PaletteHelper {
         Sprite sprite = model.getParticleSprite();
         if (sprite == null) {
             AllTheTrims.LOGGER.warn("Model of item " + item.getName()
-                .getString() + " has no particle sprite, using blank palette");
+                                                           .getString() + " has no particle sprite, using blank palette");
             putPalette(identifier, BLANK_PALETTE);
             return BLANK_PALETTE;
         }
@@ -65,7 +65,7 @@ public abstract class PaletteHelper {
         SpriteContents content = sprite.getContents();
         if (content.getDistinctFrameCount().count() <= 0) {
             AllTheTrims.LOGGER.warn("Sprite of item " + item.getName()
-                .getString() + " has no frames, using blank palette");
+                                                            .getString() + " has no frames, using blank palette");
             putPalette(identifier, BLANK_PALETTE);
             return BLANK_PALETTE;
         }

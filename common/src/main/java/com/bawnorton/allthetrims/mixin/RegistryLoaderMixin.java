@@ -34,7 +34,7 @@ public abstract class RegistryLoaderMixin {
         if (!first.getKey().getPath().contains("trim_material")) return original;
 
         for (Map.Entry<Identifier, Resource> resourceEntry : original.entrySet()) {
-            try(BufferedReader reader = resourceEntry.getValue().getReader()) {
+            try (BufferedReader reader = resourceEntry.getValue().getReader()) {
                 JsonObject trimJson = JsonHelper.fromJsonReader(reader, JsonObject.class);
                 TrimMaterialHelper.BUILTIN_TRIM_MATERIALS.add(TrimMaterialJson.fromJson(trimJson));
             } catch (IOException e) {
@@ -43,18 +43,19 @@ public abstract class RegistryLoaderMixin {
         }
 
         TrimMaterialHelper.forEachTrimMaterial((item, builtin) -> {
-            if(builtin) return;
+            if (builtin) return;
 
             Identifier itemId = Registries.ITEM.getId(item);
             TrimMaterialJson trimMaterialJson = new TrimMaterialJson(
-                AllTheTrims.TRIM_ASSET_NAME,
-                "#FFFFFF",
-                Text.translatable("text.allthetrims.material", item.getName().getString()).getString(),
-                itemId.toString(),
-                Float.MAX_VALUE
+                    AllTheTrims.TRIM_ASSET_NAME,
+                    "#FFFFFF",
+                    Text.translatable("text.allthetrims.material", item.getName().getString()).getString(),
+                    itemId.toString(),
+                    Float.MAX_VALUE
             );
             JsonObject resourceJson = trimMaterialJson.asJson();
-            Resource resource = new Resource(first.getValue().getPack(), () -> IOUtils.toInputStream(resourceJson.toString(), "UTF-8"));
+            Resource resource = new Resource(first.getValue()
+                                                  .getPack(), () -> IOUtils.toInputStream(resourceJson.toString(), "UTF-8"));
             Identifier resourceId = new Identifier(itemId.getNamespace(), "trim_material/" + itemId.getPath() + ".json");
             original.put(resourceId, resource);
 

@@ -4,12 +4,13 @@ import com.google.gson.JsonObject;
 
 import java.util.Map;
 
-public record TrimModelOverrideResourceJson(String parent, Textures textures, String assetName) implements JsonRepresentable {
+public record TrimModelOverrideResourceJson(String parent, Textures textures,
+                                            String assetName) implements JsonRepresentable {
     public static TrimModelOverrideResourceJson fromJson(JsonObject json, String assetName) {
         return new TrimModelOverrideResourceJson(
-            JsonHelper.getString(json, "parent"),
-            Textures.fromJson(JsonHelper.getObject(json, "textures")),
-            assetName
+                JsonHelper.getString(json, "parent"),
+                Textures.fromJson(JsonHelper.getObject(json, "textures")),
+                assetName
         );
     }
 

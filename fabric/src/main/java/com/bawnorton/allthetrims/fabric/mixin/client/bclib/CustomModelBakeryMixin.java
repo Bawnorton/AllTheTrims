@@ -39,7 +39,8 @@ public abstract class CustomModelBakeryMixin {
         AtomicReference<Identifier> overrideId = new AtomicReference<>();
         model.getOverrides().forEach(modelOverride -> modelOverride.streamConditions().forEach(condition -> {
             if (!(condition.getType()
-                .equals(new Identifier("trim_type")) && (condition.getThreshold() >= Float.MAX_VALUE))) return;
+                           .equals(new Identifier("trim_type")) && (condition.getThreshold() >= Float.MAX_VALUE)))
+                return;
 
             isTrimmable.set(true);
             overrideId.set(modelOverride.getModelId());
@@ -72,43 +73,43 @@ public abstract class CustomModelBakeryMixin {
         String overrideResourceString;
         if (equipment instanceof DyeableArmorItem) {
             overrideResourceString = """
-                {
-                   "parent": "minecraft:item/generated",
-                   "textures": {
-                     "layer0": "%1$s",
-                     "layer1": "%1$s_overlay",
-                     "layer2": "minecraft:trims/items/%2$s_trim_0_%3$s",
-                     "layer3": "minecraft:trims/items/%2$s_trim_1_%3$s",
-                     "layer4": "minecraft:trims/items/%2$s_trim_2_%3$s",
-                     "layer5": "minecraft:trims/items/%2$s_trim_3_%3$s",
-                     "layer6": "minecraft:trims/items/%2$s_trim_4_%3$s",
-                     "layer7": "minecraft:trims/items/%2$s_trim_5_%3$s",
-                     "layer8": "minecraft:trims/items/%2$s_trim_6_%3$s",
-                     "layer9": "minecraft:trims/items/%2$s_trim_7_%3$s"
-                   }
-                }
-                """.formatted(itemID.withPrefixedPath("item/"), armourType, AllTheTrims.TRIM_ASSET_NAME);
+                    {
+                       "parent": "minecraft:item/generated",
+                       "textures": {
+                         "layer0": "%1$s",
+                         "layer1": "%1$s_overlay",
+                         "layer2": "minecraft:trims/items/%2$s_trim_0_%3$s",
+                         "layer3": "minecraft:trims/items/%2$s_trim_1_%3$s",
+                         "layer4": "minecraft:trims/items/%2$s_trim_2_%3$s",
+                         "layer5": "minecraft:trims/items/%2$s_trim_3_%3$s",
+                         "layer6": "minecraft:trims/items/%2$s_trim_4_%3$s",
+                         "layer7": "minecraft:trims/items/%2$s_trim_5_%3$s",
+                         "layer8": "minecraft:trims/items/%2$s_trim_6_%3$s",
+                         "layer9": "minecraft:trims/items/%2$s_trim_7_%3$s"
+                       }
+                    }
+                    """.formatted(itemID.withPrefixedPath("item/"), armourType, AllTheTrims.TRIM_ASSET_NAME);
         } else {
             overrideResourceString = """
-                {
-                  "parent": "minecraft:item/generated",
-                  "textures": {
-                    "layer0": "%1$s",
-                    "layer1": "minecraft:trims/items/%2$s_trim_0_%3$s",
-                    "layer2": "minecraft:trims/items/%2$s_trim_1_%3$s",
-                    "layer3": "minecraft:trims/items/%2$s_trim_2_%3$s",
-                    "layer4": "minecraft:trims/items/%2$s_trim_3_%3$s",
-                    "layer5": "minecraft:trims/items/%2$s_trim_4_%3$s",
-                    "layer6": "minecraft:trims/items/%2$s_trim_5_%3$s",
-                    "layer7": "minecraft:trims/items/%2$s_trim_6_%3$s",
-                    "layer8": "minecraft:trims/items/%2$s_trim_7_%3$s"
-                  }
-                }
-                """.formatted(itemID.withPrefixedPath("item/"), armourType, AllTheTrims.TRIM_ASSET_NAME);
+                    {
+                      "parent": "minecraft:item/generated",
+                      "textures": {
+                        "layer0": "%1$s",
+                        "layer1": "minecraft:trims/items/%2$s_trim_0_%3$s",
+                        "layer2": "minecraft:trims/items/%2$s_trim_1_%3$s",
+                        "layer3": "minecraft:trims/items/%2$s_trim_2_%3$s",
+                        "layer4": "minecraft:trims/items/%2$s_trim_3_%3$s",
+                        "layer5": "minecraft:trims/items/%2$s_trim_4_%3$s",
+                        "layer6": "minecraft:trims/items/%2$s_trim_5_%3$s",
+                        "layer7": "minecraft:trims/items/%2$s_trim_6_%3$s",
+                        "layer8": "minecraft:trims/items/%2$s_trim_7_%3$s"
+                      }
+                    }
+                    """.formatted(itemID.withPrefixedPath("item/"), armourType, AllTheTrims.TRIM_ASSET_NAME);
         }
         DebugHelper.createDebugFile("bclib", overrideId.get().getNamespace() + ":" + overrideId.get()
-            .getPath()
-            .substring(5) + ".json", overrideResourceString);
+                                                                                               .getPath()
+                                                                                               .substring(5) + ".json", overrideResourceString);
         models.put(overrideId.get(), JsonUnbakedModel.deserialize(overrideResourceString));
     }
 }

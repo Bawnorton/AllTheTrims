@@ -41,7 +41,8 @@ public abstract class ArmorTrimMixin {
         Item trimItem = ingredient.value();
         Identifier trimAssetId = new Identifier(Registries.ITEM.getId(trimItem).getNamespace(), assetName);
         MutableText originalText = original.call(instance, text);
-        return originalText.styled(style -> PaletteHelper.paletteExists(trimAssetId) ? style : style.withColor(ImageUtil.getAverageColour(PaletteHelper.getPalette(trimItem)).getRGB()));
+        return originalText.styled(style -> PaletteHelper.paletteExists(trimAssetId) ? style : style.withColor(ImageUtil.getAverageColour(PaletteHelper.getPalette(trimItem))
+                                                                                                                        .getRGB()));
     }
 
     @WrapWithCondition(method = "appendTooltip", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z", ordinal = 2))

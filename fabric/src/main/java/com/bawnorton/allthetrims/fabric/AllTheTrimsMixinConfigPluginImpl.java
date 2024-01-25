@@ -6,7 +6,6 @@ import net.fabricmc.loader.api.FabricLoader;
 import net.fabricmc.loader.api.ModContainer;
 import net.fabricmc.loader.api.Version;
 import net.fabricmc.loader.api.VersionParsingException;
-import net.fabricmc.loader.impl.util.version.SemanticVersionImpl;
 import org.objectweb.asm.tree.ClassNode;
 import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
@@ -21,7 +20,7 @@ public class AllTheTrimsMixinConfigPluginImpl implements IMixinConfigPlugin {
     }
 
     public static boolean versionMatches(String modid, String versionPredicate) {
-        if(versionPredicate.isEmpty()) return true;
+        if (versionPredicate.isEmpty()) return true;
 
         Optional<ModContainer> mod = FabricLoader.getInstance().getModContainer(modid);
         if (mod.isEmpty()) return false;

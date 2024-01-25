@@ -26,7 +26,7 @@ public class AllTheTrimsMixinConfigPluginImpl implements IMixinConfigPlugin {
     }
 
     public static boolean versionMatches(String modid, String versionPredicate) {
-        if(versionPredicate.isEmpty()) return true;
+        if (versionPredicate.isEmpty()) return true;
 
         ModFileInfo mod = LoadingModList.get().getModFileById(modid);
         if (mod == null) return false;

@@ -9,7 +9,9 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class JsonHelper {
-    private static final Gson GSON = new GsonBuilder().setPrettyPrinting().setFieldNamingStrategy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
+    private static final Gson GSON = new GsonBuilder().setPrettyPrinting()
+                                                      .setFieldNamingStrategy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                                                      .create();
 
     public static <T> T fromJsonReader(BufferedReader reader, Class<T> clazz) {
         return GSON.fromJson(reader, clazz);
@@ -56,7 +58,8 @@ public class JsonHelper {
             if (!element.isJsonObject()) continue;
             try {
                 list.add(parser.apply(element.getAsJsonObject()));
-            } catch (RuntimeException ignored) {}
+            } catch (RuntimeException ignored) {
+            }
         }
         return list;
     }

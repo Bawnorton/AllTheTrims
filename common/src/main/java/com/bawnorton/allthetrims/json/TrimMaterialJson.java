@@ -2,18 +2,19 @@ package com.bawnorton.allthetrims.json;
 
 import com.google.gson.JsonObject;
 
-public record TrimMaterialJson(String assetName, Description description, String ingredient, Float itemModelIndex) implements JsonRepresentable {
-    public static TrimMaterialJson fromJson(JsonObject json) {
-        return new TrimMaterialJson(
-            JsonHelper.getString(json, "asset_name"),
-            Description.fromJson(JsonHelper.getObject(json, "description")),
-            JsonHelper.getString(json, "ingredient"),
-            JsonHelper.getFloat(json, "item_model_index")
-        );
-    }
-
+public record TrimMaterialJson(String assetName, Description description, String ingredient,
+                               Float itemModelIndex) implements JsonRepresentable {
     public TrimMaterialJson(String assetName, String colour, String translate, String ingredient, Float itemModelIndex) {
         this(assetName, new Description(colour, translate), ingredient, itemModelIndex);
+    }
+
+    public static TrimMaterialJson fromJson(JsonObject json) {
+        return new TrimMaterialJson(
+                JsonHelper.getString(json, "asset_name"),
+                Description.fromJson(JsonHelper.getObject(json, "description")),
+                JsonHelper.getString(json, "ingredient"),
+                JsonHelper.getFloat(json, "item_model_index")
+        );
     }
 
     public JsonObject asJson() {
@@ -28,8 +29,8 @@ public record TrimMaterialJson(String assetName, Description description, String
     public record Description(String colour, String translate) implements JsonRepresentable {
         public static Description fromJson(JsonObject json) {
             return new Description(
-                JsonHelper.getStringOrElse(json, "color", "#FFFFFF"),
-                JsonHelper.getStringOrElse(json, "translate", "")
+                    JsonHelper.getStringOrElse(json, "color", "#FFFFFF"),
+                    JsonHelper.getStringOrElse(json, "translate", "")
             );
         }
 
