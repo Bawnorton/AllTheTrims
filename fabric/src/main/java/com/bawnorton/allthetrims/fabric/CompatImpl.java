@@ -31,4 +31,8 @@ public class CompatImpl {
     public static boolean isElytraTrimsLoaded() {
         return FabricLoader.getInstance().isModLoaded("elytratrims");
     }
+
+    public static boolean isBetterTrimTooltipsIsLoaded() {
+        return FabricLoader.getInstance().isModLoaded("better-trim-tooltips");
+    }
 }

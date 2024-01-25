@@ -28,4 +28,9 @@ public abstract class Compat {
     public static boolean isElytraTrimsLoaded() {
         throw new AssertionError();
     }
+
+    @ExpectPlatform
+    public static boolean isBetterTrimTooltipsIsLoaded() {
+        throw new AssertionError();
+    }
 }

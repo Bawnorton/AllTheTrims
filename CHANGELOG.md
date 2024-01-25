@@ -1,10 +1,14 @@
 ## Changelog
 
-# 3.3.7
-- Actually fix the crash with latest version of Mythic Metals
+# 3.4.0
+- Add compat with Better Trim Tooltips
+- Replace registry mismatch dump with a more useful error message when modlists don't match
 
 <details>
 <summary>Older Versions</summary>
+
+# 3.3.7
+- Actually fix the crash with latest version of Mythic Metals
 
 # 3.3.6
 - Fix crash with latest version of Mythic Metals

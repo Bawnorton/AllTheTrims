@@ -6,16 +6,16 @@
   "plugin": "com.bawnorton.allthetrims.fabric.AllTheTrimsMixinConfigPluginImpl",
   "client": [
     "client.ArmorFeatureRendererMixin",
-    "client.ArmorTrimMixin",
     "client.bclib.CustomModelBakeryMixin",
     "client.bclib.HumanoidArmorRendererMixin",
     "client.bclib.PatternsHelperMixin",
     "client.frostiful.ArmorFeatureRendererMixin",
     "client.mythicmetals.MythicMetalsClient018Mixin",
+    "client.mythicmetals.MythicMetalsClient019Mixin",
     "client.rei.DefaultClientPluginMixin"
   ],
   "mixins": [
-    "client.mythicmetals.MythicMetalsClient019Mixin"
+    "client.fapi.ClientConnectionMixinSquared"
   ],
   "injectors": {
     "defaultRequire": 1

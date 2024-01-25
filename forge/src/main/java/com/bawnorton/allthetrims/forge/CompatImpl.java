@@ -24,4 +24,8 @@ public class CompatImpl {
     public static boolean isElytraTrimsLoaded() {
         return ModList.get().isLoaded("elytratrims");
     }
+
+    public static boolean isBetterTrimTooltipsIsLoaded() {
+        return ModList.get().isLoaded("better-trim-tooltips");
+    }
 }
