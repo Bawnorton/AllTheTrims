@@ -1,5 +1,6 @@
 package com.bawnorton.allthetrims.fabric.mixin.client.fapi;
 
+import com.bawnorton.allthetrims.config.Config;
 import com.bawnorton.mixinsquared.TargetHandler;
 import com.llamalad7.mixinextras.sugar.Local;
 import io.netty.handler.codec.DecoderException;
@@ -20,7 +21,7 @@ public abstract class ClientConnectionMixinSquared {
         if (ex instanceof DecoderException) {
             String message = (String) args[0];
             if (message.contains("minecraft:trim_material")) {
-                args[0] = "§b[All The Trims] §cTrim Registry Mismatch. §rPlease ensure that the client and server have the same mods with the same versions";
+                args[0] = Config.getInstance().trimRegistryMismatchMessage;
             }
         }
         return args;

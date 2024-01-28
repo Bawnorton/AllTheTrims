@@ -1,13 +1,11 @@
 package com.bawnorton.allthetrims.config;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 public class Config {
     private static Config INSTANCE;
-    @Expose
-    @SerializedName("debug")
+
     public Boolean debug = false;
+
+    public String trimRegistryMismatchMessage = "§b[All The Trims] §cTrim Registry Mismatch. §rPlease ensure that the client and server have the same mods with the same versions.";
 
     public static Config getInstance() {
         if (INSTANCE == null) INSTANCE = new Config();
