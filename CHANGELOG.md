@@ -1,10 +1,13 @@
 ## Changelog
 
-# 3.4.1
-- Fix early loading crash
+# 3.4.2
+- Move trim registry mismatch error to config
 
 <details>
 <summary>Older Versions</summary>
+
+# 3.4.1
+- Fix early loading crash
 
 # 3.4.0
 - Add compat with Better Trim Tooltips
