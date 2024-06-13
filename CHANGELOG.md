@@ -1,10 +1,13 @@
 ## Changelog
 
-# 3.4.2
-- Move trim registry mismatch error to config
+# 3.4.3
+- Support newer versions of REI
 
 <details>
 <summary>Older Versions</summary>
+
+# 3.4.2
+- Move trim registry mismatch error to config
 
 # 3.4.1
 - Fix early loading crash

@@ -121,7 +121,7 @@ publishMods {
     modLoaders.add("forge")
 
     curseforge {
-        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+        accessToken = providers.gradleProperty("CURSEFORGE_TOKEN")
         projectId = "876154"
         minecraftVersions.addAll("1.20", "1.20.1")
         displayName = "allthetrims-%s-%s.jar".formatted(project.version, remapJar.archiveClassifier.get())
@@ -133,7 +133,7 @@ publishMods {
     }
 
     modrinth {
-        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        accessToken = providers.gradleProperty("MODRINTH_TOKEN")
         projectId = "pnsUKrap"
         minecraftVersions.addAll("1.20", "1.20.1")
         displayName = "All The Trims %s".formatted(project.version)

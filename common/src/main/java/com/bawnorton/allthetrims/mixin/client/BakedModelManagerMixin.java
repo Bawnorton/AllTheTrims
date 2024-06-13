@@ -35,7 +35,10 @@ public abstract class BakedModelManagerMixin {
         Registries.ITEM.forEach(item -> {
             if (item instanceof Equipment equipment) equipmentSet.add(equipment);
         });
-        allTheTrims$findBuiltinTrims(original);
+        if(!allTheTrims$findBuiltinTrims(original)) {
+            AllTheTrims.LOGGER.error("No builtin trims found, cannot continue, trim models will not be added");
+            return original;
+        }
         for (Equipment equipment : equipmentSet) {
             Identifier equipmentId = Registries.ITEM.getId((Item) equipment);
             if (equipmentId.getNamespace().equals("betterend"))
@@ -177,12 +180,14 @@ public abstract class BakedModelManagerMixin {
     }
 
     @Unique
-    private static void allTheTrims$findBuiltinTrims(Map<Identifier, Resource> resourceMap) {
+    private static boolean allTheTrims$findBuiltinTrims(Map<Identifier, Resource> resourceMap) {
         Identifier equipmentId = Registries.ITEM.getId(Items.CHAINMAIL_CHESTPLATE);
         Identifier resourceId = new Identifier(equipmentId.getNamespace(), "models/item/" + equipmentId.getPath() + ".json");
         Resource resource = resourceMap.get(resourceId);
         try (BufferedReader reader = resource.getReader()) {
             JsonObject model = JsonHelper.fromJsonReader(reader, JsonObject.class);
+            if (!model.has("overrides")) return false;
+
             JsonArray overrides = model.get("overrides").getAsJsonArray();
             for (JsonElement override : overrides) {
                 try {
@@ -194,6 +199,7 @@ public abstract class BakedModelManagerMixin {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        return true;
     }
 
     @Unique

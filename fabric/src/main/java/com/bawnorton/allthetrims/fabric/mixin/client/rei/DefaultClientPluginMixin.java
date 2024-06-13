@@ -18,7 +18,41 @@ import java.util.function.Function;
 @SuppressWarnings("UnstableApiUsage")
 @Mixin(DefaultClientPlugin.class)
 public abstract class DefaultClientPluginMixin {
-    @Redirect(method = "registerDisplays", at = @At(value = "INVOKE", target = "Lme/shedaniel/rei/api/client/registry/display/DisplayRegistry;registerRecipeFiller(Ljava/lang/Class;Lnet/minecraft/recipe/RecipeType;Ljava/util/function/Function;)V", ordinal = 0), slice = @Slice(from = @At(value = "CONSTANT", args = "classValue=net/minecraft/class_8062", remap = false)))
+    @Redirect(
+            method = "registerDisplays",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lme/shedaniel/rei/api/client/registry/display/DisplayRegistry;registerRecipesFiller(Ljava/lang/Class;Lnet/minecraft/recipe/RecipeType;Ljava/util/function/Function;)V",
+                    ordinal = 0
+            ),
+            slice = @Slice(
+                    from = @At(
+                            value = "CONSTANT",
+                            args = "classValue=net/minecraft/class_8062",
+                            remap = false
+                    )
+            ),
+            require = 0
+    )
     private <T extends Recipe<?>, D extends Display> void dontRegisterSmithingTrimRecipeDisplay(DisplayRegistry instance, Class<T> typeClass, RecipeType<? super T> recipeType, Function<? extends T, @Nullable D> filler) {
+    }
+
+    @Redirect(
+            method = "registerDisplays",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lme/shedaniel/rei/api/client/registry/display/DisplayRegistry;registerRecipeFiller(Ljava/lang/Class;Lnet/minecraft/recipe/RecipeType;Ljava/util/function/Function;)V",
+                    ordinal = 0
+            ),
+            slice = @Slice(
+                    from = @At(
+                            value = "CONSTANT",
+                            args = "classValue=net/minecraft/class_8062",
+                            remap = false
+                    )
+            ),
+            require = 0
+    )
+    private <T extends Recipe<?>, D extends Display> void dontRegisterSmithingTrimRecipeDisplayOld(DisplayRegistry instance, Class<T> typeClass, RecipeType<? super T> recipeType, Function<? extends T, @Nullable D> filler) {
     }
 }

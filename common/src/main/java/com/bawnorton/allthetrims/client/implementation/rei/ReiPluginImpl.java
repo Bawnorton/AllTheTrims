@@ -22,6 +22,6 @@ public class ReiPluginImpl implements REIClientPlugin {
 
     @Override
     public void registerDisplays(DisplayRegistry registry) {
-        registry.registerRecipeFiller(SmithingTrimRecipe.class, RecipeType.SMITHING, AllTheTrimsSmithingDisplay::new);
+        registry.registerRecipesFiller(SmithingTrimRecipe.class, RecipeType.SMITHING, AllTheTrimsSmithingDisplay::forRecipe);
     }
 }
