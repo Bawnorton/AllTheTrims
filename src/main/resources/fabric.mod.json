@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "id": "allthetrims",
+  "version": "${version}",
+  "name": "AllTheTrims",
+  "description": "A mod that allows any item to be a trim material and makes all armour trimmable.",
+  "authors": [
+    "Bawnorton"
+  ],
+  "contact": {
+    "homepage": "https://github.com/Bawnorton",
+    "sources": "https://github.com/Bawnorton/AllTheTrims",
+    "issues": "https://github.com/Bawnorton/AllTheTrims/issues"
+  },
+  "license": "MIT",
+  "icon": "assets/allthetrims/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.bawnorton.allthetrims.platform.AllTheTrimsWrapper"
+    ]
+  },
+  "mixins": [
+    "allthetrims.mixins.json",
+    {
+      "config": "allthetrims-client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=0.15.0",
+    "minecraft": "${minecraft_dependency}",
+    "java": ">=21",
+    "fabric-api": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "allthetrims.website": "https://github.com/Bawnorton/AllTheTrims"
+      }
+    }
+  }
+}

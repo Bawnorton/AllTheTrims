@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "com.bawnorton.allthetrims.client.mixin",
+  "minVersion": "0.8",
+  "client": [
+    "ArmorFeatureRendererMixin",
+    "PalettedPermutationsAtlasSourceMixin",
+    "accessor.SpriteContentsAccessor",
+    "shader.GameRendererMixin",
+    "shader.RenderLayer$MultiPhaseParameters$BuilderMixin",
+    "shader.RenderLayer$MultiPhaseParametersMixin",
+    "shader.ShaderProgramMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
