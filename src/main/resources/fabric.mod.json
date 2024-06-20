@@ -18,6 +18,9 @@
   "entrypoints": {
     "main": [
       "com.bawnorton.allthetrims.platform.AllTheTrimsWrapper"
+    ],
+    "modmenu": [
+      "com.bawnorton.allthetrims.client.compat.modmenu.ModMenuImpl"
     ]
   },
   "mixins": [

@@ -1,5 +1,6 @@
 package com.bawnorton.allthetrims.client.palette;
 
+import com.bawnorton.allthetrims.AllTheTrims;
 import javax.imageio.ImageIO;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.ColorHelper;
@@ -15,25 +16,18 @@ import java.util.Objects;
 public final class TrimPalette {
     public static final TrimPalette DEFAULT = new TrimPalette(ColorHelper.Argb.getArgb(255, 255, 255));
     public static final int PALETTE_SIZE = 8;
-    private final List<Integer> colours;
-    private final float[] colourArr;
+    private final List<Integer> staticColours;
+    private final List<Integer> animatedColours;
+    private long lastCycle;
+    private int[] colourArr;
 
     public TrimPalette(List<Integer> colours) {
         if (colours.size() != PALETTE_SIZE) {
-            throw new IllegalArgumentException("Trim palette requires exactly %s colours".formatted(PALETTE_SIZE));
+            throw new IllegalArgumentException("Trim palette requires exactly %s colours, but %s were found.".formatted(PALETTE_SIZE, colours.size()));
         }
-        this.colours = colours;
-        this.colourArr = new float[PALETTE_SIZE * 3];
-        for (int i = 0; i < PALETTE_SIZE; i++) {
-            int colour = colours.get(i);
-            int red = ColorHelper.Argb.getRed(colour);
-            int green = ColorHelper.Argb.getGreen(colour);
-            int blue = ColorHelper.Argb.getBlue(colour);
-
-            colourArr[i * 3] = red / 255f;
-            colourArr[i * 3 + 1] = green / 255f;
-            colourArr[i * 3 + 2] = blue / 255f;
-        }
+        this.staticColours = colours;
+        this.animatedColours = new ArrayList<>(colours);
+        this.colourArr = computeArr();
     }
 
     public TrimPalette(int singleColour) {
@@ -44,10 +38,20 @@ public final class TrimPalette {
         }));
     }
 
+    private int[] computeArr() {
+        List<Integer> reversed = getColours().reversed();
+        int[] arr = new int[PALETTE_SIZE];
+        for (int i = 0; i < PALETTE_SIZE; i++) {
+            int colour = reversed.get(i);
+            arr[i] = colour;
+        }
+        return arr;
+    }
+
     public BufferedImage toBufferedImage() {
         BufferedImage image = new BufferedImage(PALETTE_SIZE, 1, BufferedImage.TYPE_INT_ARGB);
         for (int i = 0; i < PALETTE_SIZE; i++) {
-            image.setRGB(i, 0, (255 << 24) | colours.get(i));
+            image.setRGB(i, 0, (255 << 24) | staticColours.get(i));
         }
         return image;
     }
@@ -63,8 +67,28 @@ public final class TrimPalette {
         return new ByteArrayInputStream(baos.toByteArray());
     }
 
-    public float[] getFloatArray() {
+    public int[] getColourArr() {
         return colourArr;
+    }
+
+    public void recomputeColourArr() {
+        this.colourArr = computeArr();
+    }
+
+    public List<Integer> getColours() {
+        return AllTheTrims.getConfig().animate ? animatedColours : staticColours;
+    }
+
+    public void cycleAnimatedColours() {
+        if (System.currentTimeMillis() - lastCycle <= AllTheTrims.getConfig().timeBetweenCycles) return;
+
+        int last = animatedColours.getLast();
+        for (int i = animatedColours.size() - 1; i > 0; i--) {
+            animatedColours.set(i, animatedColours.get(i - 1));
+        }
+        animatedColours.set(0, last);
+        recomputeColourArr();
+        lastCycle = System.currentTimeMillis();
     }
 
     @Override
@@ -76,11 +100,11 @@ public final class TrimPalette {
             return false;
         }
         var that = (TrimPalette) obj;
-        return Objects.equals(this.colours, that.colours);
+        return Objects.equals(this.staticColours, that.staticColours);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(colours);
+        return Objects.hash(staticColours);
     }
 }

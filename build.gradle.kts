@@ -24,13 +24,13 @@ class LoaderData {
     val isForge = name == "forge"
     val isNeoForge = name == "neoforge"
 
-    fun getVersion() : String? {
+    fun getVersion() : String {
         return if(isForge) {
-            property("loader_forge")?.toString()
+            property("loader_forge").toString()
         } else if (isNeoForge) {
-            property("loader_neoforge")?.toString()
+            property("loader_neoforge").toString()
         } else {
-            null
+            property("fabric_loader").toString()
         }
     }
 
@@ -68,6 +68,8 @@ repositories {
     maven("https://cursemaven.com")
     maven("https://api.modrinth.com/maven")
     maven("https://maven.neoforged.net/releases/")
+    maven("https://maven.isxander.dev/releases")
+    maven("https://maven.terraformersmc.com/")
 }
 
 dependencies {
@@ -80,6 +82,11 @@ loom {
     runConfigs.all {
         ideConfigGenerated(true)
         runDir = "../../run"
+    }
+
+    runConfigs["client"].apply {
+        vmArgs("-Dmixin.debug.export=true")
+        programArgs("--username=Bawnorton")
     }
 }
 
@@ -110,11 +117,16 @@ if (stonecutter.current.isActive) {
 
 if(loader.isFabric) {
     dependencies {
-        modImplementation("net.fabricmc:fabric-loader:${property("fabric_loader")}")
+        modImplementation("net.fabricmc:fabric-loader:${loader.getVersion()}")
         modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}")
 
-        modImplementation("maven.modrinth:sodium:mc1.21-0.5.9")
-        modImplementation("maven.modrinth:iris:1.7.1+1.21")
+        modImplementation("com.terraformersmc:modmenu:${property("mod_menu")}")
+        modImplementation("dev.isxander:yet-another-config-lib:3.5.0+$minecraftVersion-$loader")
+
+        if(minecraftVersion.greaterThan("1.20.6")) {
+            modCompileOnly("maven.modrinth:sodium:mc1.21-0.5.9")
+            modCompileOnly("maven.modrinth:iris:1.7.1+1.21")
+        }
 
         mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
     }
@@ -169,6 +181,8 @@ if (loader.isForge) {
 if (loader.isNeoForge) {
     dependencies {
         "neoForge"("net.neoforged:neoforge:${loader.getVersion()}")
+
+        modImplementation("dev.isxander:yet-another-config-lib:3.5.0+$minecraftVersion-$loader")
 
         mappings(loom.layered {
             mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")

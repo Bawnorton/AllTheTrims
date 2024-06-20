@@ -33,13 +33,13 @@ public abstract class TagGroupLoaderMixin {
         if (id.equals(ItemTags.TRIM_MATERIALS.id())) {
             entries.addAll(Registries.ITEM.stream()
                     .filter(item -> item != Items.AIR)
-                    .filter(item -> !(item instanceof SmithingTemplateItem))
+//                    .filter(item -> !(item instanceof SmithingTemplateItem))
                     .map(Registries.ITEM::getId)
                     .map(itemId -> new TagGroupLoader.TrackedEntry(TagEntry.create(itemId), AllTheTrims.MOD_ID))
                     .collect(Collectors.toSet()));
         } else if (id.equals(ItemTags.TRIMMABLE_ARMOR.id())) {
             entries.addAll(Registries.ITEM.stream()
-                    .filter(item -> item instanceof Equipment)
+                    .filter(item -> item instanceof Equipment equipment && equipment.getSlotType().isArmorSlot())
                     .map(Registries.ITEM::getId)
                     .map(itemId -> new TagGroupLoader.TrackedEntry(TagEntry.create(itemId), AllTheTrims.MOD_ID))
                     .collect(Collectors.toSet()));

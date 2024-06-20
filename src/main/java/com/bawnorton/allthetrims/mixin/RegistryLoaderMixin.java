@@ -68,14 +68,14 @@ public abstract class RegistryLoaderMixin {
                     Lifecycle.stable()
             );
 
-            for (Pair<Identifier, RegistryEntry<Item>> item : toInclude) {
-                RegistryKey<ArmorTrimMaterial> trimRegKey = RegistryKey.of(trimMaterialRegistry.getKey(), item.getLeft());
+            for (Pair<Identifier, RegistryEntry<Item>> itemRef : toInclude) {
+                RegistryKey<ArmorTrimMaterial> trimRegKey = RegistryKey.of(trimMaterialRegistry.getKey(), itemRef.getLeft());
                 ArmorTrimMaterial itemMaterial = new ArmorTrimMaterial(
                         "dynamic",
-                        item.getRight(),
+                        itemRef.getRight(),
                         0.6632484f,
                         Map.of(),
-                        Text.translatable("allthetrims.material", item.getRight().value().getName().getString())
+                        Text.translatable("allthetrims.material", itemRef.getRight().value().getName().getString())
                 );
                 trimMaterialRegistry.add(trimRegKey, itemMaterial, info);
             }

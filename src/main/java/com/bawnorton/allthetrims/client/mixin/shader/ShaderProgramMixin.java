@@ -1,6 +1,7 @@
 package com.bawnorton.allthetrims.client.mixin.shader;
 
-import com.bawnorton.allthetrims.client.AllTheTrimsClient;
+import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.client.mixin.accessor.GlUniformAccessor;
 import net.minecraft.client.gl.GlUniform;
 import net.minecraft.client.gl.ShaderProgram;
 import org.jetbrains.annotations.Nullable;
@@ -10,6 +11,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import java.nio.IntBuffer;
 
 @Mixin(ShaderProgram.class)
 public abstract class ShaderProgramMixin {
@@ -19,9 +21,13 @@ public abstract class ShaderProgramMixin {
     @Unique
     private GlUniform allthetrims$trimPalette;
 
+    @Unique
+    private GlUniform allthetrims$debug;
+
     @Inject(method = "<init>", at = @At("TAIL"))
     private void initAdditionalUniforms(CallbackInfo ci) {
-        allthetrims$trimPalette = getUniform("TrimPalette");
+        allthetrims$trimPalette = getUniform("allthetrims_TrimPalette");
+        allthetrims$debug = getUniform("allthetrims_Debug");
     }
 
     @Inject(
@@ -33,7 +39,17 @@ public abstract class ShaderProgramMixin {
     )
     private void setAdditionalUniforms(CallbackInfo ci) {
         if(allthetrims$trimPalette != null) {
-            allthetrims$trimPalette.set(AllTheTrimsClient.getTrimPalette());
+            int[] trimPalette = AllTheTrims.getShaderManager().getTrimPalette();
+            IntBuffer intData = allthetrims$trimPalette.getIntData();
+            intData.position(0);
+            for (int i = 0; i < trimPalette.length; i++) {
+                intData.put(i, trimPalette[i]);
+            }
+            ((GlUniformAccessor) allthetrims$trimPalette).callMarkStateDirty();
+        }
+
+        if(allthetrims$debug != null) {
+            allthetrims$debug.set(AllTheTrims.getConfig().debug ? 1 : 0);
         }
     }
 }

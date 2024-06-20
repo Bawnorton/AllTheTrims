@@ -1,6 +1,6 @@
 package com.bawnorton.allthetrims.client.mixin.shader;
 
-import com.bawnorton.allthetrims.client.AllTheTrimsClient;
+import com.bawnorton.allthetrims.AllTheTrims;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.gl.ShaderProgram;
@@ -28,7 +28,7 @@ public abstract class GameRendererMixin {
         shaderPrograms.add(
                 Pair.of(
                         new ShaderProgram(factory, "rendertype_dynamic_trim", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL),
-                        program -> AllTheTrimsClient.renderTypeDynamicTrimProgram = program
+                        program -> AllTheTrims.getShaderManager().renderTypeDynamicTrimProgram = program
                 )
         );
     }

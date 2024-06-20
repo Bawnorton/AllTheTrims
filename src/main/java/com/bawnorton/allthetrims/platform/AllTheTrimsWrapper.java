@@ -11,7 +11,7 @@ public final class AllTheTrimsWrapper implements ModInitializer {
         AllTheTrims.init();
     }
 }
-//? } elif neoforge {
+//?} elif neoforge {
 /*import net.neoforged.fml.common.Mod;
 
 @Mod(AllTheTrims.MOD_ID)
@@ -20,7 +20,7 @@ public final class AllTheTrimsWrapper {
         AllTheTrims.init();
     }
 }
-*///? } elif forge {
+*///?} elif forge {
 /*import net.minecraftforge.fml.common.Mod;
 
 @Mod(AllTheTrims.MOD_ID)
@@ -29,4 +29,4 @@ public final class AllTheTrimsWrapper {
         AllTheTrims.init();
     }
 }
-*///? }
+*///?}

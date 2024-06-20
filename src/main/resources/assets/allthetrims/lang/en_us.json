@@ -1,3 +1,25 @@
 {
-  "allthetrims.material": "%s Material"
+  "allthetrims.material": "%s Material",
+  "allthetrims.yacl.not_installed": "YetAnotherConfigLib not installed!",
+  "allthetrims.yacl.not_installed.message": "YACL is required to edit the config in game, would you like to install YACL?",
+  "allthetrims.yacl.title": "AllTheTrims Config",
+  "allthetrims.yacl.category.general": "General",
+  "allthetrims.yacl.option.use_legacy_renderer": "Use Legacy Renderer",
+  "allthetrims.yacl.description.use_legacy_renderer": "The modern renderer uses a custom shader to render the dynamic trims, which is 9x more performant, however, the old renderer is present for shader compat.",
+  "allthetrims.yacl.option.debug": "Debug",
+  "allthetrims.yacl.description.debug": "Modern renderer will render trim indexes. Generated texture files and palettes will be outputted to \".minecraft/att-debug/\" to view the layered textures and resources that the legacy renderer uses.",
+  "allthetrims.yacl.option.palette_sorting": "Palette Sorting",
+  "allthetrims.yacl.option.palette_sorting.colour": "Colour",
+  "allthetrims.yacl.option.palette_sorting.colour_reversed": "Colour Reversed",
+  "allthetrims.yacl.option.palette_sorting.saturation": "Saturation",
+  "allthetrims.yacl.option.palette_sorting.saturation_reversed": "Saturation Reversed",
+  "allthetrims.yacl.option.palette_sorting.brightness": "Brightness",
+  "allthetrims.yacl.option.palette_sorting.brightness_reversed": "Brightness Reversed",
+  "allthetrims.yacl.description.palette_sorting": "How should the generated palettes be sorted?",
+  "allthetrims.yacl.option.override_existing": "Override Existing Trims",
+  "allthetrims.yacl.description.override_existing": "By default AllTheTrims only adds materials when they're not already present. Enable this to override the existing palettes with generated ones and support trim animating on them.",
+  "allthetrims.yacl.option.animate": "Animate Trim Rendering",
+  "allthetrims.yacl.description.animate": "Trim colours will cycle giving a wave-like effect. Enable \"Override Existing Trims\" to allow vanilla and other mods' trims to animate.",
+  "allthetrims.yacl.option.time_between_cycles": "Time Between Cycles",
+  "allthetrims.yacl.description.time_between_cycles": "Animation speed, lower is faster. 0 for every frame."
 }
