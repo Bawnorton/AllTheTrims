@@ -8,7 +8,6 @@ import net.fabricmc.api.ModInitializer;
 public final class AllTheTrimsWrapper implements ModInitializer {
     @Override
     public void onInitialize() {
-        AllTheTrims.init();
     }
 }
 //?} elif neoforge {
@@ -17,7 +16,6 @@ public final class AllTheTrimsWrapper implements ModInitializer {
 @Mod(AllTheTrims.MOD_ID)
 public final class AllTheTrimsWrapper {
     public AllTheTrimsWrapper() {
-        AllTheTrims.init();
     }
 }
 *///?} elif forge {
@@ -26,7 +24,6 @@ public final class AllTheTrimsWrapper {
 @Mod(AllTheTrims.MOD_ID)
 public final class AllTheTrimsWrapper {
     public AllTheTrimsWrapper() {
-        AllTheTrims.init();
     }
 }
 *///?}

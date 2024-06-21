@@ -71,7 +71,7 @@ public abstract class RegistryLoaderMixin {
             for (Pair<Identifier, RegistryEntry<Item>> itemRef : toInclude) {
                 RegistryKey<ArmorTrimMaterial> trimRegKey = RegistryKey.of(trimMaterialRegistry.getKey(), itemRef.getLeft());
                 ArmorTrimMaterial itemMaterial = new ArmorTrimMaterial(
-                        "dynamic",
+                        AllTheTrims.DYNAMIC,
                         itemRef.getRight(),
                         0.6632484f,
                         Map.of(),

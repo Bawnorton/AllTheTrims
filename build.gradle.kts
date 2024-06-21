@@ -42,6 +42,10 @@ class LoaderData {
 class MinecraftVersionData {
     private val name = stonecutter.current.version.substringBeforeLast("-")
 
+    fun equalTo(other: String) : Boolean {
+        return stonecutter.compare(name, other.lowercase()) == 0
+    }
+
     fun greaterThan(other: String) : Boolean {
         return stonecutter.compare(name, other.lowercase()) > 0
     }
@@ -55,9 +59,14 @@ class MinecraftVersionData {
     }
 }
 
+fun DependencyHandler.neoForge(dep: Any) = add("neoForge", dep)
+fun DependencyHandler.forge(dep: Any) = add("forge", dep)
+fun DependencyHandler.forgeRuntimeLibrary(dep: Any) = add("forgeRuntimeLibrary", dep)
+
 val mod = ModData()
 val loader = LoaderData()
 val minecraftVersion = MinecraftVersionData()
+val awName = "allthetrims.accesswidener"
 
 version = "${mod.version}+$minecraftVersion"
 group = mod.group
@@ -77,7 +86,7 @@ dependencies {
 }
 
 loom {
-    accessWidenerPath.set(rootProject.file("src/main/resources/allthetrims.accesswidener"))
+    accessWidenerPath.set(rootProject.file("src/main/resources/$awName"))
 
     runConfigs.all {
         ideConfigGenerated(true)
@@ -121,12 +130,10 @@ if(loader.isFabric) {
         modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}")
 
         modImplementation("com.terraformersmc:modmenu:${property("mod_menu")}")
-        modImplementation("dev.isxander:yet-another-config-lib:3.5.0+$minecraftVersion-$loader")
+        modImplementation("dev.isxander:yet-another-config-lib:${property("yacl")}+$minecraftVersion-$loader")
 
-        if(minecraftVersion.greaterThan("1.20.6")) {
-            modCompileOnly("maven.modrinth:sodium:mc1.21-0.5.9")
-            modCompileOnly("maven.modrinth:iris:1.7.1+1.21")
-        }
+        modCompileOnly("maven.modrinth:iris:${property("iris")}")
+        modImplementation("maven.modrinth:elytra-trims:${property("elytra_trims")}")
 
         mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
     }
@@ -144,7 +151,7 @@ if(loader.isFabric) {
 
 if (loader.isForge) {
     dependencies {
-        "forge"("net.minecraftforge:forge:$minecraftVersion-${loader.getVersion()}")
+        forge("net.minecraftforge:forge:$minecraftVersion-${loader.getVersion()}")
 
         compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${property("mixin_extras")}")!!)
         implementation(include("io.github.llamalad7:mixinextras-forge:${property("mixin_extras")}")!!)
@@ -180,9 +187,11 @@ if (loader.isForge) {
 
 if (loader.isNeoForge) {
     dependencies {
-        "neoForge"("net.neoforged:neoforge:${loader.getVersion()}")
+        neoForge("net.neoforged:neoforge:${loader.getVersion()}")
 
-        modImplementation("dev.isxander:yet-another-config-lib:3.5.0+$minecraftVersion-$loader")
+        modImplementation("dev.isxander:yet-another-config-lib:${property("yacl")}+$minecraftVersion-$loader")
+        forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:json:${findProperty("quilt_parsers")}")!!)
+        forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:gson:${findProperty("quilt_parsers")}")!!)
 
         mappings(loom.layered {
             mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
@@ -196,15 +205,21 @@ if (loader.isNeoForge) {
         })
     }
 
-    tasks.processResources {
-        val map = mapOf(
-            "version" to mod.version,
-            "minecraft_dependency" to mod.minecraftDependency,
-            "loader_version" to loader.getVersion()
-        )
+    tasks {
+        processResources {
+            val map = mapOf(
+                "version" to mod.version,
+                "minecraft_dependency" to mod.minecraftDependency,
+                "loader_version" to loader.getVersion()
+            )
 
-        inputs.properties(map)
-        filesMatching("META-INF/neoforge.mods.toml") { expand(map) }
+            inputs.properties(map)
+            filesMatching("META-INF/neoforge.mods.toml") { expand(map) }
+        }
+
+        remapJar {
+            atAccessWideners.add(awName)
+        }
     }
 }
 

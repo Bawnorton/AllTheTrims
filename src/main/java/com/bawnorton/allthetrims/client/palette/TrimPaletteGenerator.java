@@ -1,6 +1,7 @@
 package com.bawnorton.allthetrims.client.palette;
 
 import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.colour.ColourHSB;
 import com.bawnorton.allthetrims.client.colour.OkLabHelper;
 import com.bawnorton.allthetrims.client.config.Config;
@@ -20,6 +21,7 @@ import net.minecraft.util.math.random.Random;
 import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -77,7 +79,7 @@ public final class TrimPaletteGenerator {
 
     private List<Integer> sortPalette(List<Integer> colours) {
         List<ColourHSB> toSort = ColourHSB.fromRGB(colours);
-        Config.PaletteSorting paletteSorting = AllTheTrims.getConfig().paletteSorting;
+        Config.PaletteSorting paletteSorting = AllTheTrimsClient.getConfig().paletteSorting;
         Comparator<ColourHSB> comparator = Comparator.comparing(colourHSB -> {
             if(paletteSorting.isBrightness()) {
                 return colourHSB.brightness();
@@ -88,7 +90,7 @@ public final class TrimPaletteGenerator {
             }
             return 0f;
         });
-        if(paletteSorting.isReversed()) {
+        if(!paletteSorting.isReversed()) { // match vanilla's direction of lightest -> darkest and avoid unneccessary double reversal
             comparator = comparator.reversed();
         }
         toSort.sort(comparator);
@@ -149,8 +151,7 @@ public final class TrimPaletteGenerator {
                 colours.add(colour);
             }
         }
-        colours = colours.stream().filter(i -> i != 0).toList();
-        return colours;
+        return colours.stream().filter(i -> i != 0).toList();
     }
 
     // [x * y] = rgb

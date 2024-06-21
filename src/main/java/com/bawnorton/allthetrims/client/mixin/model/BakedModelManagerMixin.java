@@ -1,6 +1,6 @@
 package com.bawnorton.allthetrims.client.mixin.model;
 
-import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.render.model.BakedModelManager;
 import net.minecraft.resource.Resource;
@@ -19,6 +19,6 @@ public abstract class BakedModelManagerMixin {
             )
     )
     private static Map<Identifier, Resource> addDynamicTrimModels(Map<Identifier, Resource> original) {
-        return AllTheTrims.getModelLoader().loadModels(original);
+        return AllTheTrimsClient.getModelLoader().loadModels(original);
     }
 }

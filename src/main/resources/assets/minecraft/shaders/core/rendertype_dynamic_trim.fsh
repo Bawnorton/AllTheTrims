@@ -57,7 +57,8 @@ void main() {
         int red = trimColor >> 16 & 0xFF;
         int green = trimColor >> 8 & 0xFF;
         int blue = trimColor & 0xFF;
-        color = vec4(red / 255.0, green / 255.0, blue / 255.0, 1.0);
+        float one255ths = 0.003921568627;
+        color = vec4(red * one255ths, green * one255ths, blue * one255ths, 1.0);
         color *= vertexColor * ColorModulator;
     }
 

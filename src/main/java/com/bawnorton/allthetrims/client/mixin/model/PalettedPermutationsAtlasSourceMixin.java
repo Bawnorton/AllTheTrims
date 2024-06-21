@@ -1,7 +1,7 @@
-package com.bawnorton.allthetrims.client.mixin;
+package com.bawnorton.allthetrims.client.mixin.model;
 
 import com.bawnorton.allthetrims.AllTheTrims;
-import com.bawnorton.allthetrims.client.api.DynamicTrimRenderer;
+import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.debug.Debugger;
 import com.bawnorton.allthetrims.client.palette.TrimPalette;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
@@ -64,7 +64,7 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
             }
 
             Map<String, Identifier> newPermutations = new HashMap<>(palettedPermutations);
-            newPermutations.put("dynamic", Identifier.ofVanilla("trims/color_palettes/dynamic"));
+            newPermutations.put("dynamic", Identifier.ofVanilla("trims/color_palettes/%s".formatted(AllTheTrims.DYNAMIC)));
             return function.apply(newTextures, paletteKey, newPermutations);
         };
     }
@@ -79,7 +79,7 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
     private static Optional<Resource> addDynamicPaletteImage(ResourceManager instance, Identifier identifier, Operation<Optional<Resource>> original) {
         Optional<Resource> existing = original.call(instance, identifier);
         if (existing.isPresent()) return existing;
-        if (!identifier.equals(Identifier.ofVanilla("textures/trims/color_palettes/dynamic.png"))) return existing;
+        if (!identifier.equals(Identifier.ofVanilla("textures/trims/color_palettes/%s.png".formatted(AllTheTrims.DYNAMIC)))) return existing;
 
         ResourcePack defaultPack = MinecraftClient.getInstance().getDefaultResourcePack();
         Resource dynamicResource = allthetrims$createGradientTrimPaletteResource(defaultPack);
@@ -132,11 +132,10 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
             if(newImage.right()) {
                 allthetrims$skippedLayers.add(identifier);
             } else {
-                DynamicTrimRenderer.setMaxSupportedLayer(originalIdentifier, layer);
+                AllTheTrimsClient.getLayerData().setMaxSupportedLayer(originalIdentifier, layer);
+                Debugger.createImage("%s".formatted(originalIdentifier.getPath()), bufferedImage);
+                Debugger.createImage("%s".formatted(identifier.getPath()), newImage.left());
             }
-
-            Debugger.createImage("%s".formatted(originalIdentifier.getPath()), bufferedImage);
-            Debugger.createImage("%s".formatted(identifier.getPath()), newImage.left());
 
             return Optional.of(new Resource(resource.getPack(), () -> allthetrims$asInputStream(newImage.left())));
         } catch (IOException e) {
@@ -166,6 +165,7 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
         BufferedImage maskedImage = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
         if(mask == -1) return Pair.of(maskedImage, true);
 
+        boolean empty = true;
         for (int x = 0; x < bufferedImage.getWidth(); x++) {
             for (int y = 0; y < bufferedImage.getHeight(); y++) {
                 int colour = bufferedImage.getRGB(x, y);
@@ -173,11 +173,12 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
                 if (alpha == 0) continue;
 
                 if (colour == mask) {
+                    empty = false;
                     maskedImage.setRGB(x, y, toColour);
                 }
             }
         }
-        return Pair.of(maskedImage, false);
+        return Pair.of(maskedImage, empty);
     }
 
     @Unique
@@ -203,13 +204,13 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
             newPermutations.addAll(permutations);
         } else {
             for (Map.Entry<String, Supplier<IntUnaryOperator>> entry : permutations) {
-                if (entry.getKey().equals("dynamic")) {
+                if (entry.getKey().equals(AllTheTrims.DYNAMIC)) {
                     newPermutations.add(entry);
                 }
             }
         }
-        if(AllTheTrims.getConfig().overrideExisting) {
-            newPermutations.removeIf(entry -> !entry.getKey().equals("dynamic"));
+        if(AllTheTrimsClient.getConfig().overrideExisting) {
+            newPermutations.removeIf(entry -> !entry.getKey().equals(AllTheTrims.DYNAMIC));
         }
         return newPermutations;
     }

@@ -27,7 +27,7 @@ public final class ConfigManager {
 
         if(config.useLegacyRenderer == null) config.useLegacyRenderer = false;
         if(config.debug == null) config.debug = false;
-        if(config.paletteSorting == null) config.paletteSorting = Config.PaletteSorting.BRIGHTNESS;
+        if(config.paletteSorting == null) config.paletteSorting = Config.PaletteSorting.COLOUR;
         if(config.overrideExisting == null) config.overrideExisting = false;
         if(config.animate == null) config.animate = false;
         if(config.timeBetweenCycles == null) config.timeBetweenCycles = 75;

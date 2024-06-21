@@ -21,7 +21,15 @@ public abstract class TagGroupLoaderMixin {
     @Unique
     private static final ThreadLocal<Identifier> allthetrims$TAG_ID = ThreadLocal.withInitial(() -> null);
 
-    @ModifyVariable(method = "method_51476", at = @At("HEAD"), argsOnly = true)
+    @ModifyVariable(
+            //? if fabric {
+            method = "method_51476",
+            //?} elif neoforge {
+            /*method = "lambda$build$6",
+            *///?}
+            at = @At("HEAD"),
+            argsOnly = true
+    )
     private Identifier captureTagId(Identifier id) {
         allthetrims$TAG_ID.set(id);
         return id;
@@ -33,7 +41,6 @@ public abstract class TagGroupLoaderMixin {
         if (id.equals(ItemTags.TRIM_MATERIALS.id())) {
             entries.addAll(Registries.ITEM.stream()
                     .filter(item -> item != Items.AIR)
-//                    .filter(item -> !(item instanceof SmithingTemplateItem))
                     .map(Registries.ITEM::getId)
                     .map(itemId -> new TagGroupLoader.TrackedEntry(TagEntry.create(itemId), AllTheTrims.MOD_ID))
                     .collect(Collectors.toSet()));

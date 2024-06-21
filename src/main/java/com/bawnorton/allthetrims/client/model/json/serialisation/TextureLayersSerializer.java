@@ -1,4 +1,4 @@
-package com.bawnorton.allthetrims.client.model.json.adapter;
+package com.bawnorton.allthetrims.client.model.json.serialisation;
 
 import com.bawnorton.allthetrims.client.model.json.TextureLayers;
 import com.google.gson.JsonDeserializationContext;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public final class TextureLayersAdapter implements JsonSerializer<TextureLayers>, JsonDeserializer<TextureLayers> {
+public final class TextureLayersSerializer implements JsonSerializer<TextureLayers>, JsonDeserializer<TextureLayers> {
 
     @Override
     public TextureLayers deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {

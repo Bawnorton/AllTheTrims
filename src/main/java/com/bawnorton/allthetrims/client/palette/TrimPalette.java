@@ -1,6 +1,6 @@
 package com.bawnorton.allthetrims.client.palette;
 
-import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import javax.imageio.ImageIO;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.ColorHelper;
@@ -76,11 +76,11 @@ public final class TrimPalette {
     }
 
     public List<Integer> getColours() {
-        return AllTheTrims.getConfig().animate ? animatedColours : staticColours;
+        return AllTheTrimsClient.getConfig().animate ? animatedColours : staticColours;
     }
 
     public void cycleAnimatedColours() {
-        if (System.currentTimeMillis() - lastCycle <= AllTheTrims.getConfig().timeBetweenCycles) return;
+        if (System.currentTimeMillis() - lastCycle <= AllTheTrimsClient.getConfig().timeBetweenCycles) return;
 
         int last = animatedColours.getLast();
         for (int i = animatedColours.size() - 1; i > 0; i--) {

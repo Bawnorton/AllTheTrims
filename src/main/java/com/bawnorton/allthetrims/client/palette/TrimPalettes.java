@@ -1,15 +1,9 @@
 package com.bawnorton.allthetrims.client.palette;
 
 import com.bawnorton.allthetrims.client.debug.Debugger;
-import javax.imageio.ImageIO;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Consumer;

@@ -1,6 +1,7 @@
 package com.bawnorton.allthetrims.client.render;
 
 import com.bawnorton.allthetrims.client.extend.RenderLayer$MultiPhaseParameters$BuilderExtender;
+import com.bawnorton.allthetrims.client.mixin.accessor.RenderPhaseAccessor;
 import com.bawnorton.allthetrims.client.palette.TrimPalette;
 import com.bawnorton.allthetrims.util.MemoizedFunction;
 import com.bawnorton.allthetrims.util.Memoizer;
@@ -10,8 +11,6 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.client.render.VertexFormat;
 import net.minecraft.client.render.VertexFormats;
-import net.minecraft.util.Util;
-import java.util.function.Function;
 
 import static net.minecraft.client.render.TexturedRenderLayers.ARMOR_TRIMS_ATLAS_TEXTURE;
 
@@ -44,12 +43,21 @@ public final class DynamicTrimShaderManager {
         RenderLayer.MultiPhaseParameters.Builder builder = RenderLayer.MultiPhaseParameters.builder()
                 .program(DYNAMIC_TRIM_PROGRAM)
                 .texture(new RenderPhase.Texture(ARMOR_TRIMS_ATLAS_TEXTURE, false, false))
+                //? if fabric {
                 .transparency(RenderPhase.NO_TRANSPARENCY)
                 .cull(RenderPhase.DISABLE_CULLING)
                 .lightmap(RenderPhase.ENABLE_LIGHTMAP)
                 .overlay(RenderPhase.ENABLE_OVERLAY_COLOR)
                 .layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
                 .depthTest(RenderPhase.LEQUAL_DEPTH_TEST);
+                //? } elif neoforge {
+                /*.transparency(RenderPhaseAccessor.getNoTransparency())
+                .cull(RenderPhaseAccessor.getDisableCulling())
+                .lightmap(RenderPhaseAccessor.getEnableLightmap())
+                .overlay(RenderPhaseAccessor.getEnableOverlayColor())
+                .layering(RenderPhaseAccessor.getViewOffsetZLayering())
+                .depthTest(RenderPhaseAccessor.getLequalDepthTest());
+                *///? }
         ((RenderLayer$MultiPhaseParameters$BuilderExtender) builder).allthetrims$trimPalette(new TrimPalettePhase(
                 "trim_palette",
                 () -> setTrimPalette(palette.getColourArr()),

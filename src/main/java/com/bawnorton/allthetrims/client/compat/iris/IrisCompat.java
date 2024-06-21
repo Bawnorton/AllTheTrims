@@ -1,9 +1,11 @@
 package com.bawnorton.allthetrims.client.compat.iris;
 
-import net.irisshaders.iris.Iris;
-
 public final class IrisCompat {
-    public static boolean isUsingShader() {
-        return Iris.getCurrentPack().isPresent();
+    public boolean isUsingShader() {
+        //? if fabric {
+        return net.irisshaders.iris.Iris.getCurrentPack().isPresent();
+        //? } else {
+        /*return false
+        *///? }
     }
 }

@@ -14,7 +14,10 @@ A mod that allows any item to be a trim material and makes all armour trimmable.
 logoFile = "assets/allthetrims/icon.png"
 
 [[mixins]]
-config = "neruina.mixins.json"
+config = "allthetrims.mixins.json"
+
+[[mixins]]
+config = "allthetrims-client.mixins.json"
 
 [[dependencies.allthetrims]]
 modId = "minecraft"

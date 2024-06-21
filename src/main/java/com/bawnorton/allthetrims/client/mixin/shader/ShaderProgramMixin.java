@@ -1,6 +1,7 @@
 package com.bawnorton.allthetrims.client.mixin.shader;
 
 import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.mixin.accessor.GlUniformAccessor;
 import net.minecraft.client.gl.GlUniform;
 import net.minecraft.client.gl.ShaderProgram;
@@ -24,7 +25,8 @@ public abstract class ShaderProgramMixin {
     @Unique
     private GlUniform allthetrims$debug;
 
-    @Inject(method = "<init>", at = @At("TAIL"))
+    @SuppressWarnings({"InvalidMemberReference", "MixinAnnotationTarget"})
+    @Inject(method = "<init>{1}", at = @At("TAIL"))
     private void initAdditionalUniforms(CallbackInfo ci) {
         allthetrims$trimPalette = getUniform("allthetrims_TrimPalette");
         allthetrims$debug = getUniform("allthetrims_Debug");
@@ -39,7 +41,7 @@ public abstract class ShaderProgramMixin {
     )
     private void setAdditionalUniforms(CallbackInfo ci) {
         if(allthetrims$trimPalette != null) {
-            int[] trimPalette = AllTheTrims.getShaderManager().getTrimPalette();
+            int[] trimPalette = AllTheTrimsClient.getShaderManager().getTrimPalette();
             IntBuffer intData = allthetrims$trimPalette.getIntData();
             intData.position(0);
             for (int i = 0; i < trimPalette.length; i++) {
@@ -49,7 +51,7 @@ public abstract class ShaderProgramMixin {
         }
 
         if(allthetrims$debug != null) {
-            allthetrims$debug.set(AllTheTrims.getConfig().debug ? 1 : 0);
+            allthetrims$debug.set(AllTheTrimsClient.getConfig().debug ? 1 : 0);
         }
     }
 }

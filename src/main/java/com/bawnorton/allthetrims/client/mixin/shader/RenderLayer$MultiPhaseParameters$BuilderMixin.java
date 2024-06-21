@@ -1,6 +1,7 @@
 package com.bawnorton.allthetrims.client.mixin.shader;
 
 import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.extend.RenderLayer$MultiPhaseParameters$BuilderExtender;
 import com.bawnorton.allthetrims.client.render.TrimPalettePhase;
 import net.minecraft.client.render.RenderLayer;
@@ -25,6 +26,6 @@ public abstract class RenderLayer$MultiPhaseParameters$BuilderMixin implements R
             at = @At("HEAD")
     )
     private void appendTrimPalettePhase(CallbackInfoReturnable<RenderLayer.MultiPhaseParameters> cir) {
-        AllTheTrims.getShaderManager().PHASE_ARG_LOCAL.set(allthetrims$trimPalette);
+        AllTheTrimsClient.getShaderManager().PHASE_ARG_LOCAL.set(allthetrims$trimPalette);
     }
 }

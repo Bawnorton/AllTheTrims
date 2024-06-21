@@ -1,7 +1,7 @@
 package com.bawnorton.allthetrims.client.model;
 
 import com.bawnorton.allthetrims.client.model.json.TextureLayers;
-import com.bawnorton.allthetrims.client.model.json.adapter.TextureLayersAdapter;
+import com.bawnorton.allthetrims.client.model.json.serialisation.TextureLayersSerializer;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 public final class ResourceParser {
     private static final Gson GSON = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
-            .registerTypeAdapter(TextureLayers.class, new TextureLayersAdapter())
+            .registerTypeAdapter(TextureLayers.class, new TextureLayersSerializer())
             .setPrettyPrinting()
             .create();
 

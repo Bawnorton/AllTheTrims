@@ -1,14 +1,14 @@
 package com.bawnorton.allthetrims.client.debug;
 
 import com.bawnorton.allthetrims.AllTheTrims;
-import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.client.AllTheTrimsClient;
+import com.bawnorton.allthetrims.platform.Platform;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
 import javax.imageio.ImageIO;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.resource.Resource;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -22,10 +22,10 @@ public final class Debugger {
     private static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .create();
-    private static final Path ATT_DEBUG = FabricLoader.getInstance().getGameDir().resolve("att-debug");
+    private static final Path ATT_DEBUG = Platform.getGameDir().resolve("att-debug");
 
     public static void createImage(String path, BufferedImage image) {
-        if(!AllTheTrims.getConfig().debug) return;
+        if(!AllTheTrimsClient.getConfig().debug) return;
         try {
             File file = ATT_DEBUG.resolve(path).toFile();
             file.mkdirs();
@@ -37,9 +37,9 @@ public final class Debugger {
     }
 
     public static void createJson(String path, Resource resource) {
-        if(!AllTheTrims.getConfig().debug) return;
+        if(!AllTheTrimsClient.getConfig().debug) return;
         try {
-            path = path.replace(":", "_");
+            path = path.replace(":", File.separator);
             JsonReader reader = new JsonReader(new InputStreamReader(resource.getInputStream(), StandardCharsets.UTF_8));
             JsonElement jsonElement = JsonParser.parseReader(reader);
 
