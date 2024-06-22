@@ -10,12 +10,10 @@ import net.minecraft.client.model.Model;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.VertexConsumerProvider;
-import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.client.texture.MissingSprite;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.trim.ArmorTrim;
@@ -114,16 +112,16 @@ public final class DynamicTrimRenderer {
 
         TrimPalette trimPalette = AllTheTrimsClient.getTrimPalettes().getTrimPaletteFor(trimItem);
         List<Integer> paletteColours = trimPalette.getColours().subList(0, maxSupportedLayer).reversed();
-
         if(renderLayer == null) {
             renderLayer = Compat.getTrimRenderLayer(trim.getPattern().value().decal());
         }
         String assetName = getAssetName(trimMaterial);
         for (int i = 0; i < maxSupportedLayer; i++) {
-            int index = i;
-            Sprite sprite = atlasTexture.getSprite(modelId.withPath(path -> path.replace(assetName, "%d_%s".formatted(index, assetName))));
+            Identifier layerSpriteId = modelId.withPath(modelId.getPath().replace(assetName, "%d_%s".formatted(i, assetName)));
+            Sprite sprite = atlasTexture.getSprite(layerSpriteId);
             VertexConsumer vertexConsumer = sprite.getTextureSpecificVertexConsumer(vertexConsumers.getBuffer(renderLayer));
-            int colour = ColorHelper.Argb.fullAlpha(paletteColours.get(index));
+            int colour = ColorHelper.Argb.fullAlpha(paletteColours.get(i));
+//            AllTheTrims.LOGGER.info("Rendering: {} with colour {}", layerSpriteId, colour);
             callback.render(model, matrices, vertexConsumer, light, overlay, colour);
         }
     }

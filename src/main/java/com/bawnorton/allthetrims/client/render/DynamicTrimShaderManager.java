@@ -50,14 +50,14 @@ public final class DynamicTrimShaderManager {
                 .overlay(RenderPhase.ENABLE_OVERLAY_COLOR)
                 .layering(RenderPhase.VIEW_OFFSET_Z_LAYERING)
                 .depthTest(RenderPhase.LEQUAL_DEPTH_TEST);
-                //? } elif neoforge {
+                //?} elif neoforge {
                 /*.transparency(RenderPhaseAccessor.getNoTransparency())
                 .cull(RenderPhaseAccessor.getDisableCulling())
                 .lightmap(RenderPhaseAccessor.getEnableLightmap())
                 .overlay(RenderPhaseAccessor.getEnableOverlayColor())
                 .layering(RenderPhaseAccessor.getViewOffsetZLayering())
                 .depthTest(RenderPhaseAccessor.getLequalDepthTest());
-                *///? }
+                *///?}
         ((RenderLayer$MultiPhaseParameters$BuilderExtender) builder).allthetrims$trimPalette(new TrimPalettePhase(
                 "trim_palette",
                 () -> setTrimPalette(palette.getColourArr()),

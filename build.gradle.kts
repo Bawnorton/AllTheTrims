@@ -79,6 +79,7 @@ repositories {
     maven("https://maven.neoforged.net/releases/")
     maven("https://maven.isxander.dev/releases")
     maven("https://maven.terraformersmc.com/")
+    maven("https://maven.ladysnake.org/releases")
 }
 
 dependencies {
@@ -196,11 +197,7 @@ if (loader.isNeoForge) {
         mappings(loom.layered {
             mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
             if(loader.isNeoForge) {
-                if (minecraftVersion.lessThan("1.21")) {
-                    mappings("dev.architectury:yarn-mappings-patch-neoforge:1.20.5+build.3")
-                } else {
-                    mappings(file("mappings/fix.tiny"))
-                }
+                mappings(file("mappings/fix.tiny"))
             }
         })
     }

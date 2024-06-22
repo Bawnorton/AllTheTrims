@@ -15,7 +15,8 @@
     "shader.GameRendererMixin",
     "shader.RenderLayer$MultiPhaseParameters$BuilderMixin",
     "shader.RenderLayer$MultiPhaseParametersMixin",
-    "shader.ShaderProgramMixin"
+    "shader.ShaderProgramMixin",
+    "shader.VertexBufferMixin"
   ],
   "injectors": {
     "defaultRequire": 1

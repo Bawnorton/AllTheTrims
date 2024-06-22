@@ -3,6 +3,7 @@ package com.bawnorton.allthetrims.client.mixin.render;
 import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.api.DynamicTrimRenderer;
+import com.bawnorton.allthetrims.client.colour.ColourHelper;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -26,6 +27,7 @@ import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import java.util.Map;
 
@@ -37,7 +39,7 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity> {
             //? if fabric {
             method = "renderTrim",
             //?} elif neoforge {
-            /*method = "shaderRenderTrim(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/trim/ArmorTrim;Lnet/minecraft/client/model/Model;Z)V",
+            /*method = "renderTrim(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/trim/ArmorTrim;Lnet/minecraft/client/model/Model;Z)V",
             *///?}
             at = @At(
                     value = "INVOKE",
@@ -58,30 +60,25 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity> {
             )
     )
     private void renderDynamicTrim(BipedEntityModel<T> instance, MatrixStack matrixStack, VertexConsumer vertexConsumer, int light, int uv, Operation<Void> original,
-    //? } elif neoforge {
-    /*@WrapOperation(
-            method = "renderTrim(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/trim/ArmorTrim;Lnet/minecraft/client/model/Model;Z)V",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/model/Model;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;II)V"
-            )
-    )
-    private void renderDynamicTrim(Model instance, MatrixStack matrixStack, VertexConsumer vertexConsumer, int light, int uv, Operation<Void> original,
-    *///? }
             @Local(argsOnly = true) ArmorTrim trim,
             @Local(argsOnly = true) VertexConsumerProvider vertexConsumers,
             @Local(argsOnly = true) RegistryEntry<ArmorMaterial> armourMaterial,
             @Local(argsOnly = true) boolean leggings,
             @Share("sprite") LocalRef<Sprite> spriteLocalRef) {
-        Sprite sprite = spriteLocalRef.get();
+        allthetrims$renderDynamicTrimInternal(instance, matrixStack, vertexConsumer, light, uv, original, trim, vertexConsumers, armourMaterial, leggings, spriteLocalRef.get());
+    }
+    //?}
+
+    @Unique
+    private void allthetrims$renderDynamicTrimInternal(BipedEntityModel<T> instance, MatrixStack matrixStack, VertexConsumer vertexConsumer, int light, int uv, Operation<Void> original, ArmorTrim trim, VertexConsumerProvider vertexConsumers, RegistryEntry<ArmorMaterial> armourMaterial, boolean leggings, Sprite sprite) {
         DynamicTrimRenderer trimRenderer = AllTheTrimsClient.getTrimRenderer();
         DynamicTrimRenderer.RenderCallback callback;
-        if(trimRenderer.useLegacyRenderer(sprite)) {
+        if (trimRenderer.useLegacyRenderer(sprite)) {
             callback = Model::render;
         } else {
             callback = (model, matrices, vertices, l, overlay, colour) -> original.call(model, matrices, vertices, l, overlay);
         }
-        if(AllTheTrimsClient.getConfig().overrideExisting) {
+        if (AllTheTrimsClient.getConfig().overrideExisting) {
             Identifier modelId = trimRenderer.getModelId(trim, armourMaterial, leggings);
             modelId = modelId.withPath(path -> {
                 ArmorTrimMaterial trimMaterial = trim.getMaterial().value();

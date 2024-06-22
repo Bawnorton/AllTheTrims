@@ -4,8 +4,8 @@ public final class IrisCompat {
     public boolean isUsingShader() {
         //? if fabric {
         return net.irisshaders.iris.Iris.getCurrentPack().isPresent();
-        //? } else {
+        //?} else {
         /*return false
-        *///? }
+        *///?}
     }
 }

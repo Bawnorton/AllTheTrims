@@ -5,7 +5,6 @@ import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.api.DynamicTrimRenderer;
 import com.bawnorton.allthetrims.client.compat.Compat;
 import com.bawnorton.allthetrims.client.compat.elytratrims.ElytraTrimsCompat;
-import com.bawnorton.allthetrims.client.model.DynamicTrimModelLoader;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import dev.kikugie.elytratrims.client.render.TrimOverlayRenderer;

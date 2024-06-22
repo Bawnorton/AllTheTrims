@@ -36,5 +36,5 @@ public interface RenderPhaseAccessor {
     static RenderPhase.DepthTest getLequalDepthTest() {
         throw new AssertionError();
     }
-    *///? }
+    *///?}
 }
