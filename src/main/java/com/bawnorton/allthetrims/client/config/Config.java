@@ -7,6 +7,7 @@ public final class Config {
     public Boolean overrideExisting;
     public Boolean animate;
     public Integer timeBetweenCycles;
+    public Interoplation animationInterpolation;
 
     public enum PaletteSorting {
         COLOUR, COLOUR_REVERSED,
@@ -28,5 +29,9 @@ public final class Config {
         public boolean isBrightness() {
             return this == BRIGHTNESS || this == BRIGHTNESS_REVERSED;
         }
+    }
+
+    public enum Interoplation {
+        NONE, LINEAR, COSINE, CUBIC
     }
 }

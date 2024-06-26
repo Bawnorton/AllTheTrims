@@ -21,13 +21,10 @@ class ModData {
 class LoaderData {
     private val name = loom.platform.get().name.lowercase()
     val isFabric = name == "fabric"
-    val isForge = name == "forge"
     val isNeoForge = name == "neoforge"
 
     fun getVersion() : String {
-        return if(isForge) {
-            property("loader_forge").toString()
-        } else if (isNeoForge) {
+        return if (isNeoForge) {
             property("loader_neoforge").toString()
         } else {
             property("fabric_loader").toString()
@@ -80,10 +77,17 @@ repositories {
     maven("https://maven.isxander.dev/releases")
     maven("https://maven.terraformersmc.com/")
     maven("https://maven.ladysnake.org/releases")
+    maven("https://maven.enjarai.dev/releases")
 }
 
 dependencies {
     minecraft("com.mojang:minecraft:$minecraftVersion")
+
+    modImplementation("dev.isxander:yet-another-config-lib:${property("yacl")}+$minecraftVersion-$loader")
+
+    modCompileOnly(fileTree("libs") {
+        include("**/*.jar") // deps on mods that haven't been released
+    })
 }
 
 loom {
@@ -131,58 +135,37 @@ if(loader.isFabric) {
         modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}")
 
         modImplementation("com.terraformersmc:modmenu:${property("mod_menu")}")
-        modImplementation("dev.isxander:yet-another-config-lib:${property("yacl")}+$minecraftVersion-$loader")
 
         modCompileOnly("maven.modrinth:iris:${property("iris")}")
         modImplementation("maven.modrinth:elytra-trims:${property("elytra_trims")}")
+        modImplementation("maven.modrinth:show-me-your-skin:${property("show_me_your_skin")}") {
+            modRuntimeOnly("nl.enjarai:cicada-lib:${property("cicada_lib")}")
+            modRuntimeOnly("org.ladysnake.cardinal-components-api:cardinal-components-base:${property("cardinal_components")}")
+            modRuntimeOnly("org.ladysnake.cardinal-components-api:cardinal-components-entity:${property("cardinal_components")}")
+        }
+
 
         mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
     }
 
     tasks.processResources {
-        val map = mapOf(
+        val modMetadata = mapOf(
             "version" to mod.version,
             "minecraft_dependency" to mod.minecraftDependency
         )
 
-        inputs.properties(map)
-        filesMatching("fabric.mod.json") { expand(map) }
-    }
-}
-
-if (loader.isForge) {
-    dependencies {
-        forge("net.minecraftforge:forge:$minecraftVersion-${loader.getVersion()}")
-
-        compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:${property("mixin_extras")}")!!)
-        implementation(include("io.github.llamalad7:mixinextras-forge:${property("mixin_extras")}")!!)
-
-        mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
-    }
-
-    loom {
-        forge {
-            convertAccessWideners = true
-            mixinConfig("${mod.id}.mixins.json")
-            mixinConfig("${mod.id}-client.mixins.json")
-        }
-    }
-
-    tasks.processResources {
-        val map = mapOf(
-            "version" to mod.version,
-            "minecraft_dependency" to mod.minecraftDependency,
-            "loader_version" to loader.getVersion()
+        val compatMixins = mapOf(
+            "compat_mixins" to """""",
+            "compat_client_mixins" to """
+                "elytratrims.TrimOverlayRendererMixin",
+                "wildfiregender.fabric.GenderArmorLayerMixin"
+            """
         )
 
-        inputs.properties(map)
-        filesMatching("META-INF/mods.toml") { expand(map) }
-    }
-
-    sourceSets.forEach {
-        val dir = layout.buildDirectory.dir("sourceSets/${it.name}").get().asFile
-        it.output.setResourcesDir(dir)
-        it.java.destinationDirectory = dir
+        inputs.properties(modMetadata)
+        inputs.properties(compatMixins)
+        filesMatching("fabric.mod.json") { expand(modMetadata) }
+        filesMatching("allthetrims-compat.mixins.json") { expand(compatMixins) }
     }
 }
 
@@ -190,7 +173,6 @@ if (loader.isNeoForge) {
     dependencies {
         neoForge("net.neoforged:neoforge:${loader.getVersion()}")
 
-        modImplementation("dev.isxander:yet-another-config-lib:${property("yacl")}+$minecraftVersion-$loader")
         forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:json:${findProperty("quilt_parsers")}")!!)
         forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:gson:${findProperty("quilt_parsers")}")!!)
 
@@ -204,14 +186,21 @@ if (loader.isNeoForge) {
 
     tasks {
         processResources {
-            val map = mapOf(
+            val modMetadata = mapOf(
                 "version" to mod.version,
                 "minecraft_dependency" to mod.minecraftDependency,
                 "loader_version" to loader.getVersion()
             )
 
-            inputs.properties(map)
-            filesMatching("META-INF/neoforge.mods.toml") { expand(map) }
+            val compatMixins = mapOf(
+                "compat_mixins" to """""",
+                "compat_client_mixins" to """"""
+            )
+
+            inputs.properties(modMetadata)
+            inputs.properties(compatMixins)
+            filesMatching("META-INF/neoforge.mods.toml") { expand(modMetadata) }
+            filesMatching("allthetrims-compat.mixins.json") { expand(compatMixins) }
         }
 
         remapJar {

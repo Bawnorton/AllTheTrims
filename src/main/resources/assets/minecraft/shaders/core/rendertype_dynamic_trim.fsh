@@ -54,11 +54,12 @@ void main() {
         }
     } else {
         int trimColor = allthetrims_TrimPalette[index];
+        int alpha = trimColor >> 24 & 0xFF;
         int red = trimColor >> 16 & 0xFF;
         int green = trimColor >> 8 & 0xFF;
         int blue = trimColor & 0xFF;
         float one255ths = 0.003921568627;
-        color = vec4(red * one255ths, green * one255ths, blue * one255ths, 1.0);
+        color = vec4(red * one255ths, green * one255ths, blue * one255ths, alpha * one255ths);
         color *= vertexColor * ColorModulator;
     }
 

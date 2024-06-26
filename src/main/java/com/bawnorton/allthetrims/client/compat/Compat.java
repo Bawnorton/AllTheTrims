@@ -2,39 +2,39 @@ package com.bawnorton.allthetrims.client.compat;
 
 import com.bawnorton.allthetrims.client.compat.elytratrims.ElytraTrimsCompat;
 import com.bawnorton.allthetrims.client.compat.iris.IrisCompat;
+import com.bawnorton.allthetrims.client.compat.showmeyourskin.ShowMeYourSkinCompat;
 import com.bawnorton.allthetrims.client.compat.yacl.YACLImpl;
 import com.bawnorton.allthetrims.platform.Platform;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.TexturedRenderLayers;
+import com.bawnorton.allthetrims.util.LazySupplier;
 import java.util.Optional;
 
 public final class Compat {
-    private static ElytraTrimsCompat elytraTrimsCompat;
-    private static IrisCompat irisCompat;
-    private static YACLImpl yaclImp;
+    private static final LazySupplier<ElytraTrimsCompat> elytraTrimsCompat = LazySupplier.of(ElytraTrimsCompat::new);
+    private static final LazySupplier<ShowMeYourSkinCompat> showMeYourSkinCompat = LazySupplier.of(ShowMeYourSkinCompat::new);
+    private static final LazySupplier<IrisCompat> irisCompat = LazySupplier.of(IrisCompat::new);
+    private static final LazySupplier<YACLImpl> yaclImp = LazySupplier.of(YACLImpl::new);
 
     public static Optional<IrisCompat> getIrisCompat() {
         if(!Platform.isModLoaded("iris")) return Optional.empty();
 
-        if(irisCompat == null) irisCompat = new IrisCompat();
-        return Optional.of(irisCompat);
+        return Optional.of(irisCompat.get());
     }
 
     public static Optional<YACLImpl> getYaclImpl() {
         if (!Platform.isModLoaded("yet_another_config_lib_v3")) return Optional.empty();
 
-        if (yaclImp == null) yaclImp = new YACLImpl();
-        return Optional.of(yaclImp);
+        return Optional.of(yaclImp.get());
     }
 
     public static Optional<ElytraTrimsCompat> getElytraTrimsCompat() {
         if (!Platform.isModLoaded("elytratrims")) return Optional.empty();
 
-        if(elytraTrimsCompat == null) elytraTrimsCompat = new ElytraTrimsCompat();
-        return Optional.of(elytraTrimsCompat);
+        return Optional.of(elytraTrimsCompat.get());
     }
 
-    public static RenderLayer getTrimRenderLayer(boolean decal) {
-        return TexturedRenderLayers.getArmorTrims(decal);
+    public static Optional<ShowMeYourSkinCompat> getShowMeYourSkinCompat() {
+        if (!Platform.isModLoaded("showmeyourskin")) return Optional.empty();
+
+        return Optional.of(showMeYourSkinCompat.get());
     }
 }

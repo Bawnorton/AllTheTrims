@@ -73,7 +73,7 @@ public abstract class RegistryLoaderMixin {
                 ArmorTrimMaterial itemMaterial = new ArmorTrimMaterial(
                         AllTheTrims.DYNAMIC,
                         itemRef.getRight(),
-                        0.6632484f,
+                        AllTheTrims.MODEL_INDEX,
                         Map.of(),
                         Text.translatable("allthetrims.material", itemRef.getRight().value().getName().getString())
                 );

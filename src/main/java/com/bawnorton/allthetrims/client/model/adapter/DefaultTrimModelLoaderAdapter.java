@@ -6,7 +6,7 @@ import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 
-public final class VanillaTrimModelLoaderAdapter extends TrimModelLoaderAdapter {
+public final class DefaultTrimModelLoaderAdapter extends TrimModelLoaderAdapter {
     @Override
     public boolean canTrim(Item item) {
         if (item instanceof AnimalArmorItem) return false;

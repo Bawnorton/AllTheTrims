@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 
 @Mixin(GameRenderer.class)
 public abstract class GameRendererMixin {
+    @SuppressWarnings("UnresolvedMixinReference")
     @ModifyReceiver(
             method = "loadPrograms",
             at = @At(
@@ -26,7 +27,7 @@ public abstract class GameRendererMixin {
         shaders.add(
                 Pair.of(
                         new ShaderProgram(factory, "rendertype_dynamic_trim", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL),
-                        program -> AllTheTrimsClient.getShaderManager().renderTypeDynamicTrimProgram = program
+                        program -> AllTheTrimsClient.getShaderManger().renderTypeDynamicTrimProgram = program
                 )
         );
         return shaders;

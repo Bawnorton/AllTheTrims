@@ -31,6 +31,7 @@ public final class ConfigManager {
         if(config.overrideExisting == null) config.overrideExisting = false;
         if(config.animate == null) config.animate = false;
         if(config.timeBetweenCycles == null) config.timeBetweenCycles = 75;
+        if(config.animationInterpolation == null) config.animationInterpolation = Config.Interoplation.NONE;
 
         saveConfig();
 

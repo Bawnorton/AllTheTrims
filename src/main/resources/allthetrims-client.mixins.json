@@ -6,17 +6,14 @@
     "accessor.GlUniformAccessor",
     "accessor.RenderPhaseAccessor",
     "accessor.SpriteContentsAccessor",
-    "compat.elytratrims.TrimOverlayRendererMixin",
     "model.BakedModelManagerMixin",
     "model.ItemModelGeneratorMixin",
     "model.PalettedPermutationsAtlasSourceMixin",
     "render.ArmorFeatureRendererMixin",
     "render.MinecraftClientMixin",
     "shader.GameRendererMixin",
-    "shader.RenderLayer$MultiPhaseParameters$BuilderMixin",
     "shader.RenderLayer$MultiPhaseParametersMixin",
-    "shader.ShaderProgramMixin",
-    "shader.VertexBufferMixin"
+    "shader.ShaderProgramMixin"
   ],
   "injectors": {
     "defaultRequire": 1

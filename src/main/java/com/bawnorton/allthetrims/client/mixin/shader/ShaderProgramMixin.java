@@ -1,7 +1,6 @@
 package com.bawnorton.allthetrims.client.mixin.shader;
 
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
-import com.bawnorton.allthetrims.client.extend.ShaderProgramExtender;
 import com.bawnorton.allthetrims.client.mixin.accessor.GlUniformAccessor;
 import net.minecraft.client.gl.GlUniform;
 import net.minecraft.client.gl.ShaderProgram;
@@ -15,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.nio.IntBuffer;
 
 @Mixin(ShaderProgram.class)
-public abstract class ShaderProgramMixin implements ShaderProgramExtender {
+public abstract class ShaderProgramMixin {
     @Shadow @Nullable
     public abstract GlUniform getUniform(String name);
 
@@ -32,16 +31,6 @@ public abstract class ShaderProgramMixin implements ShaderProgramExtender {
         allthetrims$debug = getUniform("allthetrims_Debug");
     }
 
-    @Override
-    public GlUniform allthetrims$getDebug() {
-        return allthetrims$debug;
-    }
-
-    @Override
-    public GlUniform allthetrims$getTrimPalette() {
-        return allthetrims$trimPalette;
-    }
-
     @Inject(
             method = "initializeUniforms",
             at = @At(
@@ -51,7 +40,7 @@ public abstract class ShaderProgramMixin implements ShaderProgramExtender {
     )
     private void setAdditionalUniforms(CallbackInfo ci) {
         if(allthetrims$trimPalette != null) {
-            int[] trimPalette = AllTheTrimsClient.getShaderManager().getTrimPalette();
+            int[] trimPalette = AllTheTrimsClient.getShaderManger().getTrimPalette();
             IntBuffer intData = allthetrims$trimPalette.getIntData();
             intData.position(0);
             for (int i = 0; i < trimPalette.length; i++) {

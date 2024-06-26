@@ -28,6 +28,7 @@
   },
   "mixins": [
     "allthetrims.mixins.json",
+    "allthetrims-compat.mixins.json",
     {
       "config": "allthetrims-client.mixins.json",
       "environment": "client"

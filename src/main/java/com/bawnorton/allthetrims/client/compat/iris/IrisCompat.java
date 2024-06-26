@@ -5,7 +5,7 @@ public final class IrisCompat {
         //? if fabric {
         return net.irisshaders.iris.Iris.getCurrentPack().isPresent();
         //?} else {
-        /*return false
+        /*return false; // Iris will port to neo/forge eventually
         *///?}
     }
 }

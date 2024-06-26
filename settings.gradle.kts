@@ -25,7 +25,6 @@ fun getVersions(key: String): Set<String> {
 }
 
 val versions = mapOf(
-	"forge" to getVersions("forge_versions"),
 	"fabric" to getVersions("fabric_versions"),
 	"neoforge" to getVersions("neoforge_versions")
 )

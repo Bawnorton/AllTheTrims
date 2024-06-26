@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-public class MemoizedFunction<T, R> implements Function<T, R> {
+public final class MemoizedFunction<T, R> implements Function<T, R> {
     private final Map<T, R> cache = new ConcurrentHashMap<>();
     private final Function<T, R> function;
 

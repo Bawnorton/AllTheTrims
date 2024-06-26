@@ -2,7 +2,7 @@ package com.bawnorton.allthetrims.client.platform;
 
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 
-//? if fabric {
+/*? if fabric {*/
 import net.fabricmc.api.ClientModInitializer;
 
 public final class AllTheTrimsClientWrapper implements ClientModInitializer {
@@ -11,7 +11,8 @@ public final class AllTheTrimsClientWrapper implements ClientModInitializer {
         AllTheTrimsClient.init();
     }
 }
-//?} elif neoforge {
+
+/*?} elif neoforge {*/
 /*import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.compat.yacl.YACLConfigScreenFactory;
 import net.neoforged.api.distmarker.Dist;
@@ -26,13 +27,4 @@ public final class AllTheTrimsClientWrapper {
         ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> YACLConfigScreenFactory::createScreen);
     }
 }
-*///?} elif forge {
-/*import net.minecraftforge.fml.common.Mod;
-
-@Mod.EventBusSubscriber(modid = AllTheTrims.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
-public final class AllTheTrimsClientWrapper {
-    public static void init(FMLClientSetupEvent event) {
-        AllTheTrimsClient.init();
-    }
-}
-*///?}
+*//*?}*/

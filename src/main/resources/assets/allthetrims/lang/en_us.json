@@ -21,5 +21,11 @@
   "allthetrims.yacl.option.animate": "Animate Trim Rendering",
   "allthetrims.yacl.description.animate": "Trim colours will cycle giving a wave-like effect. Enable \"Override Existing Trims\" to allow vanilla and other mods' trims to animate.",
   "allthetrims.yacl.option.time_between_cycles": "Time Between Cycles",
-  "allthetrims.yacl.description.time_between_cycles": "Animation speed, lower is faster. 0 for every frame."
+  "allthetrims.yacl.description.time_between_cycles": "Animation speed, lower is faster. 0 for every frame.",
+  "allthetrims.yacl.option.interpolation": "Animation Interpolation",
+  "allthetrims.yacl.option.interpolation.none": "None",
+  "allthetrims.yacl.option.interpolation.linear": "Linear",
+  "allthetrims.yacl.option.interpolation.cosine": "Cosine",
+  "allthetrims.yacl.option.interpolation.cubic": "Cubic",
+  "allthetrims.yacl.description.interpolation": "What method should the animated trims use to interpolate colours? This can help reduce the stark contrast between the start and end of a trim."
 }

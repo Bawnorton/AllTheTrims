@@ -11,7 +11,7 @@ import java.net.URI;
 
 public final class YACLConfigScreenFactory {
     public static Screen createScreen(MinecraftClient client, Screen parent) {
-        return Compat.getYaclImpl().map(impl -> impl.getConfigScreen(parent)).orElse(new ConfirmScreen((result) -> {
+        return Compat.getYaclImpl().map(impl -> impl.createConfigScreen(parent)).orElse(new ConfirmScreen((result) -> {
             if (result) {
                 Util.getOperatingSystem().open(URI.create("https://modrinth.com/mod/yacl/versions"));
             }

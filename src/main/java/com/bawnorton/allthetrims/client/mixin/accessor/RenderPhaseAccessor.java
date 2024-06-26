@@ -6,9 +6,13 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(RenderPhase.class)
 public interface RenderPhaseAccessor {
-    //? if neoforge {
-    /*@Accessor("NO_TRANSPARENCY")
+    @Accessor("NO_TRANSPARENCY")
     static RenderPhase.Transparency getNoTransparency() {
+        throw new AssertionError();
+    }
+
+    @Accessor("TRANSLUCENT_TRANSPARENCY")
+    static RenderPhase.Transparency getTranslucentTransparency() {
         throw new AssertionError();
     }
 
@@ -36,5 +40,9 @@ public interface RenderPhaseAccessor {
     static RenderPhase.DepthTest getLequalDepthTest() {
         throw new AssertionError();
     }
-    *///?}
+
+    @Accessor("COLOR_MASK")
+    static RenderPhase.WriteMaskState getColorMask() {
+        throw new AssertionError();
+    }
 }
