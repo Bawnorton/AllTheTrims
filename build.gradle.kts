@@ -23,12 +23,10 @@ class LoaderData {
     val isFabric = name == "fabric"
     val isNeoForge = name == "neoforge"
 
-    fun getVersion() : String {
-        return if (isNeoForge) {
-            property("loader_neoforge").toString()
-        } else {
-            property("fabric_loader").toString()
-        }
+    fun getVersion() : String = if (isNeoForge) {
+        property("loader_neoforge").toString()
+    } else {
+        property("fabric_loader").toString()
     }
 
     override fun toString(): String {
@@ -39,17 +37,9 @@ class LoaderData {
 class MinecraftVersionData {
     private val name = stonecutter.current.version.substringBeforeLast("-")
 
-    fun equalTo(other: String) : Boolean {
-        return stonecutter.compare(name, other.lowercase()) == 0
-    }
-
-    fun greaterThan(other: String) : Boolean {
-        return stonecutter.compare(name, other.lowercase()) > 0
-    }
-
-    fun lessThan(other: String) : Boolean {
-        return stonecutter.compare(name, other.lowercase()) < 0
-    }
+    fun equalTo(other: String) : Boolean = stonecutter.compare(name, other.lowercase()) == 0
+    fun greaterThan(other: String) : Boolean = stonecutter.compare(name, other.lowercase()) > 0
+    fun lessThan(other: String) : Boolean = stonecutter.compare(name, other.lowercase()) < 0
 
     override fun toString(): String {
         return name
@@ -78,12 +68,25 @@ repositories {
     maven("https://maven.terraformersmc.com/")
     maven("https://maven.ladysnake.org/releases")
     maven("https://maven.enjarai.dev/releases")
+    maven("https://maven.shedaniel.me")
+    maven("https://maven.blamejared.com/")
 }
 
 dependencies {
     minecraft("com.mojang:minecraft:$minecraftVersion")
 
     modImplementation("dev.isxander:yet-another-config-lib:${property("yacl")}+$minecraftVersion-$loader")
+
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-$loader:${property("rei")}")
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-$loader:${property("rei")}")
+    modCompileOnly("me.shedaniel:RoughlyEnoughItems-$loader:${property("rei")}")
+    modCompileOnly("me.shedaniel.cloth:cloth-config-$loader:${property("cloth_config")}")
+
+    modCompileOnly("dev.emi:emi-xplat-intermediary:${property("emi")}+$minecraftVersion:api")
+    modCompileOnly("dev.emi:emi-xplat-intermediary:${property("emi")}+$minecraftVersion")
+
+    modCompileOnly("mezz.jei:jei-$minecraftVersion-$loader-api:${property("jei")}") { isTransitive = false }
+    modImplementation("mezz.jei:jei-$minecraftVersion-$loader:${property("jei")}") { isTransitive = false }
 
     modCompileOnly(fileTree("libs") {
         include("**/*.jar") // deps on mods that haven't been released
@@ -104,8 +107,10 @@ loom {
     }
 }
 
-tasks.withType<JavaCompile> {
-    options.release = 21
+tasks {
+    withType<JavaCompile> {
+        options.release = 21
+    }
 }
 
 java {
@@ -138,34 +143,38 @@ if(loader.isFabric) {
 
         modCompileOnly("maven.modrinth:iris:${property("iris")}")
         modImplementation("maven.modrinth:elytra-trims:${property("elytra_trims")}")
-        modImplementation("maven.modrinth:show-me-your-skin:${property("show_me_your_skin")}") {
-            modRuntimeOnly("nl.enjarai:cicada-lib:${property("cicada_lib")}")
-            modRuntimeOnly("org.ladysnake.cardinal-components-api:cardinal-components-base:${property("cardinal_components")}")
-            modRuntimeOnly("org.ladysnake.cardinal-components-api:cardinal-components-entity:${property("cardinal_components")}")
-        }
+        modImplementation("maven.modrinth:show-me-your-skin:${property("show_me_your_skin")}")
 
+        modRuntimeOnly("nl.enjarai:cicada-lib:${property("cicada_lib")}")
+        modRuntimeOnly("org.ladysnake.cardinal-components-api:cardinal-components-base:${property("cardinal_components")}")
+        modRuntimeOnly("org.ladysnake.cardinal-components-api:cardinal-components-entity:${property("cardinal_components")}")
 
         mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
     }
 
-    tasks.processResources {
-        val modMetadata = mapOf(
-            "version" to mod.version,
-            "minecraft_dependency" to mod.minecraftDependency
-        )
+    tasks {
+        processResources {
+            val modMetadata = mapOf(
+                "version" to mod.version,
+                "minecraft_dependency" to mod.minecraftDependency
+            )
 
-        val compatMixins = mapOf(
-            "compat_mixins" to """""",
-            "compat_client_mixins" to """
+            val compatMixins = mapOf(
+                "compat_mixins" to """""",
+                "compat_client_mixins" to """
                 "elytratrims.TrimOverlayRendererMixin",
-                "wildfiregender.fabric.GenderArmorLayerMixin"
+                "wildfiregender.fabric.GenderArmorLayerMixin",
+                "rei.DefaultClientPluginMixin",
+                "emi.VanillaPluginMixin",
+                "jei.SmithingRecipeCategoryMixin"
             """
-        )
+            )
 
-        inputs.properties(modMetadata)
-        inputs.properties(compatMixins)
-        filesMatching("fabric.mod.json") { expand(modMetadata) }
-        filesMatching("allthetrims-compat.mixins.json") { expand(compatMixins) }
+            inputs.properties(modMetadata)
+            inputs.properties(compatMixins)
+            filesMatching("fabric.mod.json") { expand(modMetadata) }
+            filesMatching("allthetrims-compat.mixins.json") { expand(compatMixins) }
+        }
     }
 }
 
@@ -194,7 +203,11 @@ if (loader.isNeoForge) {
 
             val compatMixins = mapOf(
                 "compat_mixins" to """""",
-                "compat_client_mixins" to """"""
+                "compat_client_mixins" to """
+                    "rei.DefaultClientPluginMixin",
+                    "emi.VanillaPluginMixin",
+                    "jei.SmithingRecipeCategoryMixin"
+                """
             )
 
             inputs.properties(modMetadata)

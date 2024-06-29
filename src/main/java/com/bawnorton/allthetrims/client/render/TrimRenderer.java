@@ -102,7 +102,7 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
     public void shaderRenderTrim(RenderContext context, ArmorTrim trim, Sprite sprite, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, int colour, RenderLayer renderLayer, RenderCallback callback) {
         Item material = trim.getMaterial().value().ingredient().value();
         Item trimmed = context.trimmed();
-        TrimPalette palette = AllTheTrimsClient.getTrimPalettes().getTrimPaletteFor(material);
+        TrimPalette palette = AllTheTrimsClient.getTrimPalettes().getOrGeneratePalette(material);
         if(renderLayer == null) {
             renderLayer = AllTheTrimsClient.getShaderManger().getTrimRenderLayer(trimmed, palette);
         }
@@ -124,7 +124,7 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
         Identifier patternId = modelId.withPath(path -> "textures/%s.png".formatted(path.substring(0, path.lastIndexOf("_"))));
         int maxSupportedLayer = AllTheTrimsClient.getLayerData().getMaxSupportedLayer(patternId);
 
-        TrimPalette trimPalette = AllTheTrimsClient.getTrimPalettes().getTrimPaletteFor(trimItem);
+        TrimPalette trimPalette = AllTheTrimsClient.getTrimPalettes().getOrGeneratePalette(trimItem);
         List<Integer> paletteColours = trimPalette.getColours().subList(0, maxSupportedLayer).reversed();
         String assetName = getAssetName(trimMaterial);
         TrimRendererAdapter adapter = getAdapter(trimmed);

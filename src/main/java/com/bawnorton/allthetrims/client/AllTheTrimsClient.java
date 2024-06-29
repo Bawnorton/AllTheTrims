@@ -82,7 +82,7 @@ public final class AllTheTrimsClient {
 
     public static RenderLayer getTrimRenderLayer(Item trimmed, ArmorTrim trim) {
         Item trimMaterial = trim.getMaterial().value().ingredient().value();
-        TrimPalette palette = trimPalettes.getTrimPaletteFor(trimMaterial);
+        TrimPalette palette = trimPalettes.getOrGeneratePalette(trimMaterial);
         return shaderManager.getTrimRenderLayer(trimmed, palette);
     }
 }

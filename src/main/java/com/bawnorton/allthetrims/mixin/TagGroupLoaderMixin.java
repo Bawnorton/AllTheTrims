@@ -1,6 +1,7 @@
 package com.bawnorton.allthetrims.mixin;
 
 import com.bawnorton.allthetrims.AllTheTrims;
+import net.minecraft.item.AnimalArmorItem;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Items;
 import net.minecraft.item.SmithingTemplateItem;
@@ -46,6 +47,7 @@ public abstract class TagGroupLoaderMixin {
                     .collect(Collectors.toSet()));
         } else if (id.equals(ItemTags.TRIMMABLE_ARMOR.id())) {
             entries.addAll(Registries.ITEM.stream()
+                    .filter(item -> !(item instanceof AnimalArmorItem))
                     .filter(item -> item instanceof Equipment equipment && equipment.getSlotType().isArmorSlot())
                     .map(Registries.ITEM::getId)
                     .map(itemId -> new TagGroupLoader.TrackedEntry(TagEntry.create(itemId), AllTheTrims.MOD_ID))

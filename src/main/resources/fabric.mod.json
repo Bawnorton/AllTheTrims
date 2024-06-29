@@ -24,6 +24,15 @@
     ],
     "modmenu": [
       "com.bawnorton.allthetrims.client.compat.modmenu.ModMenuImpl"
+    ],
+    "rei_client": [
+      "com.bawnorton.allthetrims.client.compat.recipebrowser.rei.ReiPluginImpl"
+    ],
+    "emi": [
+      "com.bawnorton.allthetrims.client.compat.recipebrowser.emi.EmiPluginImpl"
+    ],
+    "jei_mod_plugin": [
+      "com.bawnorton.allthetrims.client.compat.recipebrowser.jei.JeiPluginImpl"
     ]
   },
   "mixins": [

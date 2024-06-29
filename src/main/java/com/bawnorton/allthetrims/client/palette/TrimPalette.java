@@ -2,6 +2,7 @@ package com.bawnorton.allthetrims.client.palette;
 
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.colour.ColourInterpolation;
+import com.bawnorton.allthetrims.client.colour.OkLabHelper;
 import com.bawnorton.allthetrims.client.config.Config;
 import javax.imageio.ImageIO;
 import net.minecraft.util.Util;
@@ -83,6 +84,17 @@ public final class TrimPalette {
 
     public List<Integer> getColours() {
         return AllTheTrimsClient.getConfig().animate ? animatedColours : staticColours;
+    }
+
+    public int getAverageColour() {
+        double[][] okLabSpace = new double[PALETTE_SIZE][3];
+        for (int i = 0; i < colourArr.length; i++) {
+            int colour = colourArr[i];
+            double[] okLab = OkLabHelper.rgbToOKLab(colour);
+            okLabSpace[i] = okLab;
+        }
+        double[] averaged = OkLabHelper.average(okLabSpace);
+        return OkLabHelper.oklabToRGB(averaged);
     }
 
     public void cycleAnimatedColours() {

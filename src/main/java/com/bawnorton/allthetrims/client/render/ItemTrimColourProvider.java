@@ -36,7 +36,7 @@ public final class ItemTrimColourProvider implements ItemColorProvider {
         if(tintIndex < startLayer) return -1;
 
         Item materialItem = material.ingredient().value();
-        TrimPalette palette = palettes.getTrimPaletteFor(materialItem);
+        TrimPalette palette = palettes.getOrGeneratePalette(materialItem);
 
         return ColorHelper.Argb.fullAlpha(palette.getColours().get(tintIndex - startLayer));
     }

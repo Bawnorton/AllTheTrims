@@ -63,7 +63,7 @@ public abstract class RegistryLoaderMixin {
                     Optional.of(new VersionedIdentifier(
                             AllTheTrims.MOD_ID,
                             "runtime_trim_materials",
-                            SharedConstants.VERSION_NAME
+                            SharedConstants.getGameVersion().getId()
                     )),
                     Lifecycle.stable()
             );
