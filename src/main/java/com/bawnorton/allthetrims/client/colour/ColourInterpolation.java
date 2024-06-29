@@ -5,44 +5,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 public final class ColourInterpolation {
-    public static List<Integer> interpolateColors(List<Integer> colors, Config.Interoplation interoplation) {
-        if(interoplation == Config.Interoplation.NONE) return colors;
+    public static List<Integer> interpolateColours(List<Integer> colours, Config.Interoplation interoplation) {
+        if(interoplation == Config.Interoplation.NONE) return colours;
 
-        List<Integer> interpolatedColors = new ArrayList<>();
-        for (int i = 0; i < colors.size() - 1; i++) {
+        List<Integer> interpolatedColours = new ArrayList<>();
+        for (int i = 0; i < colours.size() - 1; i++) {
             for(int j = 0; j <= 1; j++) {
                 float mu = j / 2f;
                 switch (interoplation) {
-                    case LINEAR -> interpolatedColors.add(linearInterpolate(colors.get(i), colors.get(i + 1), mu));
-                    case COSINE -> interpolatedColors.add(cosineInterpolate(colors.get(i), colors.get(i + 1)));
+                    case LINEAR -> interpolatedColours.add(linearInterpolate(colours.get(i), colours.get(i + 1), mu));
+                    case COSINE -> interpolatedColours.add(cosineInterpolate(colours.get(i), colours.get(i + 1)));
                     case CUBIC -> {
-                        int prevColor = i > 0 ? colors.get(i - 1) : colors.get(i);
-                        int nextColor = i < colors.size() - 2 ? colors.get(i + 2) : colors.get(i + 1);
-                        interpolatedColors.add(cubicInterpolate(prevColor, colors.get(i), colors.get(i + 1), nextColor, mu));
+                        int prevColour = i > 0 ? colours.get(i - 1) : colours.get(i);
+                        int nextColour = i < colours.size() - 2 ? colours.get(i + 2) : colours.get(i + 1);
+                        interpolatedColours.add(cubicInterpolate(prevColour, colours.get(i), colours.get(i + 1), nextColour, mu));
                     }
                 }
             }
         }
-        interpolatedColors.add(colors.getLast());
-        return interpolatedColors;
+        interpolatedColours.add(colours.getLast());
+        return interpolatedColours;
     }
 
-    private static int linearInterpolate(int color1, int color2, double mu) {
-        int r = (int) ((1 - mu) * ((color1 >> 16) & 0xFF) + mu * ((color2 >> 16) & 0xFF));
-        int g = (int) ((1 - mu) * ((color1 >> 8) & 0xFF) + mu * ((color2 >> 8) & 0xFF));
-        int b = (int) ((1 - mu) * (color1 & 0xFF) + mu * (color2 & 0xFF));
+    private static int linearInterpolate(int colour1, int colour2, double mu) {
+        int r = (int) ((1 - mu) * ((colour1 >> 16) & 0xFF) + mu * ((colour2 >> 16) & 0xFF));
+        int g = (int) ((1 - mu) * ((colour1 >> 8) & 0xFF) + mu * ((colour2 >> 8) & 0xFF));
+        int b = (int) ((1 - mu) * (colour1 & 0xFF) + mu * (colour2 & 0xFF));
         return (r << 16) | (g << 8) | b;
     }
 
-    private static int cosineInterpolate(int color1, int color2) {
+    private static int cosineInterpolate(int colour1, int colour2) {
         float mu = (1 - (float) Math.cos(Math.PI)) / 2;
-        return linearInterpolate(color1, color2, mu);
+        return linearInterpolate(colour1, colour2, mu);
     }
 
-    private static int cubicInterpolate(int color0, int color1, int color2, int color3, float mu) {
-        int r = cubicInterpolateColour((color0 >> 16) & 0xFF, (color1 >> 16) & 0xFF, (color2 >> 16) & 0xFF, (color3 >> 16) & 0xFF, mu);
-        int g = cubicInterpolateColour((color0 >> 8) & 0xFF, (color1 >> 8) & 0xFF, (color2 >> 8) & 0xFF, (color3 >> 8) & 0xFF, mu);
-        int b = cubicInterpolateColour(color0 & 0xFF, color1 & 0xFF, color2 & 0xFF, color3 & 0xFF, mu);
+    private static int cubicInterpolate(int colour0, int colour1, int colour2, int colour3, float mu) {
+        int r = cubicInterpolateColour((colour0 >> 16) & 0xFF, (colour1 >> 16) & 0xFF, (colour2 >> 16) & 0xFF, (colour3 >> 16) & 0xFF, mu);
+        int g = cubicInterpolateColour((colour0 >> 8) & 0xFF, (colour1 >> 8) & 0xFF, (colour2 >> 8) & 0xFF, (colour3 >> 8) & 0xFF, mu);
+        int b = cubicInterpolateColour(colour0 & 0xFF, colour1 & 0xFF, colour2 & 0xFF, colour3 & 0xFF, mu);
         return (r << 16) | (g << 8) | b;
     }
 

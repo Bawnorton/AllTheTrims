@@ -53,7 +53,7 @@ public abstract class TrimOverlayRendererMixin {
      */
     @SuppressWarnings("FinalPrivateMethod") // kotlin
     @Overwrite
-    private final void renderTrimExtended(Model model, MatrixStack matrices, VertexConsumerProvider provider, LivingEntity entity, ItemStack stack, ArmorTrim trim, int light, int color) {
+    private final void renderTrimExtended(Model model, MatrixStack matrices, VertexConsumerProvider provider, LivingEntity entity, ItemStack stack, ArmorTrim trim, int light, int colour) {
         Sprite sprite = allthetrims$SPRITE_CAPTURE.get();
 
         TrimRenderer renderer = AllTheTrimsClient.getTrimRenderer();
@@ -74,7 +74,7 @@ public abstract class TrimOverlayRendererMixin {
             renderLayer = AllTheTrimsClient.getTrimRenderLayer(stack.getItem(), trim);
         }
 
-        renderer.renderTrim(trim, sprite, matrices, provider, light, OverlayTexture.DEFAULT_UV, color, modelId, ETAtlasHolder.INSTANCE.getAtlas(), renderLayer, model::render);
+        renderer.renderTrim(trim, sprite, matrices, provider, light, OverlayTexture.DEFAULT_UV, colour, modelId, ETAtlasHolder.INSTANCE.getAtlas(), renderLayer, model::render);
     }
 }
 /*?}*/

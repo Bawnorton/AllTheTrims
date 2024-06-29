@@ -44,7 +44,7 @@ public final class TrimPalette {
     }
 
     public void computeInterpolation(Config.Interoplation interoplation) {
-        List<Integer> interpolated = ColourInterpolation.interpolateColors(staticColours, interoplation);
+        List<Integer> interpolated = ColourInterpolation.interpolateColours(staticColours, interoplation);
         animatedColours.clear();
         animatedColours.addAll(interpolated);
         computeColourArr();

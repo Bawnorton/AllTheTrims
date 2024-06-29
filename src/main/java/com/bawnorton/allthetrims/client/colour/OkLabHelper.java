@@ -13,18 +13,18 @@ public final class OkLabHelper {
             int index2 = Math.min(index1 + 1, size - 1);
             double blend = (t * (size - 1)) - index1;
 
-            double[] color1 = oklabPalette.get(index1);
-            double[] color2 = oklabPalette.get(index2);
-            double[] interpolatedColor = interpolateOKLab(color1, color2, blend);
-            stretchedOKLab.add(interpolatedColor);
+            double[] colour1 = oklabPalette.get(index1);
+            double[] colour2 = oklabPalette.get(index2);
+            double[] interpolatedColour = interpolateOKLab(colour1, colour2, blend);
+            stretchedOKLab.add(interpolatedColour);
         }
         return stretchedOKLab;
     }
 
-    public static double[] interpolateOKLab(double[] color1, double[] color2, double blend) {
+    public static double[] interpolateOKLab(double[] colour1, double[] colour2, double blend) {
         double[] result = new double[3];
         for (int i = 0; i < 3; i++) {
-            result[i] = color1[i] * (1 - blend) + color2[i] * blend;
+            result[i] = colour1[i] * (1 - blend) + colour2[i] * blend;
         }
         return result;
     }

@@ -29,8 +29,8 @@ public abstract class ArmorTrimMaterialMixin {
         Style style = mutableText.getStyle();
         if(style == null) style = Style.EMPTY;
 
-        TextColor color = style.getColor();
-        if(color != null) return original;
+        TextColor colour = style.getColor();
+        if(colour != null) return original;
 
         TrimPalette palette = AllTheTrimsClient.getTrimPalettes().getPalette(ingredient.value());
         if(palette == null) return original;
