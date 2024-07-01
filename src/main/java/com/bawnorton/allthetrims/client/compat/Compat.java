@@ -14,18 +14,30 @@ public final class Compat {
     private static YACLImpl yaclImpl;
 
     public static Optional<IrisCompat> getIrisCompat() {
-        return Platform.isModLoaded("iris") ? Optional.of(irisCompat == null ? irisCompat = new IrisCompat() : irisCompat) : Optional.empty();
+        if (!Platform.isModLoaded("iris")) return Optional.empty();
+        if (irisCompat == null) irisCompat = new IrisCompat();
+
+        return Optional.of(irisCompat);
     }
 
     public static Optional<ElytraTrimsCompat> getElytraTrimsCompat() {
-        return Platform.isModLoaded("elytratrims") ? Optional.of(elytraTrimsCompat == null ? elytraTrimsCompat = new ElytraTrimsCompat() : elytraTrimsCompat) : Optional.empty();
+        if (!Platform.isModLoaded("elytratrims")) return Optional.empty();
+        if (elytraTrimsCompat == null) elytraTrimsCompat = new ElytraTrimsCompat();
+
+        return Optional.of(elytraTrimsCompat);
     }
 
     public static Optional<ShowMeYourSkinCompat> getShowMeYourSkinCompat() {
-        return Platform.isModLoaded("showmeyourskin") ? Optional.of(showMeYourSkinCompat == null ? showMeYourSkinCompat = new ShowMeYourSkinCompat() : showMeYourSkinCompat) : Optional.empty();
+        if (!Platform.isModLoaded("showmeyourskin")) return Optional.empty();
+        if (showMeYourSkinCompat == null) showMeYourSkinCompat = new ShowMeYourSkinCompat();
+
+        return Optional.of(showMeYourSkinCompat);
     }
 
     public static Optional<YACLImpl> getYaclImpl() {
-        return Platform.isModLoaded("yet_another_config_lib_v3") ? Optional.of(yaclImpl == null ? yaclImpl = new YACLImpl() : yaclImpl) : Optional.empty();
+        if (!Platform.isModLoaded("yet_another_config_lib_v3")) return Optional.empty();
+        if (yaclImpl == null) yaclImpl = new YACLImpl();
+
+        return Optional.of(yaclImpl);
     }
 }
