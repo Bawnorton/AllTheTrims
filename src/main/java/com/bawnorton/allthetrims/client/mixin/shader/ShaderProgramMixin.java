@@ -1,10 +1,12 @@
 package com.bawnorton.allthetrims.client.mixin.shader;
 
+import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.mixin.accessor.GlUniformAccessor;
 import net.minecraft.client.gl.GlUniform;
 import net.minecraft.client.gl.ShaderProgram;
 import org.jetbrains.annotations.Nullable;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -18,14 +20,21 @@ public abstract class ShaderProgramMixin {
     @Shadow @Nullable
     public abstract GlUniform getUniform(String name);
 
+    @Shadow @Final private String name;
     @Unique
     private GlUniform allthetrims$trimPalette;
 
     @Unique
     private GlUniform allthetrims$debug;
 
-    @SuppressWarnings({"InvalidMemberReference", "MixinAnnotationTarget"})
-    @Inject(method = "<init>{1}", at = @At("TAIL"))
+    @Inject(
+            //? if fabric {
+            /*method = "<init>",
+            *///?} elif neoforge {
+            method = "<init>(Lnet/minecraft/resource/ResourceFactory;Lnet/minecraft/util/Identifier;Lnet/minecraft/client/render/VertexFormat;)V",
+            //?}
+            at = @At("TAIL")
+    )
     private void initAdditionalUniforms(CallbackInfo ci) {
         allthetrims$trimPalette = getUniform("allthetrims_TrimPalette");
         allthetrims$debug = getUniform("allthetrims_Debug");

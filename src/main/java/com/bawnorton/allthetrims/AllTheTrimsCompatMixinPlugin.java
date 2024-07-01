@@ -48,10 +48,8 @@ public final class AllTheTrimsCompatMixinPlugin implements IMixinConfigPlugin {
                     shouldApply = false;
                 }
             }
-            LOGGER.info("Apply mixin {}? {}", mixinClassName, shouldApply);
             return shouldApply;
         } catch (IOException | ClassNotFoundException e) {
-            LOGGER.error("Failed to load mixin {}: {}", mixinClassName, e.getMessage());
             return false;
         }
     }

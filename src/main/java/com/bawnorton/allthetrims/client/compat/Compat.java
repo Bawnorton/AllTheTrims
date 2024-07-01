@@ -4,28 +4,28 @@ import com.bawnorton.allthetrims.client.compat.elytratrims.ElytraTrimsCompat;
 import com.bawnorton.allthetrims.client.compat.iris.IrisCompat;
 import com.bawnorton.allthetrims.client.compat.showmeyourskin.ShowMeYourSkinCompat;
 import com.bawnorton.allthetrims.client.compat.yacl.YACLImpl;
-import com.bawnorton.allthetrims.util.LazySupplier;
+import com.bawnorton.allthetrims.platform.Platform;
 import java.util.Optional;
 
 public final class Compat {
-    private static final LazySupplier<CompatEntry<IrisCompat>> irisCompat = LazySupplier.of(() -> CompatEntry.of("iris", new IrisCompat()));
-    private static final LazySupplier<CompatEntry<ElytraTrimsCompat>> elytraTrimsCompat = LazySupplier.of(() -> CompatEntry.of("elytratrims", new ElytraTrimsCompat()));
-    private static final LazySupplier<CompatEntry<ShowMeYourSkinCompat>> showMeYourSkinCompat = LazySupplier.of(() -> CompatEntry.of("showmeyourskin", new ShowMeYourSkinCompat()));
-    private static final LazySupplier<CompatEntry<YACLImpl>> yaclImpl = LazySupplier.of(() -> CompatEntry.of("yet_another_config_lib_v3", new YACLImpl()));
+    private static IrisCompat irisCompat;
+    private static ElytraTrimsCompat elytraTrimsCompat;
+    private static ShowMeYourSkinCompat showMeYourSkinCompat;
+    private static YACLImpl yaclImpl;
 
     public static Optional<IrisCompat> getIrisCompat() {
-        return irisCompat.get().getCompat();
+        return Platform.isModLoaded("iris") ? Optional.of(irisCompat == null ? irisCompat = new IrisCompat() : irisCompat) : Optional.empty();
     }
 
     public static Optional<ElytraTrimsCompat> getElytraTrimsCompat() {
-        return elytraTrimsCompat.get().getCompat();
+        return Platform.isModLoaded("elytratrims") ? Optional.of(elytraTrimsCompat == null ? elytraTrimsCompat = new ElytraTrimsCompat() : elytraTrimsCompat) : Optional.empty();
     }
 
     public static Optional<ShowMeYourSkinCompat> getShowMeYourSkinCompat() {
-        return showMeYourSkinCompat.get().getCompat();
+        return Platform.isModLoaded("showmeyourskin") ? Optional.of(showMeYourSkinCompat == null ? showMeYourSkinCompat = new ShowMeYourSkinCompat() : showMeYourSkinCompat) : Optional.empty();
     }
 
     public static Optional<YACLImpl> getYaclImpl() {
-        return yaclImpl.get().getCompat();
+        return Platform.isModLoaded("yet_another_config_lib_v3") ? Optional.of(yaclImpl == null ? yaclImpl = new YACLImpl() : yaclImpl) : Optional.empty();
     }
 }

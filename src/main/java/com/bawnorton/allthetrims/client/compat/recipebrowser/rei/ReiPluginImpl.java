@@ -12,6 +12,8 @@ import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmithingTrimRecipe;
 
 @SuppressWarnings("UnstableApiUsage")
+//? if neoforge
+@me.shedaniel.rei.forge.REIPluginClient
 public final class ReiPluginImpl implements REIClientPlugin {
     public static final CategoryIdentifier<DefaultSmithingDisplay> TRIMMING = CategoryIdentifier.of(AllTheTrims.MOD_ID, "plugins/smithing");
 

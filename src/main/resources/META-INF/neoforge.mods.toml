@@ -19,6 +19,9 @@ config = "allthetrims.mixins.json"
 [[mixins]]
 config = "allthetrims-client.mixins.json"
 
+[[mixins]]
+config = "allthetrims-compat.mixins.json"
+
 [[dependencies.allthetrims]]
 modId = "minecraft"
 type = "required"

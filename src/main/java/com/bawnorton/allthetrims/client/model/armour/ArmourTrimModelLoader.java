@@ -40,6 +40,7 @@ public final class ArmourTrimModelLoader extends Adaptable<TrimModelLoaderAdapte
             TrimmableItemModel itemModel = resourceParser.fromResource(trimmableResource.resource(), TrimmableItemModel.class);
             if(itemModel == null) continue;
             if(itemModel.textures == null) itemModel.textures = TextureLayers.empty();
+            if(itemModel.overrides == null) itemModel.overrides = new ArrayList<>();
 
             Identifier modelId = trimmableResource.modelId().withSuffixedPath("_%s_trim".formatted(AllTheTrims.DYNAMIC));
 

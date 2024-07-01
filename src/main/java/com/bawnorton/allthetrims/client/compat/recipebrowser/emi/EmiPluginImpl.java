@@ -20,6 +20,8 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.ItemTags;
 
+//? if neoforge
+@dev.emi.emi.api.EmiEntrypoint
 public final class EmiPluginImpl implements EmiPlugin {
     @Override
     public void register(EmiRegistry registry) {

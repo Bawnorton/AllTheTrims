@@ -21,6 +21,7 @@ public final class Platform {
 *///?} elif neoforge {
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLPaths;
+import net.neoforged.fml.loading.LoadingModList;
 
 public final class Platform {
     public static Path getConfigDir() {
@@ -32,7 +33,15 @@ public final class Platform {
     }
 
     public static boolean isModLoaded(String modId) {
-        return ModList.get().isLoaded(modId);
+        ModList modList = ModList.get();
+        if(modList != null) {
+            return modList.isLoaded(modId);
+        }
+        LoadingModList loadingModList = LoadingModList.get();
+        if(loadingModList != null) {
+            return loadingModList.getModFileById(modId) != null;
+        }
+        return false;
     }
 }
 //?}
