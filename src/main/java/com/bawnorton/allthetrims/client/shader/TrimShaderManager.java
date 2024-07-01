@@ -8,7 +8,6 @@ import net.minecraft.client.gl.ShaderProgram;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
 import net.minecraft.entity.Entity;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.Item;
 
 public final class TrimShaderManager extends Adaptable<TrimRenderLayerAdpater> {

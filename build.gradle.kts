@@ -3,7 +3,7 @@
 plugins {
     `maven-publish`
     kotlin("jvm") version "1.9.22"
-    id("dev.architectury.loom") version "1.6-SNAPSHOT"
+    id("dev.architectury.loom") version "1.6.+"
     id("architectury-plugin") version "3.4-SNAPSHOT"
     id("me.modmuss50.mod-publish-plugin") version "0.5.+"
 }
@@ -46,6 +46,41 @@ class MinecraftVersionData {
     }
 }
 
+class CompatMixins {
+    private var common : List<MixinEntry> = listOf(
+        MixinEntry("elytratrims.TrimOverlayRendererMixin"),
+        MixinEntry("rei.DefaultClientPluginMixin"),
+        MixinEntry("emi.VanillaPluginMixin"),
+        MixinEntry("jei.SmithingRecipeCategoryMixin")
+    )
+
+    private var fabric : List<MixinEntry> = listOf(
+        MixinEntry("wildfiregender.fabric.GenderArmorLayerMixin")
+    )
+
+    private var neoforge : List<MixinEntry> = listOf()
+
+    fun getMixins() : Map<String, String> {
+        val mixins = common + if(loader.isFabric) fabric else neoforge
+        val clientMixins = ArrayList<String>()
+        val sharedMixins = ArrayList<String>()
+        for (mixin in mixins) {
+            if (mixin.client) {
+                clientMixins += mixin.name
+            } else {
+                sharedMixins += mixin.name
+            }
+        }
+        return mapOf(
+            "compat_mixins" to "[\n${sharedMixins.joinToString(",\n") { "\"$it\"" }}\n]",
+            "compat_client_mixins" to "[\n${clientMixins.joinToString(",\n") { "\"$it\"" }}\n]"
+        )
+    }
+
+    private data class MixinEntry(val name : String, val client: Boolean = true)
+}
+
+
 fun DependencyHandler.neoForge(dep: Any) = add("neoForge", dep)
 fun DependencyHandler.forge(dep: Any) = add("forge", dep)
 fun DependencyHandler.forgeRuntimeLibrary(dep: Any) = add("forgeRuntimeLibrary", dep)
@@ -55,7 +90,7 @@ val loader = LoaderData()
 val minecraftVersion = MinecraftVersionData()
 val awName = "allthetrims.accesswidener"
 
-version = "${mod.version}+$minecraftVersion"
+version = "${mod.version}-$loader+$minecraftVersion"
 group = mod.group
 base.archivesName.set(mod.name)
 
@@ -77,20 +112,14 @@ dependencies {
 
     modImplementation("dev.isxander:yet-another-config-lib:${property("yacl")}+$minecraftVersion-$loader")
 
-    modCompileOnly("me.shedaniel:RoughlyEnoughItems-api-$loader:${property("rei")}")
-    modCompileOnly("me.shedaniel:RoughlyEnoughItems-default-plugin-$loader:${property("rei")}")
     modCompileOnly("me.shedaniel:RoughlyEnoughItems-$loader:${property("rei")}")
     modCompileOnly("me.shedaniel.cloth:cloth-config-$loader:${property("cloth_config")}")
 
-    modCompileOnly("dev.emi:emi-xplat-intermediary:${property("emi")}+$minecraftVersion:api")
-    modCompileOnly("dev.emi:emi-xplat-intermediary:${property("emi")}+$minecraftVersion")
+    modCompileOnly("dev.emi:emi-$loader:${property("emi")}+$minecraftVersion:api")
+    modCompileOnly("dev.emi:emi-$loader:${property("emi")}+$minecraftVersion")
 
     modCompileOnly("mezz.jei:jei-$minecraftVersion-$loader-api:${property("jei")}") { isTransitive = false }
-    modImplementation("mezz.jei:jei-$minecraftVersion-$loader:${property("jei")}") { isTransitive = false }
-
-    modCompileOnly(fileTree("libs") {
-        include("**/*.jar") // deps on mods that haven't been released
-    })
+    modCompileOnly("mezz.jei:jei-$minecraftVersion-$loader:${property("jei")}") { isTransitive = false }
 }
 
 loom {
@@ -110,6 +139,13 @@ loom {
 tasks {
     withType<JavaCompile> {
         options.release = 21
+    }
+
+    processResources {
+        val compatMixins = CompatMixins().getMixins()
+
+        inputs.properties(compatMixins)
+        filesMatching("allthetrims-compat.mixins.json") { expand(compatMixins) }
     }
 }
 
@@ -137,17 +173,14 @@ if (stonecutter.current.isActive) {
 if(loader.isFabric) {
     dependencies {
         modImplementation("net.fabricmc:fabric-loader:${loader.getVersion()}")
-        modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}")
+        modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}+$minecraftVersion")
 
         modImplementation("com.terraformersmc:modmenu:${property("mod_menu")}")
 
-        modCompileOnly("maven.modrinth:iris:${property("iris")}")
-        modImplementation("maven.modrinth:elytra-trims:${property("elytra_trims")}")
-        modImplementation("maven.modrinth:show-me-your-skin:${property("show_me_your_skin")}")
-
-        modRuntimeOnly("nl.enjarai:cicada-lib:${property("cicada_lib")}")
-        modRuntimeOnly("org.ladysnake.cardinal-components-api:cardinal-components-base:${property("cardinal_components")}")
-        modRuntimeOnly("org.ladysnake.cardinal-components-api:cardinal-components-entity:${property("cardinal_components")}")
+        modCompileOnly("maven.modrinth:elytra-trims:${property("elytra_trims")}")
+        modCompileOnly("maven.modrinth:iris:${property("iris")}+$minecraftVersion")
+        modCompileOnly("maven.modrinth:show-me-your-skin:${property("show_me_your_skin")}+$minecraftVersion")
+        modCompileOnly("maven.modrinth:female-gender:${property("wildfire_gender")}+$minecraftVersion")
 
         mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
     }
@@ -159,21 +192,8 @@ if(loader.isFabric) {
                 "minecraft_dependency" to mod.minecraftDependency
             )
 
-            val compatMixins = mapOf(
-                "compat_mixins" to """""",
-                "compat_client_mixins" to """
-                "elytratrims.TrimOverlayRendererMixin",
-                "wildfiregender.fabric.GenderArmorLayerMixin",
-                "rei.DefaultClientPluginMixin",
-                "emi.VanillaPluginMixin",
-                "jei.SmithingRecipeCategoryMixin"
-            """
-            )
-
             inputs.properties(modMetadata)
-            inputs.properties(compatMixins)
             filesMatching("fabric.mod.json") { expand(modMetadata) }
-            filesMatching("allthetrims-compat.mixins.json") { expand(compatMixins) }
         }
     }
 }
@@ -182,14 +202,16 @@ if (loader.isNeoForge) {
     dependencies {
         neoForge("net.neoforged:neoforge:${loader.getVersion()}")
 
+        modCompileOnly(fileTree("libs") {
+            include("*.jar")
+        })
+
         forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:json:${findProperty("quilt_parsers")}")!!)
         forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:gson:${findProperty("quilt_parsers")}")!!)
 
         mappings(loom.layered {
             mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
-            if(loader.isNeoForge) {
-                mappings(file("mappings/fix.tiny"))
-            }
+            mappings("dev.architectury:yarn-mappings-patch-neoforge:1.21+build.4")
         })
     }
 
@@ -201,19 +223,8 @@ if (loader.isNeoForge) {
                 "loader_version" to loader.getVersion()
             )
 
-            val compatMixins = mapOf(
-                "compat_mixins" to """""",
-                "compat_client_mixins" to """
-                    "rei.DefaultClientPluginMixin",
-                    "emi.VanillaPluginMixin",
-                    "jei.SmithingRecipeCategoryMixin"
-                """
-            )
-
             inputs.properties(modMetadata)
-            inputs.properties(compatMixins)
             filesMatching("META-INF/neoforge.mods.toml") { expand(modMetadata) }
-            filesMatching("allthetrims-compat.mixins.json") { expand(compatMixins) }
         }
 
         remapJar {

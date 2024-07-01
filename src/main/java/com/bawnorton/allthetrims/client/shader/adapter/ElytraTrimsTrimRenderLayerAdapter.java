@@ -1,9 +1,7 @@
 package com.bawnorton.allthetrims.client.shader.adapter;
 
-import com.bawnorton.allthetrims.client.compat.Compat;
-import com.bawnorton.allthetrims.client.compat.showmeyourskin.ShowMeYourSkinCompat;
 import com.bawnorton.allthetrims.client.mixin.accessor.RenderPhaseAccessor;
-import com.bawnorton.allthetrims.client.model.adapter.ElytraTrimModelLoaderAdapter;
+import com.bawnorton.allthetrims.client.model.armour.adapter.ElytraTrimModelLoaderAdapter;
 import com.bawnorton.allthetrims.client.palette.TrimPalette;
 import com.bawnorton.allthetrims.util.MemoizedFunction;
 import com.bawnorton.allthetrims.util.Memoizer;

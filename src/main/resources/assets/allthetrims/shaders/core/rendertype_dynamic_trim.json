@@ -1,6 +1,6 @@
 {
-    "vertex": "rendertype_dynamic_trim",
-    "fragment": "rendertype_dynamic_trim",
+    "vertex": "allthetrims:rendertype_dynamic_trim",
+    "fragment": "allthetrims:rendertype_dynamic_trim",
     "samplers": [
         { "name": "Sampler0" },
         { "name": "Sampler2" }

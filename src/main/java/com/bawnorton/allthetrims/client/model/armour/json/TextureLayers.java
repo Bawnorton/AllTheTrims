@@ -1,5 +1,6 @@
-package com.bawnorton.allthetrims.client.model.json;
+package com.bawnorton.allthetrims.client.model.armour.json;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public final class TextureLayers {
@@ -7,6 +8,10 @@ public final class TextureLayers {
 
     private TextureLayers(List<String> layers) {
         this.layers = layers;
+    }
+
+    public static TextureLayers empty() {
+        return new TextureLayers(new ArrayList<>());
     }
 
     public static TextureLayers of(List<String> layers) {

@@ -1,10 +1,9 @@
-package com.bawnorton.allthetrims.client.model.adapter;
+package com.bawnorton.allthetrims.client.model.armour.adapter;
 
 import com.bawnorton.allthetrims.AllTheTrims;
 import net.minecraft.item.AnimalArmorItem;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
-import net.minecraft.registry.Registries;
 
 public final class DefaultTrimModelLoaderAdapter extends TrimModelLoaderAdapter {
     @Override
@@ -17,10 +16,7 @@ public final class DefaultTrimModelLoaderAdapter extends TrimModelLoaderAdapter 
 
     @Override
     public Integer getLayerCount(Item item) {
-        if(Registries.ITEM.getId(item).getNamespace().equals("minecraft")) {
-            return 4;
-        }
-        return 8;
+        return 4;
     }
 
     @Override

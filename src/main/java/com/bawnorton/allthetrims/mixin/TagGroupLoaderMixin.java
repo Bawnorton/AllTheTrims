@@ -24,10 +24,10 @@ public abstract class TagGroupLoaderMixin {
 
     @ModifyVariable(
             //? if fabric {
-            method = "method_51476",
-            //?} elif neoforge {
-            /*method = "lambda$build$6",
-            *///?}
+            /*method = "method_51476",
+            *///?} elif neoforge {
+            method = "lambda$build$6",
+            //?}
             at = @At("HEAD"),
             argsOnly = true
     )

@@ -1,6 +1,5 @@
 package com.bawnorton.allthetrims.mixin.compat.elytratrims;
 
-/*? if fabric {*/
 
 import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
@@ -77,4 +76,3 @@ public abstract class TrimOverlayRendererMixin {
         renderer.renderTrim(trim, sprite, matrices, provider, light, OverlayTexture.DEFAULT_UV, colour, modelId, ETAtlasHolder.INSTANCE.getAtlas(), renderLayer, model::render);
     }
 }
-/*?}*/

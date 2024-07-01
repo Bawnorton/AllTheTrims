@@ -1,7 +1,7 @@
-package com.bawnorton.allthetrims.client.model;
+package com.bawnorton.allthetrims.client.model.armour;
 
-import com.bawnorton.allthetrims.client.model.json.TextureLayers;
-import com.bawnorton.allthetrims.client.model.json.serialisation.TextureLayersSerializer;
+import com.bawnorton.allthetrims.client.model.armour.json.TextureLayers;
+import com.bawnorton.allthetrims.client.model.armour.json.serialisation.TextureLayersSerializer;
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

@@ -1,11 +1,13 @@
 package com.bawnorton.allthetrims.client;
 
+import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.compat.Compat;
 import com.bawnorton.allthetrims.client.config.Config;
 import com.bawnorton.allthetrims.client.config.ConfigManager;
-import com.bawnorton.allthetrims.client.model.TrimModelLoader;
-import com.bawnorton.allthetrims.client.model.adapter.DefaultTrimModelLoaderAdapter;
-import com.bawnorton.allthetrims.client.model.adapter.ElytraTrimModelLoaderAdapter;
+import com.bawnorton.allthetrims.client.model.armour.ArmourTrimModelLoader;
+import com.bawnorton.allthetrims.client.model.armour.adapter.DefaultTrimModelLoaderAdapter;
+import com.bawnorton.allthetrims.client.model.armour.adapter.ElytraTrimModelLoaderAdapter;
+import com.bawnorton.allthetrims.client.model.item.ItemTrimModelLoader;
 import com.bawnorton.allthetrims.client.palette.TrimPalette;
 import com.bawnorton.allthetrims.client.palette.TrimPalettes;
 import com.bawnorton.allthetrims.client.render.LayerData;
@@ -20,21 +22,20 @@ import net.minecraft.client.render.RenderLayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.trim.ArmorTrim;
 
-import static com.bawnorton.allthetrims.AllTheTrims.MODEL_INDEX;
-
 public final class AllTheTrimsClient {
     private static final LayerData layerData = new LayerData();
     private static final TrimPalettes trimPalettes = new TrimPalettes();
     private static final TrimRenderer trimRenderer = new TrimRenderer();
-    private static final TrimModelLoader modelLoader = new TrimModelLoader(layerData);
+    private static final ArmourTrimModelLoader armourModelLoader = new ArmourTrimModelLoader(layerData);
+    private static final ItemTrimModelLoader itemModelLoader = new ItemTrimModelLoader(layerData);
     private static final TrimShaderManager shaderManager = new TrimShaderManager();
     private static final ConfigManager configManager = new ConfigManager();
 
     public static void init() {
-        modelLoader.setDefaultAdapter(new DefaultTrimModelLoaderAdapter());
+        armourModelLoader.setDefaultAdapter(new DefaultTrimModelLoaderAdapter());
 
         if(Compat.getElytraTrimsCompat().isPresent()) {
-            modelLoader.registerAdapter(new ElytraTrimModelLoaderAdapter(), ElytraTrimModelLoaderAdapter.APPLICABLE);
+            armourModelLoader.registerAdapter(new ElytraTrimModelLoaderAdapter(), ElytraTrimModelLoaderAdapter.APPLICABLE);
             shaderManager.registerAdapter(new ElytraTrimsTrimRenderLayerAdapter(), ElytraTrimsTrimRenderLayerAdapter.APPLICABLE);
         }
 
@@ -49,7 +50,7 @@ public final class AllTheTrimsClient {
     }
 
     public static boolean isDynamic(ArmorTrim trim) {
-        return trim.getMaterial().value().itemModelIndex() == MODEL_INDEX || getConfig().overrideExisting;
+        return trim.getMaterial().value().itemModelIndex() == AllTheTrims.MODEL_INDEX || getConfig().overrideExisting;
     }
 
     public static TrimPalettes getTrimPalettes() {
@@ -60,8 +61,12 @@ public final class AllTheTrimsClient {
         return trimRenderer;
     }
 
-    public static TrimModelLoader getModelLoader() {
-        return modelLoader;
+    public static ArmourTrimModelLoader getArmourModelLoader() {
+        return armourModelLoader;
+    }
+
+    public static ItemTrimModelLoader getItemModelLoader() {
+        return itemModelLoader;
     }
 
     public static LayerData getLayerData() {

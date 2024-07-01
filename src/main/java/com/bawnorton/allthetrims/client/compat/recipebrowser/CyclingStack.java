@@ -1,7 +1,6 @@
 package com.bawnorton.allthetrims.client.compat.recipebrowser;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Executors;

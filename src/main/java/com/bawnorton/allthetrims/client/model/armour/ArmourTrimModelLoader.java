@@ -1,13 +1,13 @@
-package com.bawnorton.allthetrims.client.model;
+package com.bawnorton.allthetrims.client.model.armour;
 
 import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.debug.Debugger;
-import com.bawnorton.allthetrims.client.model.adapter.TrimModelLoaderAdapter;
-import com.bawnorton.allthetrims.client.model.json.ModelOverride;
-import com.bawnorton.allthetrims.client.model.json.TextureLayers;
-import com.bawnorton.allthetrims.client.model.json.TrimModelPredicate;
-import com.bawnorton.allthetrims.client.model.json.TrimmableItemModel;
+import com.bawnorton.allthetrims.client.model.armour.adapter.TrimModelLoaderAdapter;
+import com.bawnorton.allthetrims.client.model.armour.json.ModelOverride;
+import com.bawnorton.allthetrims.client.model.armour.json.TextureLayers;
+import com.bawnorton.allthetrims.client.model.armour.json.TrimModelPredicate;
+import com.bawnorton.allthetrims.client.model.armour.json.TrimmableItemModel;
 import com.bawnorton.allthetrims.client.render.LayerData;
 import com.bawnorton.allthetrims.util.Adaptable;
 import net.minecraft.item.Item;
@@ -23,12 +23,12 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class TrimModelLoader extends Adaptable<TrimModelLoaderAdapter> {
+public final class ArmourTrimModelLoader extends Adaptable<TrimModelLoaderAdapter> {
     private static final Pattern itemIdPattern = Pattern.compile("^models/item/(.+)?(?=.json).json$");
     private final ResourceParser resourceParser;
     private final LayerData layerData;
 
-    public TrimModelLoader(LayerData layerData) {
+    public ArmourTrimModelLoader(LayerData layerData) {
         this.layerData = layerData;
         this.resourceParser = new ResourceParser();
     }
@@ -39,6 +39,7 @@ public final class TrimModelLoader extends Adaptable<TrimModelLoaderAdapter> {
         for(TrimmableResource trimmableResource : trimmableResources) {
             TrimmableItemModel itemModel = resourceParser.fromResource(trimmableResource.resource(), TrimmableItemModel.class);
             if(itemModel == null) continue;
+            if(itemModel.textures == null) itemModel.textures = TextureLayers.empty();
 
             Identifier modelId = trimmableResource.modelId().withSuffixedPath("_%s_trim".formatted(AllTheTrims.DYNAMIC));
 

@@ -3,7 +3,7 @@ package com.bawnorton.allthetrims.platform;
 import java.nio.file.Path;
 
 //? if fabric {
-import net.fabricmc.loader.api.FabricLoader;
+/*import net.fabricmc.loader.api.FabricLoader;
 
 public final class Platform {
     public static Path getConfigDir() {
@@ -18,8 +18,8 @@ public final class Platform {
         return FabricLoader.getInstance().isModLoaded(modId);
     }
 }
-//?} elif neoforge {
-/*import net.neoforged.fml.ModList;
+*///?} elif neoforge {
+import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLPaths;
 
 public final class Platform {
@@ -35,5 +35,5 @@ public final class Platform {
         return ModList.get().isLoaded(modId);
     }
 }
-*///?}
+//?}
 

@@ -1,4 +1,4 @@
-package com.bawnorton.allthetrims.client.model.json;
+package com.bawnorton.allthetrims.client.model.armour.json;
 
 import java.util.ArrayList;
 import java.util.List;

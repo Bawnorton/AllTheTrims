@@ -19,6 +19,6 @@ public abstract class BakedModelManagerMixin {
             )
     )
     private static Map<Identifier, Resource> addDynamicTrimModels(Map<Identifier, Resource> original) {
-        return AllTheTrimsClient.getModelLoader().loadModels(original);
+        return AllTheTrimsClient.getArmourModelLoader().loadModels(original);
     }
 }

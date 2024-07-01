@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 public final class LazySupplier<T> implements Supplier<T> {
     private final Supplier<T> supplier;
     private T value;
-    private boolean isCached = false;
 
     public LazySupplier(Supplier<T> supplier) {
         this.supplier = supplier;
@@ -17,9 +16,8 @@ public final class LazySupplier<T> implements Supplier<T> {
 
     @Override
     public T get() {
-        if(isCached) return value;
+        if (value != null) return value;
 
-        isCached = true;
         value = supplier.get();
         return value;
     }

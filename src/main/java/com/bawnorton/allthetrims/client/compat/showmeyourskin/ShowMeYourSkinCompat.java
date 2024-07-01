@@ -1,6 +1,8 @@
 package com.bawnorton.allthetrims.client.compat.showmeyourskin;
 
-import net.minecraft.client.render.RenderLayer;
+//? if fabric {
+
+/*import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Equipment;
@@ -21,3 +23,19 @@ public final class ShowMeYourSkinCompat {
         return ColorHelper.channelFromFloat(alpha);
     }
 }
+*///?} else {
+import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.TexturedRenderLayers;
+import net.minecraft.entity.Entity;
+import net.minecraft.item.Item;
+
+public final class ShowMeYourSkinCompat {
+    public RenderLayer getRenderLayer() {
+        return TexturedRenderLayers.getArmorTrims(false);
+    }
+
+    public int getAlpha(Entity entity, Item trimmed) {
+        return 255;
+    }
+}
+//?}

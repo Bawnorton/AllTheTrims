@@ -1,4 +1,4 @@
-package com.bawnorton.allthetrims.client.model.adapter;
+package com.bawnorton.allthetrims.client.model.armour.adapter;
 
 import com.bawnorton.allthetrims.AllTheTrims;
 import net.minecraft.item.ElytraItem;

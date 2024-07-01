@@ -1,4 +1,4 @@
-package com.bawnorton.allthetrims.client.model.adapter;
+package com.bawnorton.allthetrims.client.model.armour.adapter;
 
 import net.minecraft.item.Item;
 

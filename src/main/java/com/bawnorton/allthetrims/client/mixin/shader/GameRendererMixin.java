@@ -1,5 +1,6 @@
 package com.bawnorton.allthetrims.client.mixin.shader;
 
+import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import com.mojang.datafixers.util.Pair;
@@ -26,7 +27,15 @@ public abstract class GameRendererMixin {
     private List<Pair<ShaderProgram, Consumer<ShaderProgram>>> loadDynamicTrimProgram(List<Pair<ShaderProgram, Consumer<ShaderProgram>>> shaders, Object arg, ResourceFactory factory) throws IOException {
         shaders.add(
                 Pair.of(
-                        new ShaderProgram(factory, "rendertype_dynamic_trim", VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL),
+                        //? if fabric {
+                        /*new net.fabricmc.fabric.impl.client.rendering.FabricShaderProgram(
+                        *///?} elif neoforge {
+                        new ShaderProgram(
+                        //?}
+                                factory,
+                                AllTheTrims.id("rendertype_dynamic_trim"),
+                                VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL
+                        ),
                         program -> AllTheTrimsClient.getShaderManger().renderTypeDynamicTrimProgram = program
                 )
         );
