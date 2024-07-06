@@ -1,4 +1,4 @@
-package com.bawnorton.allthetrims;
+package com.bawnorton.allthetrims.mixin.compat;
 
 import com.bawnorton.allthetrims.platform.Platform;
 import com.bawnorton.allthetrims.util.mixin.ConditionalMixin;

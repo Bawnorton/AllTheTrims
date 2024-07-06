@@ -2,7 +2,7 @@ package com.bawnorton.allthetrims.client.compat.showmeyourskin;
 
 //? if fabric {
 
-/*import net.minecraft.client.render.RenderLayer;
+import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Equipment;
@@ -23,8 +23,8 @@ public final class ShowMeYourSkinCompat {
         return ColorHelper.channelFromFloat(alpha);
     }
 }
-*///?} else {
-import net.minecraft.client.render.RenderLayer;
+//?} else {
+/*import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.TexturedRenderLayers;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
@@ -38,4 +38,4 @@ public final class ShowMeYourSkinCompat {
         return 255;
     }
 }
-//?}
+*///?}

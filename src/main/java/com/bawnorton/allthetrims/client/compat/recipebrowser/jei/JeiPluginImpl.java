@@ -25,7 +25,7 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
 //? if neoforge
-@mezz.jei.api.JeiPlugin
+/*@mezz.jei.api.JeiPlugin*/
 public final class JeiPluginImpl implements IModPlugin {
     @SuppressWarnings("unchecked")
     public static final RecipeType<RecipeEntry<SmithingRecipe>> TRIMMING = new RecipeType<>(AllTheTrims.id("trimming"), (Class<RecipeEntry<SmithingRecipe>>) (Object) RecipeEntry.class);

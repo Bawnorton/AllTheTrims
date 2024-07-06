@@ -34,7 +34,7 @@ public abstract class TrimRenderLayerAdpater {
     }
 
     protected RenderContext getContext() {
-        return AllTheTrimsClient.getShaderManger().context;
+        return AllTheTrimsClient.getShaderManger().getContext();
     }
 
     protected int[] getPaletteColours(TrimPalette palette) {

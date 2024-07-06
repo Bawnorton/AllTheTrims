@@ -12,7 +12,7 @@ import net.minecraft.item.Item;
 
 public final class TrimShaderManager extends Adaptable<TrimRenderLayerAdpater> {
     public ShaderProgram renderTypeDynamicTrimProgram;
-    public RenderContext context;
+    private RenderContext context;
 
     private final RenderPhase.ShaderProgram DYNAMIC_TRIM_PROGRAM = new RenderPhase.ShaderProgram(() -> renderTypeDynamicTrimProgram);
 
@@ -28,6 +28,10 @@ public final class TrimShaderManager extends Adaptable<TrimRenderLayerAdpater> {
 
     public void setContext(Entity entity, Item trimmed) {
         context = new RenderContext(entity, trimmed);
+    }
+
+    public RenderContext getContext() {
+        return context;
     }
 
     public void setTrimPalette(int[] trimPalette) {

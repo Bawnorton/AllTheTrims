@@ -2,8 +2,7 @@
   "required": true,
   "package": "com.bawnorton.allthetrims.mixin.compat",
   "minVersion": "0.8",
-  "plugin": "com.bawnorton.allthetrims.AllTheTrimsCompatMixinPlugin",
-  "client": ${compat_client_mixins},
+  "plugin": "com.bawnorton.allthetrims.mixin.compat.AllTheTrimsCompatMixinPlugin",
   "mixins": ${compat_mixins},
   "injectors": {
     "defaultRequire": 1

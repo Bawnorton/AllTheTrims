@@ -55,7 +55,7 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
             }
 
             Map<String, Identifier> newPermutations = new HashMap<>(palettedPermutations);
-            newPermutations.put("dynamic", Identifier.ofVanilla("trims/color_palettes/%s".formatted(AllTheTrims.DYNAMIC)));
+            newPermutations.put(AllTheTrims.DYNAMIC, Identifier.ofVanilla("trims/color_palettes/%s".formatted(AllTheTrims.DYNAMIC)));
             return function.apply(newTextures, paletteKey, newPermutations);
         };
     }

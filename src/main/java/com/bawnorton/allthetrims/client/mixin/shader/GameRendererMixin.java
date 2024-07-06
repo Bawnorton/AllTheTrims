@@ -28,10 +28,10 @@ public abstract class GameRendererMixin {
         shaders.add(
                 Pair.of(
                         //? if fabric {
-                        /*new net.fabricmc.fabric.impl.client.rendering.FabricShaderProgram(
-                        *///?} elif neoforge {
-                        new ShaderProgram(
-                        //?}
+                        new net.fabricmc.fabric.impl.client.rendering.FabricShaderProgram(
+                        //?} elif neoforge {
+                        /*new ShaderProgram(
+                        *///?}
                                 factory,
                                 AllTheTrims.id("rendertype_dynamic_trim"),
                                 VertexFormats.POSITION_COLOR_TEXTURE_OVERLAY_LIGHT_NORMAL

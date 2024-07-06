@@ -29,10 +29,10 @@ public abstract class ShaderProgramMixin {
 
     @Inject(
             //? if fabric {
-            /*method = "<init>",
-            *///?} elif neoforge {
-            method = "<init>(Lnet/minecraft/resource/ResourceFactory;Lnet/minecraft/util/Identifier;Lnet/minecraft/client/render/VertexFormat;)V",
-            //?}
+            method = "<init>",
+            //?} elif neoforge {
+            /*method = "<init>(Lnet/minecraft/resource/ResourceFactory;Lnet/minecraft/util/Identifier;Lnet/minecraft/client/render/VertexFormat;)V",
+            *///?}
             at = @At("TAIL")
     )
     private void initAdditionalUniforms(CallbackInfo ci) {

@@ -3,7 +3,7 @@
 plugins {
     `maven-publish`
     kotlin("jvm") version "1.9.22"
-    id("dev.architectury.loom") version "1.6.+"
+    id("dev.architectury.loom") version "1.7-SNAPSHOT"
     id("architectury-plugin") version "3.4-SNAPSHOT"
     id("me.modmuss50.mod-publish-plugin") version "0.5.+"
 }
@@ -47,39 +47,27 @@ class MinecraftVersionData {
 }
 
 class CompatMixins {
-    private var common : List<MixinEntry> = listOf(
-        MixinEntry("elytratrims.TrimOverlayRendererMixin"),
-        MixinEntry("rei.DefaultClientPluginMixin"),
-        MixinEntry("emi.VanillaPluginMixin"),
-        MixinEntry("jei.SmithingRecipeCategoryMixin")
+    private var common : List<String> = listOf(
+        "elytratrims.TrimOverlayRendererMixin",
+        "rei.DefaultClientPluginMixin",
+        "emi.VanillaPluginMixin",
+        "jei.SmithingRecipeCategoryMixin"
     )
 
-    private var fabric : List<MixinEntry> = listOf(
-        MixinEntry("wildfiregender.fabric.GenderArmorLayerMixin")
+    private var fabric : List<String> = listOf(
+        "fabric.mythicmetals.MythicMetalsClientMixin",
+        "fabric.wildfiregender.GenderArmorLayerMixin"
     )
 
-    private var neoforge : List<MixinEntry> = listOf()
+    private var neoforge : List<String> = listOf()
 
     fun getMixins() : Map<String, String> {
         val mixins = common + if(loader.isFabric) fabric else neoforge
-        val clientMixins = ArrayList<String>()
-        val sharedMixins = ArrayList<String>()
-        for (mixin in mixins) {
-            if (mixin.client) {
-                clientMixins += mixin.name
-            } else {
-                sharedMixins += mixin.name
-            }
-        }
         return mapOf(
-            "compat_mixins" to "[\n${sharedMixins.joinToString(",\n") { "\"$it\"" }}\n]",
-            "compat_client_mixins" to "[\n${clientMixins.joinToString(",\n") { "\"$it\"" }}\n]"
+            "compat_mixins" to "[\n${mixins.joinToString(",\n") { "\"$it\"" }}\n]"
         )
     }
-
-    private data class MixinEntry(val name : String, val client: Boolean = true)
 }
-
 
 fun DependencyHandler.neoForge(dep: Any) = add("neoForge", dep)
 fun DependencyHandler.forge(dep: Any) = add("forge", dep)
@@ -181,6 +169,7 @@ if(loader.isFabric) {
         modCompileOnly("maven.modrinth:iris:${property("iris")}+$minecraftVersion")
         modCompileOnly("maven.modrinth:show-me-your-skin:${property("show_me_your_skin")}+$minecraftVersion")
         modCompileOnly("maven.modrinth:female-gender:${property("wildfire_gender")}+$minecraftVersion")
+        modCompileOnly("maven.modrinth:mythicmetals:${property("mythic_metals")}")
 
         mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
     }
