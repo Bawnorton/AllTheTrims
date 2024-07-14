@@ -3,109 +3,118 @@ package com.bawnorton.allthetrims.client.model.armour;
 import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.debug.Debugger;
-import com.bawnorton.allthetrims.client.model.armour.adapter.TrimModelLoaderAdapter;
-import com.bawnorton.allthetrims.client.model.armour.json.ModelOverride;
-import com.bawnorton.allthetrims.client.model.armour.json.TextureLayers;
-import com.bawnorton.allthetrims.client.model.armour.json.TrimModelPredicate;
-import com.bawnorton.allthetrims.client.model.armour.json.TrimmableItemModel;
 import com.bawnorton.allthetrims.client.render.LayerData;
-import com.bawnorton.allthetrims.util.Adaptable;
-import net.minecraft.item.Item;
-import net.minecraft.item.Items;
-import net.minecraft.registry.Registries;
+import it.unimi.dsi.fastutil.Pair;
+import javax.imageio.ImageIO;
 import net.minecraft.resource.Resource;
+import net.minecraft.resource.ResourcePack;
 import net.minecraft.util.Identifier;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import org.spongepowered.asm.mixin.Unique;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
+import java.util.function.IntUnaryOperator;
+import java.util.function.Supplier;
 
-public final class ArmourTrimModelLoader extends Adaptable<TrimModelLoaderAdapter> {
-    private static final Pattern itemIdPattern = Pattern.compile("^models/item/(.+)?(?=.json).json$");
-    private final ResourceParser resourceParser;
+public final class ArmourTrimModelLoader {
     private final LayerData layerData;
+    private final Map<String, List<Integer>> trimTemplateColours = Collections.synchronizedMap(new HashMap<>());
+    private final List<Identifier> skippedLayers = new ArrayList<>();
 
     public ArmourTrimModelLoader(LayerData layerData) {
         this.layerData = layerData;
-        this.resourceParser = new ResourceParser();
+    }
+    
+    public Optional<Resource> loadLayeredResource(Identifier identifier, BufferedImage bufferedImage, Identifier originalIdentifier, int layer, ResourcePack resourcePack) {
+        int layerColour = getLayerColour(bufferedImage, originalIdentifier.getPath(), layer);
+        Pair<BufferedImage, Boolean> newImage;
+        if(originalIdentifier.getPath().startsWith("textures/trims/items")) {
+            newImage = maskToColour(bufferedImage, layerColour, layerColour);
+        } else {
+            newImage = maskToColour(bufferedImage, layerColour, 0xFFFFFFFF);
+        }
+
+        if(newImage.right()) {
+            skippedLayers.add(identifier);
+        } else {
+            layerData.setMaxSupportedLayer(originalIdentifier, layer);
+            Debugger.createImage("%s".formatted(originalIdentifier.getPath()), bufferedImage);
+            Debugger.createImage("%s".formatted(identifier.getPath()), newImage.left());
+        }
+
+        return Optional.of(new Resource(resourcePack, () -> asInputStream(newImage.left())));
     }
 
-    public Map<Identifier, Resource> loadModels(Map<Identifier, Resource> original) {
-        Map<Identifier, Resource> loaded = new HashMap<>(original);
-        List<TrimmableResource> trimmableResources = findTrimmableResources(original);
-        for(TrimmableResource trimmableResource : trimmableResources) {
-            TrimmableItemModel itemModel = resourceParser.fromResource(trimmableResource.resource(), TrimmableItemModel.class);
-            if(itemModel == null) continue;
-            if(itemModel.textures == null) itemModel.textures = TextureLayers.empty();
-            if(itemModel.overrides == null) itemModel.overrides = new ArrayList<>();
+    public Set<Map.Entry<String, Supplier<IntUnaryOperator>>> cleanPermutations(Set<Map.Entry<String, Supplier<IntUnaryOperator>>> permutations, Identifier textureId) {
+        if(skippedLayers.contains(textureId)) return Collections.emptySet();
 
-            Identifier modelId = trimmableResource.modelId().withSuffixedPath("_%s_trim".formatted(AllTheTrims.DYNAMIC));
-
-            if(AllTheTrimsClient.getConfig().overrideExisting) {
-                itemModel.overrides.forEach(modelOverride -> modelOverride.model = modelId.toString());
+        String path = textureId.getPath();
+        String pattern = ".*_\\d.png";
+        Set<Map.Entry<String, Supplier<IntUnaryOperator>>> newPermutations = new HashSet<>();
+        if (!path.matches(pattern)) {
+            newPermutations.addAll(permutations);
+        } else {
+            for (Map.Entry<String, Supplier<IntUnaryOperator>> entry : permutations) {
+                if (entry.getKey().equals(AllTheTrims.DYNAMIC)) {
+                    newPermutations.add(entry);
+                }
             }
-
-            itemModel.addOverride(ModelOverride.builder()
-                    .withModel(modelId.toString())
-                    .withPredicate(TrimModelPredicate.of(AllTheTrims.MODEL_INDEX))
-                    .build());
-
-            itemModel.overrides.sort(Comparator.comparing(override -> override.predicate.trimType));
-
-            Resource newResource = resourceParser.toResource(trimmableResource.resource().getPack(), itemModel);
-            loaded.put(trimmableResource.resourceId(), newResource);
-
-            Resource overrideResource = createModelOverride(itemModel, trimmableResource);
-            Identifier overrideResourceId = modelId.withPrefixedPath("models/").withSuffixedPath(".json");
-            loaded.put(overrideResourceId, overrideResource);
-
-            Debugger.createJson("resources/%s".formatted(trimmableResource.resourceId()), newResource);
-            Debugger.createJson("resources/%s".formatted(overrideResourceId), overrideResource);
         }
-        return loaded;
+        if(AllTheTrimsClient.getConfig().overrideExisting) {
+            newPermutations.removeIf(entry -> !entry.getKey().equals(AllTheTrims.DYNAMIC));
+        }
+        return newPermutations;
     }
 
-    /**
-     * Generates a list of for valid trimmable item
-     */
-    private List<TrimmableResource> findTrimmableResources(Map<Identifier, Resource> existing) {
-        List<TrimmableResource> trimmableResources = new ArrayList<>();
-        for (Identifier resourceId : existing.keySet()) {
-            String resourcePath = resourceId.getPath();
-            Matcher matcher = itemIdPattern.matcher(resourcePath);
-            if (!matcher.matches()) continue;
-
-            String itemPath = matcher.group(1);
-            Identifier itemId = Identifier.of(resourceId.getNamespace(), itemPath);
-            Item item = Registries.ITEM.get(itemId);
-            if (item == Items.AIR) continue;
-            if (!getAdapter(item).canTrim(item)) continue;
-
-            trimmableResources.add(new TrimmableResource(item, resourceId, existing.get(resourceId)));
-        }
-        return trimmableResources;
+    @Unique
+    private int getLayerColour(BufferedImage bufferedImage, String trimId, int layer) {
+        List<Integer> layerColours = trimTemplateColours.computeIfAbsent(trimId, id -> {
+            int[] colours = bufferedImage.getRGB(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight(), null, 0, bufferedImage.getWidth());
+            Set<Integer> uniqueColours = new HashSet<>();
+            for (int colour : colours) {
+                uniqueColours.add(colour);
+            }
+            uniqueColours.remove(0);
+            return uniqueColours.stream()
+                    .sorted(Comparator.comparingInt(i -> i))
+                    .toList();
+        });
+        if (layer >= layerColours.size()) return -1;
+        return layerColours.get(layer);
     }
 
-    private Resource createModelOverride(TrimmableItemModel overriden, TrimmableResource trimmableResource) {
-        List<String> layers = new ArrayList<>(overriden.textures.layers);
+    @Unique
+    private Pair<BufferedImage, Boolean> maskToColour(BufferedImage bufferedImage, int mask, int toColour) {
+        BufferedImage maskedImage = new BufferedImage(bufferedImage.getWidth(), bufferedImage.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        if(mask == -1) return Pair.of(maskedImage, true);
 
-        Item trimmable = trimmableResource.item();
-        layerData.setTrimStartLayer(trimmable, layers.size());
+        boolean empty = true;
+        for (int x = 0; x < bufferedImage.getWidth(); x++) {
+            for (int y = 0; y < bufferedImage.getHeight(); y++) {
+                int colour = bufferedImage.getRGB(x, y);
+                int alpha = colour >> 24 & 255;
+                if (alpha == 0) continue;
 
-        TrimModelLoaderAdapter adapter = getAdapter(trimmable);
-        int layerCount = adapter.getLayerCount(trimmable);
-
-        for(int i = 0; i < layerCount; i++) {
-            layers.add(adapter.getLayerName(trimmable, i));
+                if (colour == mask) {
+                    empty = false;
+                    maskedImage.setRGB(x, y, toColour);
+                }
+            }
         }
-        TrimmableItemModel itemModel = TrimmableItemModel.builder()
-                .parent(overriden.parent)
-                .textures(TextureLayers.of(layers))
-                .build();
+        return Pair.of(maskedImage, empty);
+    }
 
-        return resourceParser.toResource(trimmableResource.resource().getPack(), itemModel);
+    @Unique
+    private InputStream asInputStream(BufferedImage bufferedImage) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(bufferedImage, "png", baos);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return new ByteArrayInputStream(baos.toByteArray());
     }
 }

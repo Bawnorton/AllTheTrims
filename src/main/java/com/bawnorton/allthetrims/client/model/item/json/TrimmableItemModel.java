@@ -1,5 +1,6 @@
-package com.bawnorton.allthetrims.client.model.armour.json;
+package com.bawnorton.allthetrims.client.model.item.json;
 
+import net.minecraft.util.Identifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,10 @@ public final class TrimmableItemModel {
         public Builder parent(String parent) {
             this.parent = parent;
             return this;
+        }
+
+        public Builder parent(Identifier identifier) {
+            return parent(identifier.toString());
         }
 
         public Builder override(ModelOverride override) {

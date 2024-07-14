@@ -1,11 +1,11 @@
-package com.bawnorton.allthetrims.client.model.armour.adapter;
+package com.bawnorton.allthetrims.client.model.item.adapter;
 
 import com.bawnorton.allthetrims.AllTheTrims;
 import net.minecraft.item.AnimalArmorItem;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
 
-public final class DefaultTrimModelLoaderAdapter extends TrimModelLoaderAdapter {
+public class DefaultTrimModelLoaderAdapter extends TrimModelLoaderAdapter {
     @Override
     public boolean canTrim(Item item) {
         if (item instanceof AnimalArmorItem) return false;

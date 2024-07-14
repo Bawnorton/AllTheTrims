@@ -3,7 +3,9 @@
   "package": "com.bawnorton.allthetrims.client.mixin",
   "minVersion": "0.8",
   "mixins": [
+    "ArmorTrimMaterialMixin",
     "accessor.GlUniformAccessor",
+    "accessor.JsonUnbakedModelAccessor",
     "accessor.RenderPhaseAccessor",
     "accessor.SpriteContentsAccessor",
     "model.BakedModelManagerMixin",
@@ -13,8 +15,7 @@
     "render.MinecraftClientMixin",
     "shader.GameRendererMixin",
     "shader.RenderLayer$MultiPhaseParametersMixin",
-    "shader.ShaderProgramMixin",
-    "ArmorTrimMaterialMixin"
+    "shader.ShaderProgramMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -18,7 +18,7 @@ public abstract class BakedModelManagerMixin {
                     target = "Lnet/minecraft/resource/ResourceFinder;findResources(Lnet/minecraft/resource/ResourceManager;)Ljava/util/Map;"
             )
     )
-    private static Map<Identifier, Resource> addDynamicTrimModels(Map<Identifier, Resource> original) {
-        return AllTheTrimsClient.getArmourModelLoader().loadModels(original);
+    private static Map<Identifier, Resource> addDynamicTrimModel(Map<Identifier, Resource> original) {
+        return AllTheTrimsClient.getItemModelLoader().loadModels(original);
     }
 }

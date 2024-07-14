@@ -1,4 +1,4 @@
-package com.bawnorton.allthetrims.client.model.armour.json;
+package com.bawnorton.allthetrims.client.model.item.json;
 
 public final class ModelOverride {
     private ModelOverride(String model, TrimModelPredicate predicate) {

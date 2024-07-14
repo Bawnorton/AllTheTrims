@@ -1,6 +1,6 @@
-package com.bawnorton.allthetrims.client.model.armour.json.serialisation;
+package com.bawnorton.allthetrims.client.model.item.json.serialisation;
 
-import com.bawnorton.allthetrims.client.model.armour.json.TextureLayers;
+import com.bawnorton.allthetrims.client.model.item.json.TextureLayers;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;

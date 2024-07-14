@@ -48,7 +48,6 @@ class MinecraftVersionData {
 
 class CompatMixins {
     private var common : List<String> = listOf(
-        "elytratrims.TrimOverlayRendererMixin",
         "rei.DefaultClientPluginMixin",
         "emi.VanillaPluginMixin",
         "jei.SmithingRecipeCategoryMixin"
@@ -56,7 +55,8 @@ class CompatMixins {
 
     private var fabric : List<String> = listOf(
         "fabric.mythicmetals.MythicMetalsClientMixin",
-        "fabric.wildfiregender.GenderArmorLayerMixin"
+        "fabric.wildfiregender.GenderArmorLayerMixin",
+        "fabric.bclib.CustomModelBakeryMixin"
     )
 
     private var neoforge : List<String> = listOf()
@@ -93,6 +93,7 @@ repositories {
     maven("https://maven.enjarai.dev/releases")
     maven("https://maven.shedaniel.me")
     maven("https://maven.blamejared.com/")
+    maven("https://jitpack.io")
 }
 
 dependencies {
@@ -171,6 +172,9 @@ if(loader.isFabric) {
         modCompileOnly("maven.modrinth:female-gender:${property("wildfire_gender")}+$minecraftVersion")
         modCompileOnly("maven.modrinth:mythicmetals:${property("mythic_metals")}")
 
+        modImplementation("maven.modrinth:bclib:${property("bclib")}")
+        modImplementation("maven.modrinth:betterend:${property("better_end")}")
+
         mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
     }
 
@@ -223,10 +227,32 @@ if (loader.isNeoForge) {
     }
 }
 
+extensions.configure<PublishingExtension> {
+    repositories {
+        maven {
+            name = "bawnorton"
+            url = uri("https://maven.bawnorton.com/releases")
+            credentials(PasswordCredentials::class)
+            authentication {
+                create<BasicAuthentication>("basic")
+            }
+        }
+    }
+    publications {
+        create<MavenPublication>("maven") {
+            groupId = "${mod.group}.${mod.id}"
+            artifactId = "${mod.id}-$loader"
+            version = "${mod.version}+$minecraftVersion"
+
+            from(components["java"])
+        }
+    }
+}
+
 publishMods {
     file = tasks.remapJar.get().archiveFile
     val tag = "$loader-${mod.version}+$minecraftVersion"
-    changelog = "[Changelog](https://github.com/Bawnorton/Neruina/blob/stonecutter/CHANGELOG.md)"
+    changelog = "[Changelog](https://github.com/Bawnorton/AllTheTrims/blob/stonecutter/CHANGELOG.md)"
     displayName = "${mod.name} ${loader.toString().replaceFirstChar { it.uppercase() }} ${mod.version} for $minecraftVersion"
     type = STABLE
     modLoaders.add(loader.toString())
@@ -235,7 +261,7 @@ publishMods {
 
     github {
         accessToken = providers.gradleProperty("GITHUB_TOKEN")
-        repository = "Bawnorton/Neruina"
+        repository = "Bawnorton/AllTheTrims"
         commitish = "stonecutter"
         changelog = getRootProject().file("CHANGELOG.md").readLines().joinToString("\n")
         tagName = tag
@@ -243,7 +269,7 @@ publishMods {
 
     modrinth {
         accessToken = providers.gradleProperty("MODRINTH_TOKEN")
-        projectId = "1s5x833P"
+        projectId = "pnsUKrap"
         if(mod.minSupportedVersion == mod.maxSupportedVersion) {
             minecraftVersions.add(mod.minSupportedVersion)
         } else {
@@ -261,7 +287,7 @@ publishMods {
 
     curseforge {
         accessToken = providers.gradleProperty("CURSEFORGE_TOKEN")
-        projectId = "851046"
+        projectId = "876154"
         if(mod.minSupportedVersion == mod.maxSupportedVersion) {
             minecraftVersions.add(mod.minSupportedVersion)
         } else {

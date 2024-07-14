@@ -1,4 +1,4 @@
-package com.bawnorton.allthetrims.client.model.armour.json;
+package com.bawnorton.allthetrims.client.model.item.json;
 
 import com.google.gson.annotations.SerializedName;
 

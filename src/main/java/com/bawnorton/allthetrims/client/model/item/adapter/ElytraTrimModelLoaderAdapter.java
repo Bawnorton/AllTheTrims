@@ -1,18 +1,17 @@
-package com.bawnorton.allthetrims.client.model.armour.adapter;
+package com.bawnorton.allthetrims.client.model.item.adapter;
 
 import com.bawnorton.allthetrims.AllTheTrims;
-import net.minecraft.item.ElytraItem;
+import dev.kikugie.elytratrims.api.ElytraTrimsAPI;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import java.util.List;
 
 public final class ElytraTrimModelLoaderAdapter extends TrimModelLoaderAdapter {
-    public static final List<Item> APPLICABLE =
-            Registries.ITEM.stream().filter(item -> item instanceof ElytraItem).toList();
+    public static final List<Item> APPLICABLE = Registries.ITEM.stream().filter(ElytraTrimsAPI::isProbablyElytra).toList();
 
     @Override
     public boolean canTrim(Item item) {
-        return item instanceof ElytraItem;
+        return ElytraTrimsAPI.isProbablyElytra(item);
     }
 
     @Override

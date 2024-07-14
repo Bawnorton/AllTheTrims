@@ -1,10 +1,11 @@
-package com.bawnorton.allthetrims.client.model.armour.adapter;
+package com.bawnorton.allthetrims.client.model.item.adapter;
 
 import net.minecraft.item.Item;
 
 public abstract class TrimModelLoaderAdapter {
     /**
-     * Whether dynamic trims should be generated for the item.
+     * Whether dynamic trims should be generated for the item.<br>
+     * All items are passed here so extending {@link DefaultTrimModelLoaderAdapter} may be desired for the existing "is armour" checks.
      */
     public abstract boolean canTrim(Item item);
 

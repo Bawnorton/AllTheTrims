@@ -1,5 +1,6 @@
 package com.bawnorton.allthetrims.client.compat;
 
+import com.bawnorton.allthetrims.client.compat.bclib.BCLibCompat;
 import com.bawnorton.allthetrims.client.compat.elytratrims.ElytraTrimsCompat;
 import com.bawnorton.allthetrims.client.compat.iris.IrisCompat;
 import com.bawnorton.allthetrims.client.compat.showmeyourskin.ShowMeYourSkinCompat;
@@ -11,6 +12,7 @@ public final class Compat {
     private static IrisCompat irisCompat;
     private static ElytraTrimsCompat elytraTrimsCompat;
     private static ShowMeYourSkinCompat showMeYourSkinCompat;
+    private static BCLibCompat bclibCompat;
     private static YACLImpl yaclImpl;
 
     public static Optional<IrisCompat> getIrisCompat() {
@@ -32,6 +34,13 @@ public final class Compat {
         if (showMeYourSkinCompat == null) showMeYourSkinCompat = new ShowMeYourSkinCompat();
 
         return Optional.of(showMeYourSkinCompat);
+    }
+
+    public static Optional<BCLibCompat> getBCLibCompat() {
+        if (!Platform.isModLoaded("bclib")) return Optional.empty();
+        if (bclibCompat == null) bclibCompat = new BCLibCompat();
+
+        return Optional.of(bclibCompat);
     }
 
     public static Optional<YACLImpl> getYaclImpl() {

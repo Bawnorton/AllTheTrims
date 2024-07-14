@@ -89,7 +89,13 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
         return new Resource(defaultPack, palette::toInputStream);
     }
 
-    @WrapOperation(method = "load", at = @At(value = "INVOKE", target = "Lnet/minecraft/resource/ResourceManager;getResource(Lnet/minecraft/util/Identifier;)Ljava/util/Optional;"))
+    @WrapOperation(
+            method = "load",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/resource/ResourceManager;getResource(Lnet/minecraft/util/Identifier;)Ljava/util/Optional;"
+            )
+    )
     private Optional<Resource> getLayeredTrimResource(ResourceManager instance, Identifier layerId, Operation<Optional<Resource>> original, @Share("layerId") LocalRef<Identifier> layerIdRef) {
         layerIdRef.set(layerId);
         Optional<Resource> originalResource = original.call(instance, layerId);
@@ -112,14 +118,20 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
         try (InputStream inputStream = resource.getInputStream()) {
             BufferedImage layerImage = ImageIO.read(inputStream);
 
-            return AllTheTrimsClient.getItemModelLoader().loadLayeredResource(layerId, layerImage, originalLayerId, layer, resource.getPack());
+            return AllTheTrimsClient.getArmourModelLoader().loadLayeredResource(layerId, layerImage, originalLayerId, layer, resource.getPack());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
 
-    @ModifyExpressionValue(method = "load", at = @At(value = "INVOKE", target = "Ljava/util/Map;entrySet()Ljava/util/Set;"))
+    @ModifyExpressionValue(
+            method = "load",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Ljava/util/Map;entrySet()Ljava/util/Set;"
+            )
+    )
     private Set<Map.Entry<String, Supplier<IntUnaryOperator>>> removeAllNonBlankPalettes(Set<Map.Entry<String, Supplier<IntUnaryOperator>>> permutations, @Share("layerId") LocalRef<Identifier> layerIdRef) {
-        return AllTheTrimsClient.getItemModelLoader().cleanPermutations(permutations, layerIdRef.get());
+        return AllTheTrimsClient.getArmourModelLoader().cleanPermutations(permutations, layerIdRef.get());
     }
 }
