@@ -5,6 +5,7 @@ import com.bawnorton.allthetrims.client.model.item.json.serialisation.TextureLay
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourcePack;
 import org.apache.commons.io.IOUtils;
@@ -37,5 +38,9 @@ public final class JsonParser {
 
     public String toJson(Object object) {
         return GSON.toJson(object);
+    }
+
+    public JsonObject toJsonObject(Object object) {
+        return GSON.toJsonTree(object).getAsJsonObject();
     }
 }

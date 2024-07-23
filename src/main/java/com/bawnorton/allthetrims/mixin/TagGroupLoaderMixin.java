@@ -1,7 +1,9 @@
 package com.bawnorton.allthetrims.mixin;
 
 import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.client.compat.Compat;
 import net.minecraft.item.AnimalArmorItem;
+import net.minecraft.item.ElytraItem;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Items;
 import net.minecraft.item.SmithingTemplateItem;
@@ -49,6 +51,7 @@ public abstract class TagGroupLoaderMixin {
             entries.addAll(Registries.ITEM.stream()
                     .filter(item -> !(item instanceof AnimalArmorItem))
                     .filter(item -> item instanceof Equipment equipment && equipment.getSlotType().isArmorSlot())
+                    .filter(item -> !(item instanceof ElytraItem) || Compat.getElytraTrimsCompat().isPresent())
                     .map(Registries.ITEM::getId)
                     .map(itemId -> new TagGroupLoader.TrackedEntry(TagEntry.create(itemId), AllTheTrims.MOD_ID))
                     .collect(Collectors.toSet()));

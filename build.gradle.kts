@@ -172,8 +172,8 @@ if(loader.isFabric) {
         modCompileOnly("maven.modrinth:female-gender:${property("wildfire_gender")}+$minecraftVersion")
         modCompileOnly("maven.modrinth:mythicmetals:${property("mythic_metals")}")
 
-        modImplementation("maven.modrinth:bclib:${property("bclib")}")
-        modImplementation("maven.modrinth:betterend:${property("better_end")}")
+        modCompileOnly("maven.modrinth:bclib:${property("bclib")}")
+        modCompileOnly("maven.modrinth:betterend:${property("better_end")}")
 
         mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
     }

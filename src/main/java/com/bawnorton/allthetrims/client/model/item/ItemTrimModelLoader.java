@@ -6,10 +6,10 @@ import com.bawnorton.allthetrims.client.debug.Debugger;
 import com.bawnorton.allthetrims.client.model.item.adapter.TrimModelLoaderAdapter;
 import com.bawnorton.allthetrims.client.model.item.json.ModelOverride;
 import com.bawnorton.allthetrims.client.model.item.json.TextureLayers;
-import com.bawnorton.allthetrims.client.model.item.json.TrimModelPredicate;
 import com.bawnorton.allthetrims.client.model.item.json.TrimmableItemModel;
 import com.bawnorton.allthetrims.client.render.LayerData;
 import com.bawnorton.allthetrims.util.Adaptable;
+import com.google.gson.JsonObject;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
 import net.minecraft.registry.Registries;
@@ -50,10 +50,18 @@ public final class ItemTrimModelLoader extends Adaptable<TrimModelLoaderAdapter>
 
             itemModel.addOverride(ModelOverride.builder()
                     .withModel(modelId.toString())
-                    .withPredicate(TrimModelPredicate.of(AllTheTrims.MODEL_INDEX))
+                    .withPredicate(jsonParser.toJsonObject(TrimModelPredicate.of(AllTheTrims.MODEL_INDEX)))
                     .build());
 
-            itemModel.overrides.sort(Comparator.comparing(override -> override.predicate.trimType));
+            itemModel.overrides.sort(Comparator.comparing(override -> {
+                JsonObject predicate = override.predicate;
+                if(predicate.has("trim_type")) {
+                    return predicate.get("trim_type").getAsFloat();
+                } else if (predicate.has("minecraft:trim_type")) {
+                    return predicate.get("minecraft:trim_type").getAsFloat();
+                }
+                return 0f;
+            }));
 
             Resource newResource = jsonParser.toResource(trimmableResource.resource().getPack(), itemModel);
             extendedModels.put(trimmableResource.resourceId(), newResource);

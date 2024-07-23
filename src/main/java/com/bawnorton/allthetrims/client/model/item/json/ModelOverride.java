@@ -1,13 +1,15 @@
 package com.bawnorton.allthetrims.client.model.item.json;
 
+import com.google.gson.JsonObject;
+
 public final class ModelOverride {
-    private ModelOverride(String model, TrimModelPredicate predicate) {
+    private ModelOverride(String model, JsonObject predicate) {
         this.model = model;
         this.predicate = predicate;
     }
 
     public String model;
-    public TrimModelPredicate predicate;
+    public JsonObject predicate;
 
     public static Builder builder() {
         return new Builder();
@@ -15,14 +17,14 @@ public final class ModelOverride {
 
     public static class Builder {
         private String model;
-        private TrimModelPredicate predicate;
+        private JsonObject predicate;
 
         public Builder withModel(String model) {
             this.model = model;
             return this;
         }
 
-        public Builder withPredicate(TrimModelPredicate predicate) {
+        public Builder withPredicate(JsonObject predicate) {
             this.predicate = predicate;
             return this;
         }
