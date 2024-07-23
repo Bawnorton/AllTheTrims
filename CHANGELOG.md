@@ -1,3 +1,9 @@
+## 4.0.1
+
+- Improve ET compat
+- Fix non-trim-type predicates being overwritten
+- Rudamentary support for BCLib (BCLib 1.21 has a lot of issues so I'm parking compat until they fix their issues)
+
 ## 4.0.0
 
 - Complete overhaul of trim rendering system
