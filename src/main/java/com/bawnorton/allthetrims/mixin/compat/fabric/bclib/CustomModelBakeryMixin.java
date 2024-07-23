@@ -1,5 +1,7 @@
 package com.bawnorton.allthetrims.mixin.compat.fabric.bclib;
 
+//? if fabric {
+
 import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.mixin.accessor.JsonUnbakedModelAccessor;
@@ -90,3 +92,5 @@ public abstract class CustomModelBakeryMixin {
         return JsonUnbakedModel.deserialize(parser.toJson(itemModel));
     }
 }
+
+//?}

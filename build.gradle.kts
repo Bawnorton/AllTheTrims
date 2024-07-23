@@ -1,5 +1,14 @@
 @file:Suppress("UnstableApiUsage")
 
+import com.google.gson.JsonParser
+import java.io.FileOutputStream
+import java.nio.file.Files
+import java.nio.file.StandardCopyOption
+import java.util.jar.JarFile
+import java.util.jar.JarOutputStream
+import java.util.zip.ZipEntry
+
+
 plugins {
     `maven-publish`
     kotlin("jvm") version "1.9.22"
@@ -166,7 +175,7 @@ if(loader.isFabric) {
 
         modImplementation("com.terraformersmc:modmenu:${property("mod_menu")}")
 
-        modCompileOnly("maven.modrinth:elytra-trims:${property("elytra_trims")}")
+        stripAw(modCompileOnly("maven.modrinth:elytra-trims:${property("elytra_trims")}")!!)
         modCompileOnly("maven.modrinth:iris:${property("iris")}+$minecraftVersion")
         modCompileOnly("maven.modrinth:show-me-your-skin:${property("show_me_your_skin")}+$minecraftVersion")
         modCompileOnly("maven.modrinth:female-gender:${property("wildfire_gender")}+$minecraftVersion")
@@ -195,9 +204,7 @@ if (loader.isNeoForge) {
     dependencies {
         neoForge("net.neoforged:neoforge:${loader.getVersion()}")
 
-        modCompileOnly(fileTree("libs") {
-            include("*.jar")
-        })
+        stripAw(modCompileOnly("maven.modrinth:elytra-trims:${property("elytra_trims")}")!!)
 
         forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:json:${findProperty("quilt_parsers")}")!!)
         forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:gson:${findProperty("quilt_parsers")}")!!)
@@ -302,4 +309,41 @@ publishMods {
             }
         }
     }
+}
+
+fun stripAw(dep: Dependency) {
+    val configuration = configurations.detachedConfiguration(dep)
+    configuration.resolve().forEach { file ->
+        val tempFile = File(file.parent, file.name + ".tmp")
+        JarFile(file).use { jar ->
+            JarOutputStream(FileOutputStream(tempFile)).use { jos ->
+                jar.entries().asSequence().forEach { entry ->
+                    if (!entry.name.endsWith(".accesswidener")) {
+                        jos.putNextEntry(ZipEntry(entry.name))
+                        if (entry.name.endsWith("fabric.mod.json")) {
+                            val jsonContent = jar.getInputStream(entry).bufferedReader().use { it.readText() }
+                            val modifiedJson = removeAccessWidenerEntry(jsonContent)
+                            jos.write(modifiedJson.toByteArray())
+                        } else {
+                            jar.getInputStream(entry).use { input ->
+                                input.copyTo(jos)
+                            }
+                        }
+                        jos.closeEntry()
+                    }
+                }
+            }
+        }
+        Files.move(tempFile.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING)
+    }
+}
+
+fun removeAccessWidenerEntry(jsonContent: String): String {
+    val jsonElement = JsonParser.parseString(jsonContent)
+    if (jsonElement.isJsonObject) {
+        val jsonObject = jsonElement.asJsonObject
+        jsonObject.remove("accessWidener")
+        return jsonObject.toString()
+    }
+    return jsonContent
 }
