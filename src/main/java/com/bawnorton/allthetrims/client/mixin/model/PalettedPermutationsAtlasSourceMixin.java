@@ -3,6 +3,7 @@ package com.bawnorton.allthetrims.client.mixin.model;
 import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.palette.TrimPalette;
+import com.bawnorton.allthetrims.versioned.VIdentifier;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
@@ -55,13 +56,17 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
             }
 
             Map<String, Identifier> newPermutations = new HashMap<>(palettedPermutations);
-            newPermutations.put(AllTheTrims.DYNAMIC, Identifier.ofVanilla("trims/color_palettes/%s".formatted(AllTheTrims.DYNAMIC)));
+            newPermutations.put(AllTheTrims.DYNAMIC, VIdentifier.ofVanilla("trims/color_palettes/%s".formatted(AllTheTrims.DYNAMIC)));
             return function.apply(newTextures, paletteKey, newPermutations);
         };
     }
 
     @WrapOperation(
-            method = "open",
+            //? if >1.20.6 {
+            /*method = "open",
+            *///?} else {
+            method = "method_48486",
+            //?}
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/resource/ResourceManager;getResource(Lnet/minecraft/util/Identifier;)Ljava/util/Optional;"
@@ -70,7 +75,7 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
     private static Optional<Resource> addDynamicPaletteImage(ResourceManager instance, Identifier identifier, Operation<Optional<Resource>> original) {
         Optional<Resource> existing = original.call(instance, identifier);
         if (existing.isPresent()) return existing;
-        if (!identifier.equals(Identifier.ofVanilla("textures/trims/color_palettes/%s.png".formatted(AllTheTrims.DYNAMIC)))) return existing;
+        if (!identifier.equals(VIdentifier.ofVanilla("textures/trims/color_palettes/%s.png".formatted(AllTheTrims.DYNAMIC)))) return existing;
 
         ResourcePack defaultPack = MinecraftClient.getInstance().getDefaultResourcePack();
         Resource dynamicResource = allthetrims$createGradientTrimPaletteResource(defaultPack);
@@ -83,7 +88,7 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
         List<Integer> colours = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             int brightness = (int) (255 - dif * i);
-            colours.add(ColorHelper.Argb.getArgb(brightness, brightness, brightness));
+            colours.add(ColorHelper.Argb.getArgb(255, brightness, brightness, brightness));
         }
         TrimPalette palette = new TrimPalette(colours);
         return new Resource(defaultPack, palette::toInputStream);

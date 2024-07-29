@@ -2,6 +2,7 @@ package com.bawnorton.allthetrims.client.mixin.shader;
 
 import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
+import com.bawnorton.allthetrims.client.compat.Compat;
 import com.llamalad7.mixinextras.injector.ModifyReceiver;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.client.gl.ShaderProgram;

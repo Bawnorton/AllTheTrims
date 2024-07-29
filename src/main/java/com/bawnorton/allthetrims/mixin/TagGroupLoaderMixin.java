@@ -2,11 +2,9 @@ package com.bawnorton.allthetrims.mixin;
 
 import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.compat.Compat;
-import net.minecraft.item.AnimalArmorItem;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Items;
-import net.minecraft.item.SmithingTemplateItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.registry.tag.TagEntry;
@@ -49,7 +47,8 @@ public abstract class TagGroupLoaderMixin {
                     .collect(Collectors.toSet()));
         } else if (id.equals(ItemTags.TRIMMABLE_ARMOR.id())) {
             entries.addAll(Registries.ITEM.stream()
-                    .filter(item -> !(item instanceof AnimalArmorItem))
+                    //? if >1.20.6
+                    /*.filter(item -> !(item instanceof net.minecraft.item.AnimalArmorItem))*/
                     .filter(item -> item instanceof Equipment equipment && equipment.getSlotType().isArmorSlot())
                     .filter(item -> !(item instanceof ElytraItem) || Compat.getElytraTrimsCompat().isPresent())
                     .map(Registries.ITEM::getId)

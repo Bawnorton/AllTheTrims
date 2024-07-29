@@ -1,8 +1,8 @@
 package com.bawnorton.allthetrims.client.shader.adapter;
 
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
+import com.bawnorton.allthetrims.client.colour.ARGBColourHelper;
 import com.bawnorton.allthetrims.client.compat.Compat;
-import com.bawnorton.allthetrims.client.compat.showmeyourskin.ShowMeYourSkinCompat;
 import com.bawnorton.allthetrims.client.extend.RenderLayer$MultiPhaseParametersExtender;
 import com.bawnorton.allthetrims.client.palette.TrimPalette;
 import com.bawnorton.allthetrims.client.shader.RenderContext;
@@ -10,7 +10,6 @@ import com.bawnorton.allthetrims.client.shader.TrimPalettePhase;
 import com.bawnorton.allthetrims.client.shader.TrimShaderManager;
 import com.bawnorton.allthetrims.util.MemoizedFunction;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.util.math.ColorHelper;
 
 public abstract class TrimRenderLayerAdpater {
     private final TrimShaderManager shaderManager = AllTheTrimsClient.getShaderManger();
@@ -34,22 +33,21 @@ public abstract class TrimRenderLayerAdpater {
     }
 
     protected RenderContext getContext() {
-        return AllTheTrimsClient.getShaderManger().getContext();
+        return AllTheTrimsClient.getTrimRenderer().getContext();
     }
 
     protected int[] getPaletteColours(TrimPalette palette) {
-        int[] colourArr = palette.getColourArr();
-        ShowMeYourSkinCompat compat = Compat.getShowMeYourSkinCompat().orElse(null);
-        if (compat == null) {
-            return colourArr;
-        } else {
-            colourArr = palette.getColourArr();
-            int[] alphaApplied = new int[colourArr.length];
-            for (int i = 0; i < colourArr.length; i++) {
-                alphaApplied[i] = ColorHelper.Argb.withAlpha(compat.getAlpha(getContext().entity(), getContext().trimmed()), colourArr[i]);
-            }
-            return alphaApplied;
-        }
+        return Compat.getShowMeYourSkinCompat()
+                .map(compat -> {
+                    int[] colourArr = palette.getColourArr();
+                    int[] alphaApplied = new int[colourArr.length];
+                    for (int i = 0; i < colourArr.length; i++) {
+                        int alpha = compat.getAlpha(getContext().entity(), getContext().trimmed());
+                        alphaApplied[i] = ARGBColourHelper.withAlpha(colourArr[i], alpha);
+                    }
+                    return alphaApplied;
+
+                }).orElse(palette.getColourArr());
     }
 
     public RenderLayer getRenderLayer(TrimPalette trimPalette) {

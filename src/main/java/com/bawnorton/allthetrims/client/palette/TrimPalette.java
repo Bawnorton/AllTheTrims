@@ -4,6 +4,7 @@ import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.colour.ColourInterpolation;
 import com.bawnorton.allthetrims.client.colour.OkLabHelper;
 import com.bawnorton.allthetrims.client.config.Config;
+import com.bawnorton.allthetrims.versioned.VLists;
 import javax.imageio.ImageIO;
 import net.minecraft.util.Util;
 import net.minecraft.util.math.ColorHelper;
@@ -13,11 +14,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 public final class TrimPalette {
-    public static final TrimPalette DEFAULT = new TrimPalette(ColorHelper.Argb.getArgb(255, 255, 255));
+    public static final TrimPalette DEFAULT = new TrimPalette(ColorHelper.Argb.getArgb(255, 255, 255, 255));
     public static final int PALETTE_SIZE = 8;
     private final List<Integer> staticColours;
     private final List<Integer> animatedColours;
@@ -74,7 +76,7 @@ public final class TrimPalette {
     }
 
     public void computeColourArr() {
-        List<Integer> reversed = getColours().reversed();
+        List<Integer> reversed = VLists.reverse(getColours());
         colourArr = new int[PALETTE_SIZE];
         for (int i = 0; i < PALETTE_SIZE; i++) {
             int colour = reversed.get(i);
@@ -101,7 +103,7 @@ public final class TrimPalette {
         Config config = AllTheTrimsClient.getConfig();
         if ((System.currentTimeMillis() - lastCycle) <= config.timeBetweenCycles / (config.animationInterpolation == Config.Interoplation.NONE ? 1 : 2)) return;
 
-        int last = animatedColours.getLast();
+        int last = VLists.getLast(animatedColours);
         for (int i = animatedColours.size() - 1; i > 0; i--) {
             animatedColours.set(i, animatedColours.get(i - 1));
         }

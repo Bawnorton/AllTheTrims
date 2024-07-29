@@ -7,7 +7,6 @@ import me.shedaniel.rei.api.client.registry.display.DisplayRegistry;
 import me.shedaniel.rei.api.common.display.Display;
 import me.shedaniel.rei.plugin.client.DefaultClientPlugin;
 import net.minecraft.recipe.Recipe;
-import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.RecipeType;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import java.util.Collection;
 import java.util.function.Function;
 
-@SuppressWarnings("UnusedMixin")
+@SuppressWarnings({"UnusedMixin", "UnstableApiUsage"})
 @ConditionalMixin("roughlyenoughitems")
 @Mixin(DefaultClientPlugin.class)
 public abstract class DefaultClientPluginMixin {
@@ -34,6 +33,6 @@ public abstract class DefaultClientPluginMixin {
                     )
             )
     )
-    private <T extends Recipe<?>, D extends Display> void dontRegisterDefaultSmithingDisplay(DisplayRegistry instance, Class<T> typeClass, RecipeType<? super T> recipeType, Function<? extends RecipeEntry<T>, @Nullable Collection<? extends D>> filler, Operation<Void> original) {
+    private <T extends Recipe<?>, D extends Display> void dontRegisterDefaultSmithingDisplay(DisplayRegistry instance, Class<T> typeClass, RecipeType<? super T> recipeType, Function<?, @Nullable Collection<? extends D>> filler, Operation<Void> original) {
     }
 }

@@ -9,6 +9,7 @@ import com.bawnorton.allthetrims.client.model.item.json.TextureLayers;
 import com.bawnorton.allthetrims.client.model.item.json.TrimmableItemModel;
 import com.bawnorton.allthetrims.client.render.LayerData;
 import com.bawnorton.allthetrims.util.Adaptable;
+import com.bawnorton.allthetrims.versioned.VIdentifier;
 import com.google.gson.JsonObject;
 import net.minecraft.item.Item;
 import net.minecraft.item.Items;
@@ -87,7 +88,7 @@ public final class ItemTrimModelLoader extends Adaptable<TrimModelLoaderAdapter>
             if (!matcher.matches()) continue;
 
             String itemPath = matcher.group(1);
-            Identifier itemId = Identifier.of(resourceId.getNamespace(), itemPath);
+            Identifier itemId = VIdentifier.of(resourceId.getNamespace(), itemPath);
             Item item = Registries.ITEM.get(itemId);
             if (item == Items.AIR) continue;
             if (!getAdapter(item).canTrim(item)) continue;

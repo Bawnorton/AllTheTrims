@@ -4,11 +4,10 @@ import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.compat.Compat;
 import com.bawnorton.allthetrims.client.config.Config;
 import com.bawnorton.allthetrims.client.config.ConfigManager;
+import com.bawnorton.allthetrims.client.model.armour.ArmourTrimModelLoader;
 import com.bawnorton.allthetrims.client.model.item.ItemTrimModelLoader;
 import com.bawnorton.allthetrims.client.model.item.adapter.DefaultTrimModelLoaderAdapter;
 import com.bawnorton.allthetrims.client.model.item.adapter.ElytraTrimModelLoaderAdapter;
-import com.bawnorton.allthetrims.client.model.armour.ArmourTrimModelLoader;
-import com.bawnorton.allthetrims.client.palette.TrimPalette;
 import com.bawnorton.allthetrims.client.palette.TrimPalettes;
 import com.bawnorton.allthetrims.client.render.LayerData;
 import com.bawnorton.allthetrims.client.render.TrimRenderer;
@@ -18,8 +17,6 @@ import com.bawnorton.allthetrims.client.shader.TrimShaderManager;
 import com.bawnorton.allthetrims.client.shader.adapter.DefaultTrimRenderLayerAdapter;
 import com.bawnorton.allthetrims.client.shader.adapter.ElytraTrimsTrimRenderLayerAdapter;
 import com.bawnorton.allthetrims.client.shader.adapter.ShowMeYourSkinTrimRenderLayerAdapter;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.trim.ArmorTrim;
 
 public final class AllTheTrimsClient {
@@ -74,6 +71,10 @@ public final class AllTheTrimsClient {
         return armourModelLoader;
     }
 
+    public static TrimShaderManager getShaderManger() {
+        return shaderManager;
+    }
+
     public static LayerData getLayerData() {
         return layerData;
     }
@@ -84,16 +85,6 @@ public final class AllTheTrimsClient {
 
     public static void saveConfig() {
         configManager.saveConfig();
-    }
-
-    public static TrimShaderManager getShaderManger() {
-        return shaderManager;
-    }
-
-    public static RenderLayer getTrimRenderLayer(Item trimmed, ArmorTrim trim) {
-        Item trimMaterial = trim.getMaterial().value().ingredient().value();
-        TrimPalette palette = trimPalettes.getOrGeneratePalette(trimMaterial);
-        return shaderManager.getTrimRenderLayer(trimmed, palette);
     }
 }
 

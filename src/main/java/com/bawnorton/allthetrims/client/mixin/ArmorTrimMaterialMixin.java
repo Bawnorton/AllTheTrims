@@ -35,6 +35,6 @@ public abstract class ArmorTrimMaterialMixin {
         TrimPalette palette = AllTheTrimsClient.getTrimPalettes().getPalette(ingredient.value());
         if(palette == null) return original;
 
-        return mutableText.withColor(palette.getAverageColour());
+        return mutableText.styled(s -> s.withColor(palette.getAverageColour()));
     }
 }

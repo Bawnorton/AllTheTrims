@@ -1,58 +1,12 @@
 @file:Suppress("UnstableApiUsage")
 
-import com.google.gson.JsonParser
-import java.io.FileOutputStream
-import java.nio.file.Files
-import java.nio.file.StandardCopyOption
-import java.util.jar.JarFile
-import java.util.jar.JarOutputStream
-import java.util.zip.ZipEntry
-
-
 plugins {
     `maven-publish`
     kotlin("jvm") version "1.9.22"
     id("dev.architectury.loom") version "1.7-SNAPSHOT"
     id("architectury-plugin") version "3.4-SNAPSHOT"
     id("me.modmuss50.mod-publish-plugin") version "0.5.+"
-}
-
-class ModData {
-    val id = property("mod_id").toString()
-    val name = property("mod_name").toString()
-    val version = property("mod_version").toString()
-    val group = property("mod_group").toString()
-    val minecraftDependency = property("minecraft_dependency").toString()
-    val minSupportedVersion = property("mod_min_supported_version").toString()
-    val maxSupportedVersion = property("mod_max_supported_version").toString()
-}
-
-class LoaderData {
-    private val name = loom.platform.get().name.lowercase()
-    val isFabric = name == "fabric"
-    val isNeoForge = name == "neoforge"
-
-    fun getVersion() : String = if (isNeoForge) {
-        property("loader_neoforge").toString()
-    } else {
-        property("fabric_loader").toString()
-    }
-
-    override fun toString(): String {
-        return name
-    }
-}
-
-class MinecraftVersionData {
-    private val name = stonecutter.current.version.substringBeforeLast("-")
-
-    fun equalTo(other: String) : Boolean = stonecutter.compare(name, other.lowercase()) == 0
-    fun greaterThan(other: String) : Boolean = stonecutter.compare(name, other.lowercase()) > 0
-    fun lessThan(other: String) : Boolean = stonecutter.compare(name, other.lowercase()) < 0
-
-    override fun toString(): String {
-        return name
-    }
+    id("dev.kikugie.j52j") version "1.0.2"
 }
 
 class CompatMixins {
@@ -65,7 +19,8 @@ class CompatMixins {
     private var fabric : List<String> = listOf(
         "fabric.mythicmetals.MythicMetalsClientMixin",
         "fabric.wildfiregender.GenderArmorLayerMixin",
-        "fabric.bclib.CustomModelBakeryMixin"
+        "fabric.bclib.CustomModelBakeryMixin",
+        "fabric.immersivearmors.LayerPieceMixin"
     )
 
     private var neoforge : List<String> = listOf()
@@ -78,13 +33,9 @@ class CompatMixins {
     }
 }
 
-fun DependencyHandler.neoForge(dep: Any) = add("neoForge", dep)
-fun DependencyHandler.forge(dep: Any) = add("forge", dep)
-fun DependencyHandler.forgeRuntimeLibrary(dep: Any) = add("forgeRuntimeLibrary", dep)
-
-val mod = ModData()
-val loader = LoaderData()
-val minecraftVersion = MinecraftVersionData()
+val mod = ModData(project)
+val loader = LoaderData(project, loom.platform.get().name.lowercase())
+val minecraftVersion = MinecraftVersionData(stonecutter)
 val awName = "allthetrims.accesswidener"
 
 version = "${mod.version}-$loader+$minecraftVersion"
@@ -93,8 +44,11 @@ base.archivesName.set(mod.name)
 
 repositories {
     mavenCentral()
+    exclusiveContent {
+        forRepository { maven("https://api.modrinth.com/maven") }
+        filter { includeGroup("maven.modrinth") }
+    }
     maven("https://cursemaven.com")
-    maven("https://api.modrinth.com/maven")
     maven("https://maven.neoforged.net/releases/")
     maven("https://maven.isxander.dev/releases")
     maven("https://maven.terraformersmc.com/")
@@ -103,6 +57,7 @@ repositories {
     maven("https://maven.shedaniel.me")
     maven("https://maven.blamejared.com/")
     maven("https://jitpack.io")
+    maven("https://maven.bawnorton.com/releases")
 }
 
 dependencies {
@@ -136,7 +91,7 @@ loom {
 
 tasks {
     withType<JavaCompile> {
-        options.release = 21
+        options.release = minecraftVersion.javaVersion()
     }
 
     processResources {
@@ -150,8 +105,8 @@ tasks {
 java {
     withSourcesJar()
 
-    sourceCompatibility = JavaVersion.VERSION_21
-    targetCompatibility = JavaVersion.VERSION_21
+    sourceCompatibility = JavaVersion.toVersion(minecraftVersion.javaVersion())
+    targetCompatibility = JavaVersion.toVersion(minecraftVersion.javaVersion())
 }
 
 val buildAndCollect = tasks.register<Copy>("buildAndCollect") {
@@ -161,28 +116,38 @@ val buildAndCollect = tasks.register<Copy>("buildAndCollect") {
     dependsOn("build")
 }
 
+stonecutter.debug(true)
 if (stonecutter.current.isActive) {
     rootProject.tasks.register("buildActive") {
         group = "project"
         dependsOn(buildAndCollect)
     }
 }
+stonecutter.dependency("java", minecraftVersion.javaVersion().toString())
+
+StonecutterSwapper(stonecutter)
+    .register("armour_material", "1.20.6", "ArmorMaterial", "RegistryEntry<ArmorMaterial>")
+    .apply(minecraftVersion.toString())
 
 if(loader.isFabric) {
     dependencies {
         modImplementation("net.fabricmc:fabric-loader:${loader.getVersion()}")
         modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}+$minecraftVersion")
 
+        include(implementation(annotationProcessor("com.bawnorton.mixinsquared:mixinsquared-fabric:${property("mixin_squared")}")!!)!!)
+
         modImplementation("com.terraformersmc:modmenu:${property("mod_menu")}")
 
-        stripAw(modCompileOnly("maven.modrinth:elytra-trims:${property("elytra_trims")}")!!)
+        modCompileOnly("maven.modrinth:elytra-trims:${property("elytra_trims")}")
         modCompileOnly("maven.modrinth:iris:${property("iris")}+$minecraftVersion")
-        modCompileOnly("maven.modrinth:show-me-your-skin:${property("show_me_your_skin")}+$minecraftVersion")
-        modCompileOnly("maven.modrinth:female-gender:${property("wildfire_gender")}+$minecraftVersion")
+        modCompileOnly("maven.modrinth:show-me-your-skin:${property("show_me_your_skin")}")
+        modCompileOnly("maven.modrinth:female-gender:${property("wildfire_gender")}")
         modCompileOnly("maven.modrinth:mythicmetals:${property("mythic_metals")}")
-
         modCompileOnly("maven.modrinth:bclib:${property("bclib")}")
-        modCompileOnly("maven.modrinth:betterend:${property("better_end")}")
+
+        if(minecraftVersion.lessThan("1.21")) {
+            modImplementation("maven.modrinth:immersive-armors:${property("immersive_armors")}+$minecraftVersion")
+        }
 
         mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
     }
@@ -191,7 +156,8 @@ if(loader.isFabric) {
         processResources {
             val modMetadata = mapOf(
                 "version" to mod.version,
-                "minecraft_dependency" to mod.minecraftDependency
+                "minecraft_dependency" to mod.minecraftDependency,
+                "java" to minecraftVersion.javaVersion(),
             )
 
             inputs.properties(modMetadata)
@@ -204,7 +170,10 @@ if (loader.isNeoForge) {
     dependencies {
         neoForge("net.neoforged:neoforge:${loader.getVersion()}")
 
-        stripAw(modCompileOnly("maven.modrinth:elytra-trims:${property("elytra_trims")}")!!)
+        compileOnly(annotationProcessor("com.bawnorton.mixinsquared:mixinsquared-common:0.2.0-beta.6")!!)
+        implementation(include("com.bawnorton.mixinsquared:mixinsquared-forge:0.2.0-beta.6")!!)
+
+        modCompileOnly("maven.modrinth:elytra-trims:${property("elytra_trims")}").stripAw(project)
 
         forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:json:${findProperty("quilt_parsers")}")!!)
         forgeRuntimeLibrary(runtimeOnly("org.quiltmc.parsers:gson:${findProperty("quilt_parsers")}")!!)
@@ -264,8 +233,6 @@ publishMods {
     type = STABLE
     modLoaders.add(loader.toString())
 
-    dryRun = false
-
     github {
         accessToken = providers.gradleProperty("GITHUB_TOKEN")
         repository = "Bawnorton/AllTheTrims"
@@ -309,41 +276,4 @@ publishMods {
             }
         }
     }
-}
-
-fun stripAw(dep: Dependency) {
-    val configuration = configurations.detachedConfiguration(dep)
-    configuration.resolve().forEach { file ->
-        val tempFile = File(file.parent, file.name + ".tmp")
-        JarFile(file).use { jar ->
-            JarOutputStream(FileOutputStream(tempFile)).use { jos ->
-                jar.entries().asSequence().forEach { entry ->
-                    if (!entry.name.endsWith(".accesswidener")) {
-                        jos.putNextEntry(ZipEntry(entry.name))
-                        if (entry.name.endsWith("fabric.mod.json")) {
-                            val jsonContent = jar.getInputStream(entry).bufferedReader().use { it.readText() }
-                            val modifiedJson = removeAccessWidenerEntry(jsonContent)
-                            jos.write(modifiedJson.toByteArray())
-                        } else {
-                            jar.getInputStream(entry).use { input ->
-                                input.copyTo(jos)
-                            }
-                        }
-                        jos.closeEntry()
-                    }
-                }
-            }
-        }
-        Files.move(tempFile.toPath(), file.toPath(), StandardCopyOption.REPLACE_EXISTING)
-    }
-}
-
-fun removeAccessWidenerEntry(jsonContent: String): String {
-    val jsonElement = JsonParser.parseString(jsonContent)
-    if (jsonElement.isJsonObject) {
-        val jsonObject = jsonElement.asJsonObject
-        jsonObject.remove("accessWidener")
-        return jsonObject.toString()
-    }
-    return jsonContent
 }

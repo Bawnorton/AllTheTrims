@@ -7,12 +7,10 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gl.ShaderProgram;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.RenderPhase;
-import net.minecraft.entity.Entity;
 import net.minecraft.item.Item;
 
 public final class TrimShaderManager extends Adaptable<TrimRenderLayerAdpater> {
     public ShaderProgram renderTypeDynamicTrimProgram;
-    private RenderContext context;
 
     private final RenderPhase.ShaderProgram DYNAMIC_TRIM_PROGRAM = new RenderPhase.ShaderProgram(() -> renderTypeDynamicTrimProgram);
 
@@ -24,14 +22,6 @@ public final class TrimShaderManager extends Adaptable<TrimRenderLayerAdpater> {
 
     public void clearRenderLayerCaches() {
         getAdapters().forEach(TrimRenderLayerAdpater::clearCache);
-    }
-
-    public void setContext(Entity entity, Item trimmed) {
-        context = new RenderContext(entity, trimmed);
-    }
-
-    public RenderContext getContext() {
-        return context;
     }
 
     public void setTrimPalette(int[] trimPalette) {

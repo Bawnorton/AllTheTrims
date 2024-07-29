@@ -1,6 +1,7 @@
 package com.bawnorton.allthetrims.client.colour;
 
 import com.bawnorton.allthetrims.client.config.Config;
+import com.bawnorton.allthetrims.versioned.VLists;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public final class ColourInterpolation {
                 }
             }
         }
-        interpolatedColours.add(colours.getLast());
+        interpolatedColours.add(VLists.getLast(colours));
         return interpolatedColours;
     }
 

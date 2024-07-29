@@ -33,6 +33,9 @@
     ],
     "jei_mod_plugin": [
       "com.bawnorton.allthetrims.client.compat.recipebrowser.jei.JeiPluginImpl"
+    ],
+    "mixinsquared-adjuster": [
+      "com.bawnorton.allthetrims.AllTheTrimsAnnotationAdjuster"
     ]
   },
   "mixins": [
@@ -46,7 +49,7 @@
   "depends": {
     "fabricloader": ">=0.15.0",
     "minecraft": "${minecraft_dependency}",
-    "java": ">=21",
+    "java": ">=${java}",
     "fabric-api": "*"
   },
   "custom": {

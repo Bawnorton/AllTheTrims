@@ -1,12 +1,11 @@
 package com.bawnorton.allthetrims.client.mixin.shader;
 
-import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
+import com.bawnorton.allthetrims.client.extend.ShaderProgramExtender;
 import com.bawnorton.allthetrims.client.mixin.accessor.GlUniformAccessor;
 import net.minecraft.client.gl.GlUniform;
 import net.minecraft.client.gl.ShaderProgram;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -16,11 +15,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.nio.IntBuffer;
 
 @Mixin(ShaderProgram.class)
-public abstract class ShaderProgramMixin {
+public abstract class ShaderProgramMixin implements ShaderProgramExtender {
     @Shadow @Nullable
     public abstract GlUniform getUniform(String name);
 
-    @Shadow @Final private String name;
     @Unique
     private GlUniform allthetrims$trimPalette;
 
@@ -40,7 +38,18 @@ public abstract class ShaderProgramMixin {
         allthetrims$debug = getUniform("allthetrims_Debug");
     }
 
-    @Inject(
+    @Override
+    public GlUniform allthetrims$getTrimPalette() {
+        return allthetrims$trimPalette;
+    }
+
+    @Override
+    public GlUniform allthetrims$getDebug() {
+        return allthetrims$debug;
+    }
+
+    //? if >1.20.6 {
+    /*@Inject(
             method = "initializeUniforms",
             at = @At(
                     value = "INVOKE",
@@ -62,4 +71,5 @@ public abstract class ShaderProgramMixin {
             allthetrims$debug.set(AllTheTrimsClient.getConfig().debug ? 1 : 0);
         }
     }
+    *///?}
 }

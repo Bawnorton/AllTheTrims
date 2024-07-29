@@ -10,6 +10,7 @@ import com.bawnorton.allthetrims.client.model.item.adapter.DefaultTrimModelLoade
 import com.bawnorton.allthetrims.client.model.item.json.TextureLayers;
 import com.bawnorton.allthetrims.client.model.item.json.TrimmableItemModel;
 import com.bawnorton.allthetrims.util.mixin.ConditionalMixin;
+import com.bawnorton.allthetrims.versioned.VIdentifier;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.mojang.datafixers.util.Either;
@@ -57,7 +58,7 @@ public abstract class CustomModelBakeryMixin {
         model.getOverrides().add(
                 new ModelOverride(id, List.of(
                         new ModelOverride.Condition(
-                                Identifier.ofVanilla("trim_type"),
+                                VIdentifier.ofVanilla("trim_type"),
                                 AllTheTrims.MODEL_INDEX
                         )
                 ))

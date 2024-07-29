@@ -97,9 +97,9 @@ public final class OkLabHelper {
         g = 255 * linearToGamma(g);
         b = 255 * linearToGamma(b);
 
-        int iR = (int) Math.clamp(r, 0, 255);
-        int iG = (int) Math.clamp(g, 0, 255);
-        int iB = (int) Math.clamp(b, 0, 255);
+        int iR = (int) Math.min(255, Math.max(r, 0));
+        int iG = (int) Math.min(255, Math.max(g, 0));
+        int iB = (int) Math.min(255, Math.max(b, 0));
 
         return iR << 16 | iG << 8 | iB;
     }

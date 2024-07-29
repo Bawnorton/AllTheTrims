@@ -16,6 +16,10 @@ plugins {
 	id("dev.kikugie.stonecutter") version "0.4"
 }
 
+gradle.rootProject {
+	System.setProperty("rootDir", rootDir.absolutePath)
+}
+
 fun getProperty(key: String): String? {
 	return settings.extra[key] as? String
 }

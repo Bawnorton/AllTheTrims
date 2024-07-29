@@ -2,12 +2,15 @@ package com.bawnorton.allthetrims.client.render;
 
 import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
+import com.bawnorton.allthetrims.client.colour.ARGBColourHelper;
 import com.bawnorton.allthetrims.client.compat.Compat;
 import com.bawnorton.allthetrims.client.compat.iris.IrisCompat;
+import com.bawnorton.allthetrims.client.mixin.accessor.ArmorTrimAccessor;
 import com.bawnorton.allthetrims.client.palette.TrimPalette;
 import com.bawnorton.allthetrims.client.render.adapter.TrimRendererAdapter;
 import com.bawnorton.allthetrims.client.shader.RenderContext;
 import com.bawnorton.allthetrims.util.Adaptable;
+import com.bawnorton.allthetrims.versioned.VLists;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.render.RenderLayer;
@@ -17,17 +20,27 @@ import net.minecraft.client.texture.MissingSprite;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.Item;
 import net.minecraft.item.trim.ArmorTrim;
 import net.minecraft.item.trim.ArmorTrimMaterial;
 import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.ColorHelper;
 import java.util.List;
 import java.util.Map;
 
 public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
+    private RenderContext context;
+
+    public void setContext(Entity entity, Item trimmed) {
+        context = new RenderContext(entity, trimmed);
+    }
+
+    public RenderContext getContext() {
+        return context;
+    }
+
     public boolean isSpriteDynamic(Sprite sprite) {
         return sprite.getContents().getId().getPath().endsWith("_%s".formatted(AllTheTrims.DYNAMIC));
     }
@@ -80,7 +93,7 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
      * Handles overriding automatically
      * @see #renderTrim(ArmorTrim, Sprite, MatrixStack, VertexConsumerProvider, int, int, int, Identifier, SpriteAtlasTexture, RenderLayer, RenderCallback)
      */
-    public void renderTrim(ArmorTrim trim, RegistryEntry<ArmorMaterial> armourMaterial, boolean leggings, Sprite sprite, MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light, int overlay, int colour, SpriteAtlasTexture atlasTexture, RenderCallback callback) {
+    public void renderTrim(ArmorTrim trim, /*$ armour_material >>*/ ArmorMaterial armourMaterial, boolean leggings, Sprite sprite, MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light, int overlay, int colour, SpriteAtlasTexture atlasTexture, RenderCallback callback) {
         if (AllTheTrimsClient.getConfig().overrideExisting) {
             renderTrim(trim, sprite, matrixStack, vertexConsumers, light, overlay, colour, getOverridenId(trim, armourMaterial, leggings), atlasTexture, callback);
         } else {
@@ -102,10 +115,12 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
      * @param modelId         Optionally provide the model to use
      * @param atlasTexture    The atlas to pull the trim texture layers from. Used by Legacy
      * @param renderLayer     Optionally provide a render layer, otherwise the default will be used.
-     * @param callback        The renderer. Typically {@link Model#render(MatrixStack, VertexConsumer, int, int, int)}. But can be a {@link Operation} if the call is wrapped.
+     * @param callback        The renderer. Typically {@link Model#render(MatrixStack, VertexConsumer, int, int, float, float, float, float)}. But can be a {@link Operation} if the call is wrapped.
      */
     public void renderTrim(ArmorTrim trim, Sprite sprite, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, int colour, Identifier modelId, SpriteAtlasTexture atlasTexture, RenderLayer renderLayer, RenderCallback callback) {
-        RenderContext context = AllTheTrimsClient.getShaderManger().getContext();
+        if(context == null) {
+            throw new IllegalStateException("Trim shader context not available");
+        }
 
         if (useLegacyRenderer(sprite)) {
             legacyRenderTrim(context, trim, matrices, vertexConsumers, light, overlay, colour, modelId, atlasTexture, renderLayer, callback);
@@ -124,7 +139,8 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
             renderLayer = AllTheTrimsClient.getShaderManger().getTrimRenderLayer(trimmed, palette);
         }
         VertexConsumer vertices = sprite.getTextureSpecificVertexConsumer(vertexConsumers.getBuffer(renderLayer));
-        getAdapter(trimmed).render(context, matrices, vertices, light, overlay, ColorHelper.Argb.withAlpha(getTrimAlpha(context), colour), callback);
+        colour = ARGBColourHelper.withAlpha(colour, getTrimAlpha(context));
+        getAdapter(trimmed).render(context, matrices, vertices, light, overlay, colour, callback);
     }
 
     public void legacyRenderTrim(RenderContext context, ArmorTrim trim, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, int colour, Identifier modelId, SpriteAtlasTexture atlasTexture, RenderLayer renderLayer, RenderCallback callback) {
@@ -142,7 +158,7 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
         int maxSupportedLayer = AllTheTrimsClient.getLayerData().getMaxSupportedLayer(patternId);
 
         TrimPalette trimPalette = AllTheTrimsClient.getTrimPalettes().getOrGeneratePalette(trimItem);
-        List<Integer> paletteColours = trimPalette.getColours().subList(0, maxSupportedLayer).reversed();
+        List<Integer> paletteColours = VLists.reverse(trimPalette.getColours().subList(0, maxSupportedLayer));
         String assetName = getAssetName(trimMaterial);
         TrimRendererAdapter adapter = getAdapter(trimmed);
         int alpha = getTrimAlpha(context);
@@ -165,12 +181,16 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
         return assetName;
     }
 
-    public Identifier getOverridenId(ArmorTrim trim, RegistryEntry<ArmorMaterial> armourMaterial, boolean leggings) {
+    public Identifier getOverridenId(ArmorTrim trim, /*$ armour_material >>*/ ArmorMaterial armourMaterial, boolean leggings) {
         Identifier modelId = getModelId(trim, armourMaterial, leggings);
         modelId = modelId.withPath(path -> {
             ArmorTrimMaterial trimMaterial = trim.getMaterial().value();
-            Map<RegistryEntry<ArmorMaterial>, String> overrides = trimMaterial.overrideArmorMaterials();
+            //? if >1.20.6 {
+            /*Map<RegistryEntry<ArmorMaterial>, String> overrides = trimMaterial.overrideArmorMaterials();
             String assetId = overrides.getOrDefault(armourMaterial, trimMaterial.assetName());
+            *///?} else {
+            String assetId = ((ArmorTrimAccessor) trim).callGetMaterialAssetNameFor(armourMaterial);
+            //?}
             return path.replace(assetId, AllTheTrims.DYNAMIC);
         });
         return modelId;
@@ -180,7 +200,7 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
         return sprite.getContents().getId();
     }
 
-    public Identifier getModelId(ArmorTrim trim, RegistryEntry<ArmorMaterial> armourMaterial, boolean leggings) {
+    public Identifier getModelId(ArmorTrim trim, /*$ armour_material >>*/ ArmorMaterial armourMaterial, boolean leggings) {
         return leggings ? trim.getLeggingsModelId(armourMaterial) : trim.getGenericModelId(armourMaterial);
     }
 
