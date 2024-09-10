@@ -23,7 +23,7 @@ public final class AllTheTrimsClient {
     private static final LayerData layerData = new LayerData();
     private static final TrimPalettes trimPalettes = new TrimPalettes();
     private static final TrimRenderer trimRenderer = new TrimRenderer();
-    private static final ItemTrimModelLoader itemModelLoader = new ItemTrimModelLoader(layerData);
+    private static final ItemTrimModelLoader itemModelLoader = new ItemTrimModelLoader();
     private static final ArmourTrimModelLoader armourModelLoader = new ArmourTrimModelLoader(layerData);
     private static final TrimShaderManager shaderManager = new TrimShaderManager();
     private static final ConfigManager configManager = new ConfigManager();

@@ -19,8 +19,7 @@ class CompatMixins {
     private var fabric : List<String> = listOf(
         "fabric.mythicmetals.MythicMetalsClientMixin",
         "fabric.wildfiregender.GenderArmorLayerMixin",
-        "fabric.bclib.CustomModelBakeryMixin",
-        "fabric.immersivearmors.LayerPieceMixin"
+        "fabric.bclib.CustomModelBakeryMixin"
     )
 
     private var neoforge : List<String> = listOf()
@@ -116,7 +115,6 @@ val buildAndCollect = tasks.register<Copy>("buildAndCollect") {
     dependsOn("build")
 }
 
-stonecutter.debug(true)
 if (stonecutter.current.isActive) {
     rootProject.tasks.register("buildActive") {
         group = "project"
@@ -124,10 +122,6 @@ if (stonecutter.current.isActive) {
     }
 }
 stonecutter.dependency("java", minecraftVersion.javaVersion().toString())
-
-StonecutterSwapper(stonecutter)
-    .register("armour_material", "1.20.6", "ArmorMaterial", "RegistryEntry<ArmorMaterial>")
-    .apply(minecraftVersion.toString())
 
 if(loader.isFabric) {
     dependencies {

@@ -14,6 +14,7 @@ import mezz.jei.library.plugins.vanilla.crafting.VanillaRecipes;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.recipe.RecipeEntry;
 import net.minecraft.recipe.SmithingRecipe;
 import net.minecraft.recipe.SmithingTrimRecipe;
 import net.minecraft.registry.Registries;
@@ -23,19 +24,12 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
-//? if >1.20.6
-/*import net.minecraft.recipe.RecipeEntry;*/
 //? if neoforge
 /*@mezz.jei.api.JeiPlugin*/
 public final class JeiPluginImpl implements IModPlugin {
-    //? if >1.20.6 {
-    /*@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     public static final RecipeType<RecipeEntry<SmithingRecipe>> TRIMMING = new RecipeType<>(AllTheTrims.id("trimming"), (Class<RecipeEntry<SmithingRecipe>>) (Object) RecipeEntry.class);
     public static IRecipeCategory<RecipeEntry<SmithingRecipe>> smithingCategory;
-    *///?} else {
-    public static final RecipeType<SmithingRecipe> TRIMMING = new RecipeType<>(AllTheTrims.id("trimming"), SmithingRecipe.class);
-    public static IRecipeCategory<SmithingRecipe> smithingCategory;
-    //?}
 
     public static boolean isTrimming(SmithingRecipe recipe) {
         return recipe instanceof SmithingTrimRecipe;
@@ -77,8 +71,7 @@ public final class JeiPluginImpl implements IModPlugin {
             );
         }
 
-        //? if >1.20.6 {
-        /*@Override
+        @Override
         public @NotNull RecipeType<RecipeEntry<SmithingRecipe>> getRecipeType() {
             return JeiPluginImpl.TRIMMING;
         }
@@ -87,17 +80,6 @@ public final class JeiPluginImpl implements IModPlugin {
         public boolean isHandled(RecipeEntry<SmithingRecipe> recipeEntry) {
             return JeiPluginImpl.isTrimming(recipeEntry.value());
         }
-        *///?} else {
-        @Override
-        public @NotNull RecipeType<SmithingRecipe> getRecipeType() {
-            return JeiPluginImpl.TRIMMING;
-        }
-
-        @Override
-        public boolean isHandled(SmithingRecipe recipe) {
-            return JeiPluginImpl.isTrimming(recipe);
-        }
-        //?}
 
         @Override
         public @NotNull Text getTitle() {

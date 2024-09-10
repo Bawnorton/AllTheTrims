@@ -7,7 +7,6 @@ import com.bawnorton.allthetrims.client.model.item.adapter.TrimModelLoaderAdapte
 import com.bawnorton.allthetrims.client.model.item.json.ModelOverride;
 import com.bawnorton.allthetrims.client.model.item.json.TextureLayers;
 import com.bawnorton.allthetrims.client.model.item.json.TrimmableItemModel;
-import com.bawnorton.allthetrims.client.render.LayerData;
 import com.bawnorton.allthetrims.util.Adaptable;
 import com.bawnorton.allthetrims.versioned.VIdentifier;
 import com.google.gson.JsonObject;
@@ -27,10 +26,8 @@ import java.util.regex.Pattern;
 public final class ItemTrimModelLoader extends Adaptable<TrimModelLoaderAdapter> {
     private static final Pattern itemIdPattern = Pattern.compile("^models/item/(.+)?(?=.json).json$");
     private final JsonParser jsonParser;
-    private final LayerData layerData;
 
-    public ItemTrimModelLoader(LayerData layerData) {
-        this.layerData = layerData;
+    public ItemTrimModelLoader() {
         this.jsonParser = new JsonParser();
     }
 
@@ -102,7 +99,7 @@ public final class ItemTrimModelLoader extends Adaptable<TrimModelLoaderAdapter>
         List<String> layers = new ArrayList<>(overriden.textures.layers);
 
         Item trimmable = trimmableResource.item();
-        layerData.setTrimStartLayer(trimmable, layers.size());
+        AllTheTrimsClient.getLayerData().setTrimStartLayer(trimmable, layers.size());
 
         TrimModelLoaderAdapter adapter = getAdapter(trimmable);
         int layerCount = adapter.getLayerCount(trimmable);

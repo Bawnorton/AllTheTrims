@@ -5,7 +5,6 @@ import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.colour.ARGBColourHelper;
 import com.bawnorton.allthetrims.client.compat.Compat;
 import com.bawnorton.allthetrims.client.compat.iris.IrisCompat;
-import com.bawnorton.allthetrims.client.mixin.accessor.ArmorTrimAccessor;
 import com.bawnorton.allthetrims.client.palette.TrimPalette;
 import com.bawnorton.allthetrims.client.render.adapter.TrimRendererAdapter;
 import com.bawnorton.allthetrims.client.shader.RenderContext;
@@ -93,7 +92,7 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
      * Handles overriding automatically
      * @see #renderTrim(ArmorTrim, Sprite, MatrixStack, VertexConsumerProvider, int, int, int, Identifier, SpriteAtlasTexture, RenderLayer, RenderCallback)
      */
-    public void renderTrim(ArmorTrim trim, /*$ armour_material >>*/ ArmorMaterial armourMaterial, boolean leggings, Sprite sprite, MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light, int overlay, int colour, SpriteAtlasTexture atlasTexture, RenderCallback callback) {
+    public void renderTrim(ArmorTrim trim, RegistryEntry<ArmorMaterial> armourMaterial, boolean leggings, Sprite sprite, MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light, int overlay, int colour, SpriteAtlasTexture atlasTexture, RenderCallback callback) {
         if (AllTheTrimsClient.getConfig().overrideExisting) {
             renderTrim(trim, sprite, matrixStack, vertexConsumers, light, overlay, colour, getOverridenId(trim, armourMaterial, leggings), atlasTexture, callback);
         } else {
@@ -115,7 +114,7 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
      * @param modelId         Optionally provide the model to use
      * @param atlasTexture    The atlas to pull the trim texture layers from. Used by Legacy
      * @param renderLayer     Optionally provide a render layer, otherwise the default will be used.
-     * @param callback        The renderer. Typically {@link Model#render(MatrixStack, VertexConsumer, int, int, float, float, float, float)}. But can be a {@link Operation} if the call is wrapped.
+     * @param callback        The renderer. Typically {@link Model#render(MatrixStack, VertexConsumer, int, int, int)}. But can be a {@link Operation} if the call is wrapped.
      */
     public void renderTrim(ArmorTrim trim, Sprite sprite, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay, int colour, Identifier modelId, SpriteAtlasTexture atlasTexture, RenderLayer renderLayer, RenderCallback callback) {
         if(context == null) {
@@ -181,16 +180,12 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
         return assetName;
     }
 
-    public Identifier getOverridenId(ArmorTrim trim, /*$ armour_material >>*/ ArmorMaterial armourMaterial, boolean leggings) {
+    public Identifier getOverridenId(ArmorTrim trim, RegistryEntry<ArmorMaterial> armourMaterial, boolean leggings) {
         Identifier modelId = getModelId(trim, armourMaterial, leggings);
         modelId = modelId.withPath(path -> {
             ArmorTrimMaterial trimMaterial = trim.getMaterial().value();
-            //? if >1.20.6 {
-            /*Map<RegistryEntry<ArmorMaterial>, String> overrides = trimMaterial.overrideArmorMaterials();
+            Map<RegistryEntry<ArmorMaterial>, String> overrides = trimMaterial.overrideArmorMaterials();
             String assetId = overrides.getOrDefault(armourMaterial, trimMaterial.assetName());
-            *///?} else {
-            String assetId = ((ArmorTrimAccessor) trim).callGetMaterialAssetNameFor(armourMaterial);
-            //?}
             return path.replace(assetId, AllTheTrims.DYNAMIC);
         });
         return modelId;
@@ -200,7 +195,7 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
         return sprite.getContents().getId();
     }
 
-    public Identifier getModelId(ArmorTrim trim, /*$ armour_material >>*/ ArmorMaterial armourMaterial, boolean leggings) {
+    public Identifier getModelId(ArmorTrim trim, RegistryEntry<ArmorMaterial> armourMaterial, boolean leggings) {
         return leggings ? trim.getLeggingsModelId(armourMaterial) : trim.getGenericModelId(armourMaterial);
     }
 

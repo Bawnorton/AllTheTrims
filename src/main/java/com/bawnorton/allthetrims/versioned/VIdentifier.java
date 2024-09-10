@@ -8,10 +8,6 @@ public final class VIdentifier {
     }
 
     public static Identifier ofVanilla(String path) {
-        //? if >1.20.6 {
-        /*return Identifier.ofVanilla(path);
-        *///?} else {
-        return new Identifier(path);
-        //?}
+        return Identifier.ofVanilla(path);
     }
 }

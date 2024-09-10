@@ -5,21 +5,15 @@ import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.colour.ARGBColourHelper;
 import com.bawnorton.allthetrims.client.palette.TrimPalette;
 import com.bawnorton.allthetrims.client.palette.TrimPalettes;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.item.ItemColorProvider;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.component.DataComponentTypes;
+import net.minecraft.item.AnimalArmorItem;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.trim.ArmorTrim;
 import net.minecraft.item.trim.ArmorTrimMaterial;
-import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.registry.Registries;
-
-//? if >1.20.6 {
-/*import net.minecraft.component.DataComponentTypes;
-import net.minecraft.item.AnimalArmorItem;
-*///?}
 
 public final class ItemTrimColourProvider implements ItemColorProvider {
     private final TrimPalettes palettes;
@@ -32,15 +26,7 @@ public final class ItemTrimColourProvider implements ItemColorProvider {
 
     @Override
     public int getColor(ItemStack stack, int tintIndex) {
-        //? if >1.20.6 {
-        /*ArmorTrim trim = stack.getComponents().get(DataComponentTypes.TRIM);
-        *///?} else {
-        ClientPlayNetworkHandler networkHandler = MinecraftClient.getInstance().getNetworkHandler();
-        if (networkHandler == null) return -1;
-
-        DynamicRegistryManager registryManager = networkHandler.getRegistryManager();
-        ArmorTrim trim = ArmorTrim.getTrim(registryManager, stack).orElse(null);
-        //?}
+        ArmorTrim trim = stack.getComponents().get(DataComponentTypes.TRIM);
         if(trim == null) return -1;
 
         ArmorTrimMaterial material = trim.getMaterial().value();
@@ -58,8 +44,7 @@ public final class ItemTrimColourProvider implements ItemColorProvider {
     public Item[] getApplicableItems() {
         return Registries.ITEM.stream().filter(item -> {
             if(item instanceof Equipment equipment) {
-                //? if >1.20.6
-                /*if(item instanceof AnimalArmorItem) return false;*/
+                if(item instanceof AnimalArmorItem) return false;
                 return equipment.getSlotType().isArmorSlot();
             }
             return false;

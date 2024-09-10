@@ -27,11 +27,7 @@ out vec2 texCoord1;
 void main() {
     gl_Position = ProjMat * ModelViewMat * vec4(Position, 1.0);
 
-    //? if >1.20.6 {
-    /*vertexDistance = fog_distance(Position, FogShape);
-    *///?} else {
-    vertexDistance = fog_distance(ModelViewMat, Position, FogShape);
-    //?}
+    vertexDistance = fog_distance(Position, FogShape);
     vertexColor = minecraft_mix_light(Light0_Direction, Light1_Direction, Normal, Color) * texelFetch(Sampler2, UV2 / 16, 0);
     texCoord0 = UV0;
     texCoord1 = UV1;
