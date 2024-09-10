@@ -20,6 +20,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,6 +73,10 @@ public final class ItemTrimModelLoader extends Adaptable<TrimModelLoaderAdapter>
             Debugger.createJson("resources/%s".formatted(overrideResourceId), overrideResource);
         }
         return extendedModels;
+    }
+
+    public void loadModels(Identifier id, Resource resource, BiConsumer<Identifier, Resource> loadedModelConsumer) {
+        loadModels(Map.of(id, resource)).forEach(loadedModelConsumer);
     }
 
     /**

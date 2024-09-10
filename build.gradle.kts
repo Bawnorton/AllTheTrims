@@ -13,7 +13,8 @@ class CompatMixins {
     private var common : List<String> = listOf(
         "rei.DefaultClientPluginMixin",
         "emi.VanillaPluginMixin",
-        "jei.SmithingRecipeCategoryMixin"
+        "jei.SmithingRecipeCategoryMixin",
+        "modernfix.BakedModelManagerMixinSquared"
     )
 
     private var fabric : List<String> = listOf(
@@ -72,6 +73,8 @@ dependencies {
 
     modCompileOnly("mezz.jei:jei-$minecraftVersion-$loader-api:${property("jei")}") { isTransitive = false }
     modCompileOnly("mezz.jei:jei-$minecraftVersion-$loader:${property("jei")}") { isTransitive = false }
+
+    modImplementation("maven.modrinth:modernfix:${property("modernfix")}")
 }
 
 loom {
