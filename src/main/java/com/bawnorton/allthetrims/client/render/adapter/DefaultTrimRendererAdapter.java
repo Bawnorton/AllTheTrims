@@ -11,7 +11,11 @@ import net.minecraft.item.trim.ArmorTrim;
 public final class DefaultTrimRendererAdapter extends TrimRendererAdapter {
     @Override
     public RenderLayer getLegacyRenderLayer(ArmorTrim trim) {
-        return TexturedRenderLayers.getArmorTrims(trim.getPattern().value().decal());
+        //? if >1.20.6 {
+        /*return TexturedRenderLayers.getArmorTrims(trim.getPattern().value().decal());
+        *///?} else {
+        return TexturedRenderLayers.getArmorTrims();
+        //?}
     }
 
     @Override

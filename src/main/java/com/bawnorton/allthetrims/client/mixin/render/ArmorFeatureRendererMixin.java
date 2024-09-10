@@ -24,6 +24,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.item.ArmorItem;
 import net.minecraft.item.ArmorMaterial;
 import net.minecraft.item.trim.ArmorTrim;
+import net.minecraft.util.math.ColorHelper;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -42,20 +43,46 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extend
         super(context);
     }
 
-    @Inject(
+    //? if >1.20.6 {
+    /*@Inject(
             method = "renderArmor",
             at = @At(
                     value = "INVOKE",
                     //? if fabric {
                     target = "Lnet/minecraft/client/render/entity/feature/ArmorFeatureRenderer;renderTrim(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/trim/ArmorTrim;Lnet/minecraft/client/render/entity/model/BipedEntityModel;Z)V"
                     //?} elif neoforge {
-                    /*target = "Lnet/minecraft/client/render/entity/feature/ArmorFeatureRenderer;renderTrim(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/trim/ArmorTrim;Lnet/minecraft/client/model/Model;Z)V"
-                    *///?}
+                    /^target = "Lnet/minecraft/client/render/entity/feature/ArmorFeatureRenderer;renderTrim(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/trim/ArmorTrim;Lnet/minecraft/client/model/Model;Z)V"
+                    ^///?}
             )
     )
     private void captureContext(MatrixStack matrices, VertexConsumerProvider vertexConsumers, T entity, EquipmentSlot armorSlot, int light, A model, CallbackInfo ci, @Local ArmorItem trimmed) {
         AllTheTrimsClient.getTrimRenderer().setContext(entity, trimmed);
     }
+    *///?} else {
+    private static final ThreadLocal<Entity> ENTITY_CAPTURE = new ThreadLocal<>();
+
+    @Inject(
+            method = "renderArmor",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/item/trim/ArmorTrim;getTrim(Lnet/minecraft/registry/DynamicRegistryManager;Lnet/minecraft/item/ItemStack;)Ljava/util/Optional;"
+            )
+    )
+    private void captureEntity(MatrixStack matrices, VertexConsumerProvider vertexConsumers, T entity, EquipmentSlot armorSlot, int light, A model, CallbackInfo ci) {
+        ENTITY_CAPTURE.set(entity);
+    }
+
+    @Inject(
+            method = "method_48483",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/render/entity/feature/ArmorFeatureRenderer;renderTrim(Lnet/minecraft/item/ArmorMaterial;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/trim/ArmorTrim;Lnet/minecraft/client/render/entity/model/BipedEntityModel;Z)V"
+            )
+    )
+    private void captureContext(ArmorItem armorItem, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, BipedEntityModel<T> bipedEntityModel, boolean bl, ArmorTrim trim, CallbackInfo ci) {
+        AllTheTrimsClient.getTrimRenderer().setContext(ENTITY_CAPTURE.get(), armorItem);
+    }
+    //?}
 
     @ModifyExpressionValue(
             //? if fabric {
@@ -73,7 +100,8 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extend
         return original;
     }
 
-    @WrapOperation(
+    //? if >1.20.6 {
+    /*@WrapOperation(
     //? if fabric {
             method = "renderTrim",
             at = @At(
@@ -83,17 +111,27 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extend
     )
     private void renderDynamicTrim(BipedEntityModel<T> instance, MatrixStack matrixStack, VertexConsumer vertexConsumer, int light, int uv, Operation<Void> original,
     //?} elif neoforge {
-            /*method = "renderTrim(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/trim/ArmorTrim;Lnet/minecraft/client/model/Model;Z)V",
+            /^method = "renderTrim(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/trim/ArmorTrim;Lnet/minecraft/client/model/Model;Z)V",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/model/Model;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;II)V"
             )
     )
     private void renderDynamicTrim(Model instance, MatrixStack matrixStack, VertexConsumer vertexConsumer, int light, int uv, Operation<Void> original,
-    *///?}
+    ^///?}
+    *///?} else {
+    @WrapOperation(
+            method = "renderTrim",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;IIFFFF)V"
+            )
+    )
+    private void renderDynamicTrim(BipedEntityModel<T> instance, MatrixStack matrixStack, VertexConsumer vertexConsumer, int light, int uv, float red, float green, float blue, float alpha, Operation<Void> original,
+    //?}
             @Local(argsOnly = true) ArmorTrim trim,
             @Local(argsOnly = true) VertexConsumerProvider vertexConsumers,
-            @Local(argsOnly = true) RegistryEntry<ArmorMaterial> armourMaterial,
+            @Local(argsOnly = true) /*$ armour_material >>*/ ArmorMaterial armourMaterial,
             @Local(argsOnly = true) boolean leggings,
             @Share("sprite") LocalRef<Sprite> spriteLocalRef) {
         AllTheTrimsClient.getTrimRenderer().renderTrim(
@@ -107,7 +145,17 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extend
                 uv,
                 -1,
                 armorTrimsAtlas,
-                instance::render
+                //? if >1.20.6 {
+                /*instance::render
+                *///?} else {
+                (matrices, vertices, light1, overlay, colour) -> {
+                    float r = ARGBColourHelper.floatFromChannel(ColorHelper.Argb.getRed(colour));
+                    float g = ARGBColourHelper.floatFromChannel(ColorHelper.Argb.getGreen(colour));
+                    float b = ARGBColourHelper.floatFromChannel(ColorHelper.Argb.getBlue(colour));
+                    float a = ARGBColourHelper.floatFromChannel(ColorHelper.Argb.getAlpha(colour));
+                    original.call(instance, matrices, vertices, light1, overlay, r, g, b, a);
+                }
+                //?}
         );
     }
 }

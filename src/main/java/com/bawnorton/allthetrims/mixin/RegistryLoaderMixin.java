@@ -20,16 +20,26 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
-import net.minecraft.registry.entry.RegistryEntryInfo;
+
+//? if >1.20.6
+/*import net.minecraft.registry.entry.RegistryEntryInfo;*/
 
 @Mixin(RegistryLoader.class)
 public abstract class RegistryLoaderMixin {
     @SuppressWarnings("unchecked")
-    @Inject(
+    //? if >1.20.6 {
+    /*@Inject(
             method = "loadFromResource(Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/registry/RegistryOps$RegistryInfoGetter;Lnet/minecraft/registry/MutableRegistry;Lcom/mojang/serialization/Decoder;Ljava/util/Map;)V",
             at = @At("TAIL")
     )
     private static <E> void addAllTrimMaterialsToRegistry(ResourceManager resourceManager, RegistryOps.RegistryInfoGetter infoGetter, MutableRegistry<E> registry, Decoder<E> elementDecoder, Map<RegistryKey<?>, Exception> errors, CallbackInfo ci) {
+    *///?} else {
+    @Inject(
+            method = "load(Lnet/minecraft/registry/RegistryOps$RegistryInfoGetter;Lnet/minecraft/resource/ResourceManager;Lnet/minecraft/registry/RegistryKey;Lnet/minecraft/registry/MutableRegistry;Lcom/mojang/serialization/Decoder;Ljava/util/Map;)V",
+            at = @At("TAIL")
+    )
+    private static <E> void addAllTrimMaterialsToRegistry(RegistryOps.RegistryInfoGetter registryInfoGetter, ResourceManager resourceManager, RegistryKey<? extends Registry<E>> registryRef, MutableRegistry<E> registry, Decoder<E> decoder, Map<RegistryKey<?>, Exception> exceptions, CallbackInfo ci) {
+    //?}
         if (registry.getKey().equals(RegistryKeys.TRIM_MATERIAL)) {
             boolean valid = false;
             if(registry instanceof SimpleRegistry<?> simpleRegistry) {
@@ -59,7 +69,8 @@ public abstract class RegistryLoaderMixin {
                     .map(item -> new Pair<>(Registries.ITEM.getId(item), Registries.ITEM.getEntry(item)))
                     .collect(Collectors.toSet());
 
-            RegistryEntryInfo info = new RegistryEntryInfo(
+            //? if >1.20.6 {
+            /*RegistryEntryInfo info = new RegistryEntryInfo(
                     Optional.of(new VersionedIdentifier(
                             AllTheTrims.MOD_ID,
                             "runtime_trim_materials",
@@ -67,6 +78,9 @@ public abstract class RegistryLoaderMixin {
                     )),
                     Lifecycle.stable()
             );
+            *///?} else {
+            Lifecycle info = Lifecycle.stable();
+            //?}
 
             for (Pair<Identifier, RegistryEntry<Item>> itemRef : toInclude) {
                 RegistryKey<ArmorTrimMaterial> trimRegKey = RegistryKey.of(trimMaterialRegistry.getKey(), itemRef.getLeft());

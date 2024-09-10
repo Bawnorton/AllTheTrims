@@ -6,7 +6,6 @@ pluginManagement {
 		maven("https://maven.architectury.dev")
 		maven("https://maven.minecraftforge.net/")
 		maven("https://maven.neoforged.net/releases/")
-		maven("https://maven.kikugie.dev/snapshots/")
 		maven("https://maven.kikugie.dev/releases/")
 		mavenCentral()
 		gradlePluginPortal()
@@ -14,7 +13,7 @@ pluginManagement {
 }
 
 plugins {
-	id("dev.kikugie.stonecutter") version "0.5-alpha.4"
+	id("dev.kikugie.stonecutter") version "0.4"
 }
 
 gradle.rootProject {

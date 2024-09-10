@@ -1,7 +1,6 @@
 package com.bawnorton.allthetrims.client.model.item.adapter;
 
 import com.bawnorton.allthetrims.AllTheTrims;
-import net.minecraft.item.AnimalArmorItem;
 import net.minecraft.item.ElytraItem;
 import net.minecraft.item.Equipment;
 import net.minecraft.item.Item;
@@ -9,7 +8,8 @@ import net.minecraft.item.Item;
 public class DefaultTrimModelLoaderAdapter extends TrimModelLoaderAdapter {
     @Override
     public boolean canTrim(Item item) {
-        if (item instanceof AnimalArmorItem) return false;
+        //? if >1.20.6
+        /*if (item instanceof net.minecraft.item.AnimalArmorItem) return false;*/
         if (!(item instanceof Equipment equipment)) return false;
         if (item instanceof ElytraItem) return false; // If ET is present, ElytraTrimModelLoaderAdapater takes care of elytras
 

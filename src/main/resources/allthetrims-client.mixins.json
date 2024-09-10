@@ -4,6 +4,7 @@
   "minVersion": "0.8",
   "mixins": [
     "ArmorTrimMaterialMixin",
+    "accessor.ArmorTrimAccessor",
     "accessor.GlUniformAccessor",
     "accessor.JsonUnbakedModelAccessor",
     "accessor.RenderPhaseAccessor",
@@ -21,5 +22,6 @@
     "defaultRequire": 1
   },
   "client": [
+    "shader.VertexBufferMixin"
   ]
 }
