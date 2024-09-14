@@ -1,5 +1,7 @@
 package com.bawnorton.allthetrims.client.model.item.json;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import net.minecraft.util.Identifier;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +11,20 @@ public final class TrimmableItemModel {
     public List<ModelOverride> overrides;
     public TextureLayers textures;
 
+    public String credit;
+    public JsonArray textureSize;
+    public JsonObject display;
+    public String guiLight;
+    public JsonArray elements;
+
     private TrimmableItemModel(String parent, List<ModelOverride> overrides, TextureLayers textures) {
         this.parent = parent;
         this.overrides = overrides;
         this.textures = textures;
+    }
+
+    public boolean isComplex() {
+        return display != null || guiLight != null || elements != null;
     }
 
     public void addOverride(ModelOverride override) {

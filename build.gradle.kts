@@ -9,31 +9,6 @@ plugins {
     id("dev.kikugie.j52j") version "1.0.2"
 }
 
-class CompatMixins {
-    private var common : List<String> = listOf(
-        "rei.DefaultClientPluginMixin",
-        "emi.VanillaPluginMixin",
-        "jei.SmithingRecipeCategoryMixin",
-        "modernfix.BakedModelManagerMixinSquared"
-    )
-
-    private var fabric : List<String> = listOf(
-        "fabric.mythicmetals.MythicMetalsClientMixin",
-        "fabric.wildfiregender.GenderArmorLayerMixin",
-        "fabric.bclib.CustomModelBakeryMixin",
-        "fabric.immersivearmors.LayerPieceMixin"
-    )
-
-    private var neoforge : List<String> = listOf()
-
-    fun getMixins() : Map<String, String> {
-        val mixins = common + if(loader.isFabric) fabric else neoforge
-        return mapOf(
-            "compat_mixins" to "[\n${mixins.joinToString(",\n") { "\"$it\"" }}\n]"
-        )
-    }
-}
-
 val mod = ModData(project)
 val loader = LoaderData(project, loom.platform.get().name.lowercase())
 val minecraftVersion = MinecraftVersionData(stonecutter)
@@ -92,17 +67,8 @@ loom {
     }
 }
 
-tasks {
-    withType<JavaCompile> {
-        options.release = minecraftVersion.javaVersion()
-    }
-
-    processResources {
-        val compatMixins = CompatMixins().getMixins()
-
-        inputs.properties(compatMixins)
-        filesMatching("allthetrims-compat.mixins.json") { expand(compatMixins) }
-    }
+tasks.withType<JavaCompile> {
+    options.release = minecraftVersion.javaVersion()
 }
 
 java {

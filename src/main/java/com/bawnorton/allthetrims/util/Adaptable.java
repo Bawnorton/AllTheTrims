@@ -36,6 +36,14 @@ public abstract class Adaptable<T> {
         adapters.put(itemId, adapter);
     }
 
+    protected boolean hasAdapter(Identifier id) {
+        return adapters.containsKey(id);
+    }
+
+    protected boolean hasAdapter(Item item) {
+        return hasAdapter(Registries.ITEM.getId(item));
+    }
+
     protected T getAdapter(Identifier id) {
         Validate.notNull(id, "id cannot be null");
         return adapters.getOrDefault(id, Validate.notNull(defaultAdapter, "Adapter for \"%s\" is not registered and no default adapter set".formatted(id)));

@@ -6,6 +6,7 @@
     "ArmorTrimMaterialMixin",
     "accessor.ArmorTrimAccessor",
     "accessor.GlUniformAccessor",
+    "accessor.ItemColorsAccessor",
     "accessor.JsonUnbakedModelAccessor",
     "accessor.RenderPhaseAccessor",
     "accessor.SpriteContentsAccessor",

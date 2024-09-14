@@ -15,5 +15,3 @@ public final class AllTheTrims {
         return VIdentifier.of(MOD_ID, path);
     }
 }
-
-

@@ -10,6 +10,7 @@ import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,11 +19,9 @@ public final class TextureLayersSerializer implements JsonSerializer<TextureLaye
     @Override
     public TextureLayers deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
         JsonObject jsonObject = json.getAsJsonObject();
-        List<String> layers = new ArrayList<>();
+        Map<String, String> layers = new HashMap<>();
         for (Map.Entry<String, JsonElement> entry : jsonObject.entrySet()) {
-            if (entry.getKey().startsWith("layer")) {
-                layers.add(entry.getValue().getAsString());
-            }
+            layers.put(entry.getKey(), entry.getValue().getAsString());
         }
         return TextureLayers.of(layers);
     }
@@ -30,9 +29,7 @@ public final class TextureLayersSerializer implements JsonSerializer<TextureLaye
     @Override
     public JsonElement serialize(TextureLayers src, Type typeOfSrc, JsonSerializationContext context) {
         JsonObject jsonObject = new JsonObject();
-        for (int i = 0; i < src.layers.size(); i++) {
-            jsonObject.addProperty("layer" + i, src.layers.get(i));
-        }
+        src.layers.forEach((key, value) -> jsonObject.add(key, context.serialize(value)));
         return jsonObject;
     }
 }

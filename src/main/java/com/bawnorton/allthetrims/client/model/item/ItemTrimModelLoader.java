@@ -41,6 +41,14 @@ public final class ItemTrimModelLoader extends Adaptable<TrimModelLoaderAdapter>
         for(TrimmableResource trimmableResource : trimmableResources) {
             TrimmableItemModel itemModel = jsonParser.fromResource(trimmableResource.resource(), TrimmableItemModel.class);
             if(itemModel == null) continue;
+
+            if(itemModel.isComplex()) {
+                Item item = trimmableResource.item();
+                if (!hasAdapter(item) || !getAdapter(item).canTrim(item)) {
+                    continue;
+                }
+            }
+
             if(itemModel.textures == null) itemModel.textures = TextureLayers.empty();
             if(itemModel.overrides == null) itemModel.overrides = new ArrayList<>();
 
@@ -104,16 +112,17 @@ public final class ItemTrimModelLoader extends Adaptable<TrimModelLoaderAdapter>
     }
 
     private Resource createModelOverride(TrimmableItemModel overriden, TrimmableResource trimmableResource) {
-        List<String> layers = new ArrayList<>(overriden.textures.layers);
+        Map<String, String> layers = new HashMap<>(overriden.textures.layers);
 
+        int startLayer = layers.size();
         Item trimmable = trimmableResource.item();
-        layerData.setTrimStartLayer(trimmable, layers.size());
+        layerData.setTrimStartLayer(trimmable, startLayer);
 
         TrimModelLoaderAdapter adapter = getAdapter(trimmable);
         int layerCount = adapter.getLayerCount(trimmable);
 
         for(int i = 0; i < layerCount; i++) {
-            layers.add(adapter.getLayerName(trimmable, i));
+            layers.put("layer%s".formatted(i + startLayer), adapter.getLayerName(trimmable, i));
         }
         TrimmableItemModel itemModel = TrimmableItemModel.builder()
                 .parent(overriden.parent)

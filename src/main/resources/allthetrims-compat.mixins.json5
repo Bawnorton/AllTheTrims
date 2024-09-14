@@ -1,0 +1,23 @@
+{
+  "required": true,
+  "package": "com.bawnorton.allthetrims.mixin.compat",
+  "minVersion": "0.8",
+  "plugin": "com.bawnorton.allthetrims.mixin.compat.AllTheTrimsCompatMixinPlugin",
+  "mixins": [
+    "rei.DefaultClientPluginMixin",
+    "emi.VanillaPluginMixin",
+    "jei.SmithingRecipeCategoryMixin",
+    "modernfix.BakedModelManagerMixinSquared",
+    //? if fabric {
+    "fabric.mythicmetals.MythicMetalsClientMixin",
+    "fabric.wildfiregender.GenderArmorLayerMixin",
+    "fabric.bclib.CustomModelBakeryMixin",
+    //? if <1.20.6 {
+    "fabric.immersivearmors.LayerPieceMixin"
+    //?}
+    //?}
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

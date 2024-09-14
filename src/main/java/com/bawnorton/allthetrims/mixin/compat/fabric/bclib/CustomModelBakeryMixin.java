@@ -66,23 +66,22 @@ public abstract class CustomModelBakeryMixin {
 
         JsonUnbakedModelAccessor accessor = (JsonUnbakedModelAccessor) model;
         Map<String, Either<SpriteIdentifier, String>> textures = new HashMap<>(accessor.getTextureMap());
-        AllTheTrimsClient.getLayerData().setTrimStartLayer(item, textures.size());
+        int startLayer = textures.size();
+        AllTheTrimsClient.getLayerData().setTrimStartLayer(item, startLayer);
 
-        String[] layers = new String[textures.size()];
+        Map<String, String> layers = new HashMap<>();
         for (Map.Entry<String, Either<SpriteIdentifier, String>> entry : textures.entrySet()) {
             String layer = entry.getKey();
             Either<SpriteIdentifier, String> location = entry.getValue();
 
             String layerLocation = location.map(spriteId -> spriteId.getTextureId().toString(), Function.identity());
-            int layerNum = Integer.parseInt(layer.replaceAll("\\D", ""));
-            layers[layerNum] = layerLocation;
+            layers.put(layer, layerLocation);
         }
 
         int layerCount = trimModelLoaderAdapter.getLayerCount(item);
-        List<String> existingAndTrims = new ArrayList<>(layers.length + layerCount);
-        existingAndTrims.addAll(Arrays.asList(layers));
+        Map<String, String> existingAndTrims = new HashMap<>(layers);
         for(int i = 0; i < layerCount; i++) {
-            existingAndTrims.add(trimModelLoaderAdapter.getLayerName(item, i));
+            existingAndTrims.put("layer%s".formatted(i + startLayer), trimModelLoaderAdapter.getLayerName(item, i));
         }
 
         TrimmableItemModel itemModel = TrimmableItemModel.builder()
