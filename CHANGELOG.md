@@ -1,3 +1,8 @@
+## 4.0.2
+
+- Fix accidental overwriting of existing colour providers
+- Fix custom model loading
+
 ## 4.0.1
 
 - Improve ET compat
