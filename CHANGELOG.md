@@ -1,4 +1,4 @@
-## 4.0.2
+## 4.0.3
 
 - Fix accidental overwriting of existing colour providers
 - Fix custom model loading
