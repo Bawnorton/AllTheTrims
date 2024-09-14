@@ -93,7 +93,7 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
      * Handles overriding automatically
      * @see #renderTrim(ArmorTrim, Sprite, MatrixStack, VertexConsumerProvider, int, int, int, Identifier, SpriteAtlasTexture, RenderLayer, RenderCallback)
      */
-    public void renderTrim(ArmorTrim trim, /*$ armour_material >>*/ ArmorMaterial armourMaterial, boolean leggings, Sprite sprite, MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light, int overlay, int colour, SpriteAtlasTexture atlasTexture, RenderCallback callback) {
+    public void renderTrim(ArmorTrim trim, /*$ armour_material >>*/ RegistryEntry<ArmorMaterial> armourMaterial, boolean leggings, Sprite sprite, MatrixStack matrixStack, VertexConsumerProvider vertexConsumers, int light, int overlay, int colour, SpriteAtlasTexture atlasTexture, RenderCallback callback) {
         if (AllTheTrimsClient.getConfig().overrideExisting) {
             renderTrim(trim, sprite, matrixStack, vertexConsumers, light, overlay, colour, getOverridenId(trim, armourMaterial, leggings), atlasTexture, callback);
         } else {
@@ -181,16 +181,16 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
         return assetName;
     }
 
-    public Identifier getOverridenId(ArmorTrim trim, /*$ armour_material >>*/ ArmorMaterial armourMaterial, boolean leggings) {
+    public Identifier getOverridenId(ArmorTrim trim, /*$ armour_material >>*/ RegistryEntry<ArmorMaterial> armourMaterial, boolean leggings) {
         Identifier modelId = getModelId(trim, armourMaterial, leggings);
         modelId = modelId.withPath(path -> {
             ArmorTrimMaterial trimMaterial = trim.getMaterial().value();
             //? if >1.20.6 {
-            /*Map<RegistryEntry<ArmorMaterial>, String> overrides = trimMaterial.overrideArmorMaterials();
+            Map<RegistryEntry<ArmorMaterial>, String> overrides = trimMaterial.overrideArmorMaterials();
             String assetId = overrides.getOrDefault(armourMaterial, trimMaterial.assetName());
-            *///?} else {
-            String assetId = ((ArmorTrimAccessor) trim).callGetMaterialAssetNameFor(armourMaterial);
-            //?}
+            //?} else {
+            /*String assetId = ((ArmorTrimAccessor) trim).callGetMaterialAssetNameFor(armourMaterial);
+            *///?}
             return path.replace(assetId, AllTheTrims.DYNAMIC);
         });
         return modelId;
@@ -200,7 +200,7 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
         return sprite.getContents().getId();
     }
 
-    public Identifier getModelId(ArmorTrim trim, /*$ armour_material >>*/ ArmorMaterial armourMaterial, boolean leggings) {
+    public Identifier getModelId(ArmorTrim trim, /*$ armour_material >>*/ RegistryEntry<ArmorMaterial> armourMaterial, boolean leggings) {
         return leggings ? trim.getLeggingsModelId(armourMaterial) : trim.getGenericModelId(armourMaterial);
     }
 

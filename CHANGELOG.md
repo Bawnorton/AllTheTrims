@@ -1,3 +1,7 @@
+## 4.0.4
+
+- Fix refmap on compat mixins
+
 ## 4.0.3
 
 - Fix accidental overwriting of existing colour providers

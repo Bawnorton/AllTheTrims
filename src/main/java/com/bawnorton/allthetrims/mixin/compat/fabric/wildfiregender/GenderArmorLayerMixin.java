@@ -1,7 +1,7 @@
 package com.bawnorton.allthetrims.mixin.compat.fabric.wildfiregender;
 
 //? if fabric && >1.20.6 {
-/*import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.render.TrimRenderer;
 import com.bawnorton.allthetrims.util.mixin.ConditionalMixin;
@@ -102,8 +102,8 @@ public abstract class GenderArmorLayerMixin<T extends LivingEntity, M extends Bi
         }
     }
 }
-*///?} elif fabric {
-import com.bawnorton.allthetrims.AllTheTrims;
+//?} elif fabric {
+/*import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.colour.ARGBColourHelper;
 import com.bawnorton.allthetrims.client.render.TrimRenderer;
@@ -200,4 +200,4 @@ public abstract class GenderArmorLayerMixin {
         }
     }
 }
-//?}
+*///?}

@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 @Mixin(ArmorTrim.class)
 public interface ArmorTrimAccessor {
     //? if <1.20.6 {
-    @Invoker
+    /*@Invoker
     String callGetMaterialAssetNameFor(ArmorMaterial armourMaterial);
-    //?}
+    *///?}
 }

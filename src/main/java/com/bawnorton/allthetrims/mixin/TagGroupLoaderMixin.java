@@ -48,7 +48,7 @@ public abstract class TagGroupLoaderMixin {
         } else if (id.equals(ItemTags.TRIMMABLE_ARMOR.id())) {
             entries.addAll(Registries.ITEM.stream()
                     //? if >1.20.6
-                    /*.filter(item -> !(item instanceof net.minecraft.item.AnimalArmorItem))*/
+                    .filter(item -> !(item instanceof net.minecraft.item.AnimalArmorItem))
                     .filter(item -> item instanceof Equipment equipment && equipment.getSlotType().isArmorSlot())
                     .filter(item -> !(item instanceof ElytraItem) || Compat.getElytraTrimsCompat().isPresent())
                     .map(Registries.ITEM::getId)

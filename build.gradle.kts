@@ -67,8 +67,19 @@ loom {
     }
 }
 
-tasks.withType<JavaCompile> {
-    options.release = minecraftVersion.javaVersion()
+tasks {
+    withType<JavaCompile> {
+        options.release = minecraftVersion.javaVersion()
+    }
+
+    processResources {
+        val refmap = "refmap" to "${mod.name}-$minecraftVersion-$loader-refmap.json"
+        inputs.properties(refmap)
+
+        filesMatching("allthetrims-compat.mixins.json5") {
+            expand(refmap)
+        }
+    }
 }
 
 java {

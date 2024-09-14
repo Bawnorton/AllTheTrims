@@ -16,7 +16,7 @@ import java.nio.IntBuffer;
 @Mixin(VertexBuffer.class)
 public abstract class VertexBufferMixin {
     //? if <1.20.6 {
-    @SuppressWarnings("resource")
+    /*@SuppressWarnings("resource")
     @Inject(
             method = "drawInternal",
             at = @At(
@@ -43,5 +43,5 @@ public abstract class VertexBufferMixin {
             debug.set(AllTheTrimsClient.getConfig().debug ? 1 : 0);
         }
     }
-    //?}
+    *///?}
 }

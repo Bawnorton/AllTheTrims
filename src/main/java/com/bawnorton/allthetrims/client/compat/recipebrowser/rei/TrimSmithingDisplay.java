@@ -6,7 +6,7 @@ import net.minecraft.recipe.SmithingTrimRecipe;
 import java.util.List;
 
 //? if >1.20.6
-/*import net.minecraft.recipe.RecipeEntry;*/
+import net.minecraft.recipe.RecipeEntry;
 @SuppressWarnings("UnstableApiUsage")
 public final class TrimSmithingDisplay extends DefaultSmithingDisplay {
     private TrimSmithingDisplay(DefaultSmithingDisplay display) {
@@ -19,16 +19,16 @@ public final class TrimSmithingDisplay extends DefaultSmithingDisplay {
     }
 
     //? if >1.20.6 {
-    /*public static List<TrimSmithingDisplay> forRecipe(RecipeEntry<SmithingTrimRecipe> recipe) {
+    public static List<TrimSmithingDisplay> forRecipe(RecipeEntry<SmithingTrimRecipe> recipe) {
         return DefaultSmithingDisplay.fromTrimming(recipe).stream()
                 .map(TrimSmithingDisplay::new)
                 .toList();
     }
-    *///?} else {
-    public static List<TrimSmithingDisplay> forRecipe(SmithingTrimRecipe recipe) {
+    //?} else {
+    /*public static List<TrimSmithingDisplay> forRecipe(SmithingTrimRecipe recipe) {
         return DefaultSmithingDisplay.from(recipe).stream()
                 .map(TrimSmithingDisplay::new)
                 .toList();
     }
-    //?}
+    *///?}
 }

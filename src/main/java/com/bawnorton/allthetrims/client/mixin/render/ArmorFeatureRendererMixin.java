@@ -44,22 +44,22 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extend
     }
 
     //? if >1.20.6 {
-    /*@Inject(
+    @Inject(
             method = "renderArmor",
             at = @At(
                     value = "INVOKE",
                     //? if fabric {
                     target = "Lnet/minecraft/client/render/entity/feature/ArmorFeatureRenderer;renderTrim(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/trim/ArmorTrim;Lnet/minecraft/client/render/entity/model/BipedEntityModel;Z)V"
                     //?} elif neoforge {
-                    /^target = "Lnet/minecraft/client/render/entity/feature/ArmorFeatureRenderer;renderTrim(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/trim/ArmorTrim;Lnet/minecraft/client/model/Model;Z)V"
-                    ^///?}
+                    /*target = "Lnet/minecraft/client/render/entity/feature/ArmorFeatureRenderer;renderTrim(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/trim/ArmorTrim;Lnet/minecraft/client/model/Model;Z)V"
+                    *///?}
             )
     )
     private void captureContext(MatrixStack matrices, VertexConsumerProvider vertexConsumers, T entity, EquipmentSlot armorSlot, int light, A model, CallbackInfo ci, @Local ArmorItem trimmed) {
         AllTheTrimsClient.getTrimRenderer().setContext(entity, trimmed);
     }
-    *///?} else {
-    private static final ThreadLocal<Entity> ENTITY_CAPTURE = new ThreadLocal<>();
+    //?} else {
+    /*private static final ThreadLocal<Entity> ENTITY_CAPTURE = new ThreadLocal<>();
 
     @Inject(
             method = "renderArmor",
@@ -82,7 +82,7 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extend
     private void captureContext(ArmorItem armorItem, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, BipedEntityModel<T> bipedEntityModel, boolean bl, ArmorTrim trim, CallbackInfo ci) {
         AllTheTrimsClient.getTrimRenderer().setContext(ENTITY_CAPTURE.get(), armorItem);
     }
-    //?}
+    *///?}
 
     @ModifyExpressionValue(
             //? if fabric {
@@ -101,7 +101,7 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extend
     }
 
     //? if >1.20.6 {
-    /*@WrapOperation(
+    @WrapOperation(
     //? if fabric {
             method = "renderTrim",
             at = @At(
@@ -111,16 +111,16 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extend
     )
     private void renderDynamicTrim(BipedEntityModel<T> instance, MatrixStack matrixStack, VertexConsumer vertexConsumer, int light, int uv, Operation<Void> original,
     //?} elif neoforge {
-            /^method = "renderTrim(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/trim/ArmorTrim;Lnet/minecraft/client/model/Model;Z)V",
+            /*method = "renderTrim(Lnet/minecraft/registry/entry/RegistryEntry;Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider;ILnet/minecraft/item/trim/ArmorTrim;Lnet/minecraft/client/model/Model;Z)V",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/model/Model;render(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumer;II)V"
             )
     )
     private void renderDynamicTrim(Model instance, MatrixStack matrixStack, VertexConsumer vertexConsumer, int light, int uv, Operation<Void> original,
-    ^///?}
-    *///?} else {
-    @WrapOperation(
+    *///?}
+    //?} else {
+    /*@WrapOperation(
             method = "renderTrim",
             at = @At(
                     value = "INVOKE",
@@ -128,10 +128,10 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extend
             )
     )
     private void renderDynamicTrim(BipedEntityModel<T> instance, MatrixStack matrixStack, VertexConsumer vertexConsumer, int light, int uv, float red, float green, float blue, float alpha, Operation<Void> original,
-    //?}
+    *///?}
             @Local(argsOnly = true) ArmorTrim trim,
             @Local(argsOnly = true) VertexConsumerProvider vertexConsumers,
-            @Local(argsOnly = true) /*$ armour_material >>*/ ArmorMaterial armourMaterial,
+            @Local(argsOnly = true) /*$ armour_material >>*/ RegistryEntry<ArmorMaterial> armourMaterial,
             @Local(argsOnly = true) boolean leggings,
             @Share("sprite") LocalRef<Sprite> spriteLocalRef) {
         AllTheTrimsClient.getTrimRenderer().renderTrim(
@@ -146,16 +146,16 @@ public abstract class ArmorFeatureRendererMixin<T extends LivingEntity, M extend
                 -1,
                 armorTrimsAtlas,
                 //? if >1.20.6 {
-                /*instance::render
-                *///?} else {
-                (matrices, vertices, light1, overlay, colour) -> {
+                instance::render
+                //?} else {
+                /*(matrices, vertices, light1, overlay, colour) -> {
                     float r = ARGBColourHelper.floatFromChannel(ColorHelper.Argb.getRed(colour));
                     float g = ARGBColourHelper.floatFromChannel(ColorHelper.Argb.getGreen(colour));
                     float b = ARGBColourHelper.floatFromChannel(ColorHelper.Argb.getBlue(colour));
                     float a = ARGBColourHelper.floatFromChannel(ColorHelper.Argb.getAlpha(colour));
                     original.call(instance, matrices, vertices, light1, overlay, r, g, b, a);
                 }
-                //?}
+                *///?}
         );
     }
 }

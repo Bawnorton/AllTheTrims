@@ -9,20 +9,20 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 //? if >1.20.6
-/*import net.minecraft.recipe.RecipeEntry;*/
+import net.minecraft.recipe.RecipeEntry;
 @SuppressWarnings("UnusedMixin")
 @Mixin(SmithingRecipeCategory.class)
 @ConditionalMixin("jei")
 public abstract class SmithingRecipeCategoryMixin {
     //? if >1.20.6 {
-    /*@ModifyReturnValue(method = "isHandled(Lnet/minecraft/recipe/RecipeEntry;)Z", at = @At("RETURN"))
+    @ModifyReturnValue(method = "isHandled(Lnet/minecraft/recipe/RecipeEntry;)Z", at = @At("RETURN"))
     private boolean onlyHandleTransformations(boolean original, RecipeEntry<SmithingRecipe> recipeEntry) {
         return !JeiPluginImpl.isTrimming(recipeEntry.value());
     }
-    *///?} else {
-    @ModifyReturnValue(method = "isHandled(Lnet/minecraft/recipe/SmithingRecipe;)Z", at = @At("RETURN"))
+    //?} else {
+    /*@ModifyReturnValue(method = "isHandled(Lnet/minecraft/recipe/SmithingRecipe;)Z", at = @At("RETURN"))
     private boolean onlyHandleTransformations(boolean original, SmithingRecipe recipe) {
         return !JeiPluginImpl.isTrimming(recipe);
     }
-    //?}
+    *///?}
 }

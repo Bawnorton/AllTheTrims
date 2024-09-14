@@ -29,7 +29,7 @@ import org.spongepowered.asm.mixin.injection.At;
 @Mixin(MythicMetalsClient.class)
 public abstract class MythicMetalsClientMixin {
     //? if >1.20.6 {
-    /*@WrapOperation(
+    @WrapOperation(
             method = "lambda$registerArmorRenderer$9",
             at = @At(
                     value = "INVOKE",
@@ -41,8 +41,8 @@ public abstract class MythicMetalsClientMixin {
             @Local ArmorTrim trim,
             @Local Sprite sprite,
             @Local HallowedArmor armour) {
-    *///?} else {
-    @WrapOperation(
+    //?} else {
+    /*@WrapOperation(
             method = "lambda$registerArmorRenderer$11",
             at = @At(
                     value = "INVOKE",
@@ -54,7 +54,7 @@ public abstract class MythicMetalsClientMixin {
             @Local(argsOnly = true) ArmorTrim trim,
             @Local Sprite sprite,
             @Local(argsOnly = true) HallowedArmor armour) {
-    //?}
+    *///?}
         AllTheTrimsClient.getTrimRenderer().renderTrim(
                 trim,
                 armour.getMaterial(),
@@ -67,16 +67,16 @@ public abstract class MythicMetalsClientMixin {
                 -1,
                 MinecraftClient.getInstance().getBakedModelManager().getAtlas(TexturedRenderLayers.ARMOR_TRIMS_ATLAS_TEXTURE),
                 //? if >1.20.6 {
-                /*instance::render
-                 *///?} else {
-                (matrices, vertices, light1, overlay1, colour) -> {
+                instance::render
+                 //?} else {
+                /*(matrices, vertices, light1, overlay1, colour) -> {
                     float r = ARGBColourHelper.floatFromChannel(ColorHelper.Argb.getRed(colour));
                     float g = ARGBColourHelper.floatFromChannel(ColorHelper.Argb.getGreen(colour));
                     float b = ARGBColourHelper.floatFromChannel(ColorHelper.Argb.getBlue(colour));
                     float a = ARGBColourHelper.floatFromChannel(ColorHelper.Argb.getAlpha(colour));
                     original.call(instance, matrices, vertices, light1, overlay1, r, g, b, a);
                 }
-                //?}
+                *///?}
         );
     }
 }

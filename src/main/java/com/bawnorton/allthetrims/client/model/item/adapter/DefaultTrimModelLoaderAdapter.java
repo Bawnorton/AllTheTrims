@@ -9,7 +9,7 @@ public class DefaultTrimModelLoaderAdapter extends TrimModelLoaderAdapter {
     @Override
     public boolean canTrim(Item item) {
         //? if >1.20.6
-        /*if (item instanceof net.minecraft.item.AnimalArmorItem) return false;*/
+        if (item instanceof net.minecraft.item.AnimalArmorItem) return false;
         if (!(item instanceof Equipment equipment)) return false;
         if (item instanceof ElytraItem) return false; // If ET is present, ElytraTrimModelLoaderAdapater takes care of elytras
 

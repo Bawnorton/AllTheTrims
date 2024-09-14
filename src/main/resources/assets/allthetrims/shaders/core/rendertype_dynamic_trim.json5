@@ -1,6 +1,6 @@
 {
     //? if <1.20.6 {
-    "blend": {
+    /*"blend": {
         "func": "add",
         "srcrgb": "srcalpha",
         "dstrgb": "1-srcalpha"
@@ -13,7 +13,7 @@
         "UV2",
         "Normal"
     ],
-    //?}
+    *///?}
     "vertex": "allthetrims:rendertype_dynamic_trim",
     "fragment": "allthetrims:rendertype_dynamic_trim",
     "samplers": [

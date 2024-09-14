@@ -63,10 +63,10 @@ public abstract class PalettedPermutationsAtlasSourceMixin {
 
     @WrapOperation(
             //? if >1.20.6 {
-            /*method = "open",
-            *///?} else {
-            method = "method_48486",
-            //?}
+            method = "open",
+            //?} else {
+            /*method = "method_48486",
+            *///?}
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/resource/ResourceManager;getResource(Lnet/minecraft/util/Identifier;)Ljava/util/Optional;"

@@ -49,7 +49,7 @@ public abstract class ShaderProgramMixin implements ShaderProgramExtender {
     }
 
     //? if >1.20.6 {
-    /*@Inject(
+    @Inject(
             method = "initializeUniforms",
             at = @At(
                     value = "INVOKE",
@@ -71,5 +71,5 @@ public abstract class ShaderProgramMixin implements ShaderProgramExtender {
             allthetrims$debug.set(AllTheTrimsClient.getConfig().debug ? 1 : 0);
         }
     }
-    *///?}
+    //?}
 }

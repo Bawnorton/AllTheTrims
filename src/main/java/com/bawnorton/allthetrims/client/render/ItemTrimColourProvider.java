@@ -15,13 +15,13 @@ import net.minecraft.registry.Registries;
 import net.minecraft.util.collection.IdList;
 
 //? if >1.20.6 {
-/*import net.minecraft.component.DataComponentTypes;
+import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.AnimalArmorItem;
-*///?} else {
-import net.minecraft.client.network.ClientPlayNetworkHandler;
+//?} else {
+/*import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.registry.DynamicRegistryManager;
-//?}
+*///?}
 
 
 public final class ItemTrimColourProvider implements ItemColorProvider {
@@ -38,14 +38,14 @@ public final class ItemTrimColourProvider implements ItemColorProvider {
     @Override
     public int getColor(ItemStack stack, int tintIndex) {
         //? if >1.20.6 {
-        /*ArmorTrim trim = stack.getComponents().get(DataComponentTypes.TRIM);
-        *///?} else {
-        ClientPlayNetworkHandler networkHandler = MinecraftClient.getInstance().getNetworkHandler();
+        ArmorTrim trim = stack.getComponents().get(DataComponentTypes.TRIM);
+        //?} else {
+        /*ClientPlayNetworkHandler networkHandler = MinecraftClient.getInstance().getNetworkHandler();
         if (networkHandler == null) return getExistingColor(stack, tintIndex);
 
         DynamicRegistryManager registryManager = networkHandler.getRegistryManager();
         ArmorTrim trim = ArmorTrim.getTrim(registryManager, stack).orElse(null);
-        //?}
+        *///?}
         if(trim == null) return getExistingColor(stack, tintIndex);
 
         ArmorTrimMaterial material = trim.getMaterial().value();
@@ -72,7 +72,7 @@ public final class ItemTrimColourProvider implements ItemColorProvider {
         return Registries.ITEM.stream().filter(item -> {
             if(item instanceof Equipment equipment) {
                 //? if >1.20.6
-                /*if(item instanceof AnimalArmorItem) return false;*/
+                if(item instanceof AnimalArmorItem) return false;
                 return equipment.getSlotType().isArmorSlot();
             }
             return false;

@@ -20,7 +20,7 @@ import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.registry.tag.ItemTags;
 
 //? if >1.20.6
-/*import net.minecraft.recipe.RecipeEntry;*/
+import net.minecraft.recipe.RecipeEntry;
 
 //? if neoforge
 /*@dev.emi.emi.api.EmiEntrypoint*/
@@ -45,11 +45,11 @@ public final class EmiPluginImpl implements EmiPlugin {
         registry.addWorkstation(trimming, EmiStack.of(Items.SMITHING_TABLE));
 
         //? if >1.20.6 {
-        /*for (RecipeEntry<SmithingRecipe> recipeEntry : registry.getRecipeManager().listAllOfType(RecipeType.SMITHING)) {
+        for (RecipeEntry<SmithingRecipe> recipeEntry : registry.getRecipeManager().listAllOfType(RecipeType.SMITHING)) {
             SmithingRecipe recipe = recipeEntry.value();
-        *///?} else {
-        for(SmithingRecipe recipe : registry.getRecipeManager().listAllOfType(RecipeType.SMITHING)) {
-        //?}
+        //?} else {
+        /*for(SmithingRecipe recipe : registry.getRecipeManager().listAllOfType(RecipeType.SMITHING)) {
+        *///?}
             if (recipe instanceof SmithingTrimRecipeAccessor accessor) {
                 registry.addRecipe(new EmiSmithingTrimRecipe(
                         EmiIngredient.of(accessor.getTemplate()),

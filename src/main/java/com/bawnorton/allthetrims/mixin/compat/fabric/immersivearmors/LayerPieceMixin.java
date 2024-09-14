@@ -2,7 +2,7 @@ package com.bawnorton.allthetrims.mixin.compat.fabric.immersivearmors;
 
 //? if fabric && <1.20.6 {
 
-import com.bawnorton.allthetrims.client.AllTheTrimsClient;
+/*import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.colour.ARGBColourHelper;
 import com.bawnorton.allthetrims.client.render.TrimRenderer;
 import com.bawnorton.allthetrims.util.mixin.ConditionalMixin;
@@ -95,4 +95,4 @@ public abstract class LayerPieceMixin {
     }
 }
 
-//?}
+*///?}
