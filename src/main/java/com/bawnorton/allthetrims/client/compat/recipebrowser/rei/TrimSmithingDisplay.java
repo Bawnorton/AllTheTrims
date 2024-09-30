@@ -10,7 +10,7 @@ import net.minecraft.recipe.RecipeEntry;
 @SuppressWarnings("UnstableApiUsage")
 public final class TrimSmithingDisplay extends DefaultSmithingDisplay {
     private TrimSmithingDisplay(DefaultSmithingDisplay display) {
-        super(display.getInputEntries(), display.getOutputEntries(), display.getDisplayLocation());
+        super(display.getInputEntries(), display.getOutputEntries(), SmithingRecipeType.TRIM, display.getDisplayLocation());
     }
 
     @Override
