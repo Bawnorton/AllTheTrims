@@ -1,3 +1,8 @@
+## 4.0.5
+
+- Fix M^2 dep
+- Update REI dep
+
 ## 4.0.4
 
 - Fix refmap on compat mixins
