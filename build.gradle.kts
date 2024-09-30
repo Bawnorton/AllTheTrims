@@ -114,7 +114,7 @@ if(loader.isFabric) {
         modImplementation("net.fabricmc:fabric-loader:${loader.getVersion()}")
         modImplementation("net.fabricmc.fabric-api:fabric-api:${property("fabric_api")}+$minecraftVersion")
 
-        include(implementation(annotationProcessor("com.bawnorton.mixinsquared:mixinsquared-fabric:${property("mixin_squared")}")!!)!!)
+        include(implementation(annotationProcessor("com.github.bawnorton:mixinsquared-fabric:${property("mixin_squared")}")!!)!!)
 
         modImplementation("com.terraformersmc:modmenu:${property("mod_menu")}")
 
@@ -150,8 +150,8 @@ if (loader.isNeoForge) {
     dependencies {
         neoForge("net.neoforged:neoforge:${loader.getVersion()}")
 
-        compileOnly(annotationProcessor("com.bawnorton.mixinsquared:mixinsquared-common:0.2.0-beta.6")!!)
-        implementation(include("com.bawnorton.mixinsquared:mixinsquared-forge:0.2.0-beta.6")!!)
+        compileOnly(annotationProcessor("com.github.bawnorton:mixinsquared-common:0.2.0-beta.6")!!)
+        implementation(include("com.github.bawnorton:mixinsquared-forge:0.2.0-beta.6")!!)
 
         modCompileOnly("maven.modrinth:elytra-trims:${property("elytra_trims")}").stripAw(project)
 
