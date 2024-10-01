@@ -51,6 +51,12 @@ dependencies {
     modCompileOnly("mezz.jei:jei-$minecraftVersion-$loader:${property("jei")}") { isTransitive = false }
 
     modImplementation("maven.modrinth:modernfix:${property("modernfix")}")
+    modImplementation("maven.modrinth:iris:${property("iris")}")
+    modImplementation("maven.modrinth:sodium:${property("sodium")}")
+
+    modRuntimeOnly("org.antlr:antlr4-runtime:4.13.1")
+    modRuntimeOnly("io.github.douira:glsl-transformer:2.0.1")
+    modRuntimeOnly("org.anarres:jcpp:1.4.14")
 }
 
 loom {
@@ -119,7 +125,6 @@ if(loader.isFabric) {
         modImplementation("com.terraformersmc:modmenu:${property("mod_menu")}")
 
         modCompileOnly("maven.modrinth:elytra-trims:${property("elytra_trims")}")
-        modCompileOnly("maven.modrinth:iris:${property("iris")}+$minecraftVersion")
         modCompileOnly("maven.modrinth:show-me-your-skin:${property("show_me_your_skin")}")
         modCompileOnly("maven.modrinth:female-gender:${property("wildfire_gender")}")
         modCompileOnly("maven.modrinth:mythicmetals:${property("mythic_metals")}")

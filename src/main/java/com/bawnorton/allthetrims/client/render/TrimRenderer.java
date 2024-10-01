@@ -5,7 +5,6 @@ import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.colour.ARGBColourHelper;
 import com.bawnorton.allthetrims.client.compat.Compat;
 import com.bawnorton.allthetrims.client.compat.iris.IrisCompat;
-import com.bawnorton.allthetrims.client.mixin.accessor.ArmorTrimAccessor;
 import com.bawnorton.allthetrims.client.palette.TrimPalette;
 import com.bawnorton.allthetrims.client.render.adapter.TrimRendererAdapter;
 import com.bawnorton.allthetrims.client.shader.RenderContext;
@@ -123,7 +122,11 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
         }
 
         if (useLegacyRenderer(sprite)) {
-            legacyRenderTrim(context, trim, matrices, vertexConsumers, light, overlay, colour, modelId, atlasTexture, renderLayer, callback);
+            if(!isSpriteDynamic(sprite)) {
+                callback.render(matrices, sprite.getTextureSpecificVertexConsumer(vertexConsumers.getBuffer(getLegacyRenderLayer(context.trimmed(), trim))), light, overlay, colour);
+            } else {
+                legacyRenderTrim(context, trim, matrices, vertexConsumers, light, overlay, colour, modelId, atlasTexture, renderLayer, callback);
+            }
         } else if (isSpriteDynamic(sprite)) {
             shaderRenderTrim(context, trim, sprite, matrices, vertexConsumers, light, overlay, colour, renderLayer, callback);
         } else {
@@ -164,8 +167,8 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
         int alpha = getTrimAlpha(context);
         for (int i = 0; i < maxSupportedLayer; i++) {
             Identifier layerSpriteId = modelId.withPath(modelId.getPath().replace(assetName, "%d_%s".formatted(i, assetName)));
-            Sprite sprite = atlasTexture.getSprite(layerSpriteId);
-            VertexConsumer vertexConsumer = sprite.getTextureSpecificVertexConsumer(vertexConsumers.getBuffer(renderLayer));
+            Sprite layerSprite = atlasTexture.getSprite(layerSpriteId);
+            VertexConsumer vertexConsumer = layerSprite.getTextureSpecificVertexConsumer(vertexConsumers.getBuffer(renderLayer));
             colour = paletteColours.get(i) | alpha << 24;
             adapter.render(context, matrices, vertexConsumer, light, overlay, colour, callback);
         }
