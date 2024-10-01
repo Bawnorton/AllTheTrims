@@ -1,6 +1,7 @@
 ## 4.0.6
 
 - Fix built-in trim rendering when using shaders
+- Update NeoForge
 
 ## 4.0.5
 
