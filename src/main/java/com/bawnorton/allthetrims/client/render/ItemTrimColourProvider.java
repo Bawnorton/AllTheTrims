@@ -34,8 +34,9 @@ public final class ItemTrimColourProvider implements ItemColorProvider {
     public ItemTrimColourProvider(TrimPalettes palettes, LayerData layerData, IdList<ItemColorProvider> existingProviders) {
     *///?} elif neoforge {
     private final Map<Item, ItemColorProvider> existingProviders;
-    //?}
+
     public ItemTrimColourProvider(TrimPalettes palettes, LayerData layerData, Map<Item, ItemColorProvider> existingProviders) {
+    //?}
         this.palettes = palettes;
         this.layerData = layerData;
         this.existingProviders = existingProviders;
