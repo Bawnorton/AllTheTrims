@@ -9,13 +9,13 @@
     "jei.SmithingRecipeCategoryMixin",
     "modernfix.BakedModelManagerMixinSquared",
     //? if fabric {
-    "fabric.mythicmetals.MythicMetalsClientMixin",
+    /*"fabric.mythicmetals.MythicMetalsClientMixin",
     "fabric.wildfiregender.GenderArmorLayerMixin",
     "fabric.bclib.CustomModelBakeryMixin",
     //? if <1.20.6 {
-    /*"fabric.immersivearmors.LayerPieceMixin"
+    /^"fabric.immersivearmors.LayerPieceMixin"
+    ^///?}
     *///?}
-    //?}
   ],
   "injectors": {
     "defaultRequire": 1

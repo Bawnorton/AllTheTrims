@@ -17,7 +17,8 @@ import net.minecraft.util.collection.IdList;
 //? if >1.20.6 {
 import net.minecraft.component.DataComponentTypes;
 import net.minecraft.item.AnimalArmorItem;
-//?} else {
+import java.util.Map;
+        //?} else {
 /*import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.registry.DynamicRegistryManager;
@@ -27,9 +28,14 @@ import net.minecraft.registry.DynamicRegistryManager;
 public final class ItemTrimColourProvider implements ItemColorProvider {
     private final TrimPalettes palettes;
     private final LayerData layerData;
-    private final IdList<ItemColorProvider> existingProviders;
+    //? if fabric {
+    /*private final IdList<ItemColorProvider> existingProviders;
 
     public ItemTrimColourProvider(TrimPalettes palettes, LayerData layerData, IdList<ItemColorProvider> existingProviders) {
+    *///?} elif neoforge {
+    private final Map<Item, ItemColorProvider> existingProviders;
+    //?}
+    public ItemTrimColourProvider(TrimPalettes palettes, LayerData layerData, Map<Item, ItemColorProvider> existingProviders) {
         this.palettes = palettes;
         this.layerData = layerData;
         this.existingProviders = existingProviders;
@@ -61,7 +67,11 @@ public final class ItemTrimColourProvider implements ItemColorProvider {
     }
 
     private int getExistingColor(ItemStack stack, int tintIndex) {
-        ItemColorProvider existingProvider = existingProviders.get(Item.getRawId(stack.getItem()));
+        //? if fabric {
+        /*ItemColorProvider existingProvider = existingProviders.get(Item.getRawId(stack.getItem()));
+        *///?} elif neoforge {
+        ItemColorProvider existingProvider = existingProviders.get(stack.getItem());
+        //?}
         if (existingProvider == null)
             return -1;
 

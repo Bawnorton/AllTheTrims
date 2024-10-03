@@ -3,7 +3,7 @@ package com.bawnorton.allthetrims.client.platform;
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 
 /*? if fabric {*/
-import net.fabricmc.api.ClientModInitializer;
+/*import net.fabricmc.api.ClientModInitializer;
 
 public final class AllTheTrimsClientWrapper implements ClientModInitializer {
     @Override
@@ -12,8 +12,8 @@ public final class AllTheTrimsClientWrapper implements ClientModInitializer {
     }
 }
 
-/*?} elif neoforge {*/
-/*import com.bawnorton.allthetrims.AllTheTrims;
+*//*?} elif neoforge {*/
+import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.compat.yacl.YACLConfigScreenFactory;
 import net.minecraft.client.MinecraftClient;
 import net.neoforged.api.distmarker.Dist;
@@ -28,4 +28,4 @@ public final class AllTheTrimsClientWrapper {
         ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> (container, screen) -> YACLConfigScreenFactory.createScreen(MinecraftClient.getInstance(), screen));
     }
 }
-*//*?}*/
+/*?}*/

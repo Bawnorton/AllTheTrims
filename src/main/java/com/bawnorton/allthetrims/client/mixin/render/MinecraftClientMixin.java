@@ -10,12 +10,15 @@ import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.color.item.ItemColorProvider;
 import net.minecraft.client.color.item.ItemColors;
+import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.util.collection.IdList;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import java.util.HashMap;
+import java.util.Map;
 
 @Mixin(MinecraftClient.class)
 public abstract class MinecraftClientMixin {
@@ -29,7 +32,8 @@ public abstract class MinecraftClientMixin {
     private ItemColors registerTrimColourProvider(ItemColors original) {
         TrimPalettes trimPalettes = AllTheTrimsClient.getTrimPalettes();
         LayerData layerData = AllTheTrimsClient.getLayerData();
-        IdList<ItemColorProvider> providers = new IdList<>();
+        //? if fabric {
+        /*IdList<ItemColorProvider> providers = new IdList<>();
         IdList<ItemColorProvider> existingProviders = ((ItemColorsAccessor) original).getProviders();
         Registries.ITEM.stream()
                 .forEach(item -> {
@@ -38,6 +42,16 @@ public abstract class MinecraftClientMixin {
                     providers.set(existingProvider, rawId);
                 });
         ItemTrimColourProvider colourRenderer = new ItemTrimColourProvider(trimPalettes, layerData, providers);
+        *///?} elif neoforge {
+        Map<Item, ItemColorProvider> providers = new HashMap<>();
+        Map<Item, ItemColorProvider> existingProviders = ((ItemColorsAccessor) original).getProviders();
+        Registries.ITEM.stream()
+                .forEach(item -> {
+                    ItemColorProvider existingProvider = existingProviders.get(item);
+                    providers.put(item, existingProvider);
+                });
+        ItemTrimColourProvider colourRenderer = new ItemTrimColourProvider(trimPalettes, layerData, providers);
+        //?}
         original.register(colourRenderer, colourRenderer.getApplicableItems());
         return original;
     }

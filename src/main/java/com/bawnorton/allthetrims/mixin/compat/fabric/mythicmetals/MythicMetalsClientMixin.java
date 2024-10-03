@@ -2,7 +2,7 @@ package com.bawnorton.allthetrims.mixin.compat.fabric.mythicmetals;
 
 //? if fabric {
 
-import com.bawnorton.allthetrims.client.AllTheTrimsClient;
+/*import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.colour.ARGBColourHelper;
 import com.bawnorton.allthetrims.client.render.TrimRenderer;
 import com.bawnorton.allthetrims.util.mixin.ConditionalMixin;
@@ -42,7 +42,7 @@ public abstract class MythicMetalsClientMixin {
             @Local Sprite sprite,
             @Local HallowedArmor armour) {
     //?} else {
-    /*@WrapOperation(
+    /^@WrapOperation(
             method = "lambda$registerArmorRenderer$11",
             at = @At(
                     value = "INVOKE",
@@ -54,7 +54,7 @@ public abstract class MythicMetalsClientMixin {
             @Local(argsOnly = true) ArmorTrim trim,
             @Local Sprite sprite,
             @Local(argsOnly = true) HallowedArmor armour) {
-    *///?}
+    ^///?}
         AllTheTrimsClient.getTrimRenderer().renderTrim(
                 trim,
                 armour.getMaterial(),
@@ -69,16 +69,16 @@ public abstract class MythicMetalsClientMixin {
                 //? if >1.20.6 {
                 instance::render
                  //?} else {
-                /*(matrices, vertices, light1, overlay1, colour) -> {
+                /^(matrices, vertices, light1, overlay1, colour) -> {
                     float r = ARGBColourHelper.floatFromChannel(ColorHelper.Argb.getRed(colour));
                     float g = ARGBColourHelper.floatFromChannel(ColorHelper.Argb.getGreen(colour));
                     float b = ARGBColourHelper.floatFromChannel(ColorHelper.Argb.getBlue(colour));
                     float a = ARGBColourHelper.floatFromChannel(ColorHelper.Argb.getAlpha(colour));
                     original.call(instance, matrices, vertices, light1, overlay1, r, g, b, a);
                 }
-                *///?}
+                ^///?}
         );
     }
 }
 
-//?}
+*///?}

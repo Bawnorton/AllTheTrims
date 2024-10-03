@@ -1,3 +1,7 @@
+## 4.0.7
+
+- Fix colour provider accessor on neoforge
+
 ## 4.0.6
 
 - Fix built-in trim rendering when using shaders

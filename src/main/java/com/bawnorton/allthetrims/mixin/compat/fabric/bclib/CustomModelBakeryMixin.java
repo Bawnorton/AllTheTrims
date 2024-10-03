@@ -2,7 +2,7 @@ package com.bawnorton.allthetrims.mixin.compat.fabric.bclib;
 
 //? if fabric {
 
-import com.bawnorton.allthetrims.AllTheTrims;
+/*import com.bawnorton.allthetrims.AllTheTrims;
 import com.bawnorton.allthetrims.client.AllTheTrimsClient;
 import com.bawnorton.allthetrims.client.mixin.accessor.JsonUnbakedModelAccessor;
 import com.bawnorton.allthetrims.client.model.item.JsonParser;
@@ -93,4 +93,4 @@ public abstract class CustomModelBakeryMixin {
     }
 }
 
-//?}
+*///?}
