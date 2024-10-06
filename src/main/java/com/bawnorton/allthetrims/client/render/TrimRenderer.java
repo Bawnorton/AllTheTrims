@@ -122,7 +122,7 @@ public final class TrimRenderer extends Adaptable<TrimRendererAdapter> {
         }
 
         if (useLegacyRenderer(sprite)) {
-            if(!isSpriteDynamic(sprite)) {
+            if(!(isSpriteDynamic(sprite) || AllTheTrimsClient.getConfig().overrideExisting)) {
                 callback.render(matrices, sprite.getTextureSpecificVertexConsumer(vertexConsumers.getBuffer(getLegacyRenderLayer(context.trimmed(), trim))), light, overlay, colour);
             } else {
                 legacyRenderTrim(context, trim, matrices, vertexConsumers, light, overlay, colour, modelId, atlasTexture, renderLayer, callback);

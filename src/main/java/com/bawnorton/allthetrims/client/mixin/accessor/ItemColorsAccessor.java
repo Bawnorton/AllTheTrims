@@ -12,8 +12,8 @@ import java.util.Map;
 public interface ItemColorsAccessor {
     @Accessor
     //? if fabric {
-    /*IdList<ItemColorProvider> getProviders();
-    *///?} elif neoforge {
-    Map<Item, ItemColorProvider> getProviders();
-    //?}
+    IdList<ItemColorProvider> getProviders();
+    //?} elif neoforge {
+    /*Map<Item, ItemColorProvider> getProviders();
+    *///?}
 }

@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 //? if >1.20.6
 import net.minecraft.recipe.RecipeEntry;
 //? if neoforge
-@mezz.jei.api.JeiPlugin
+/*@mezz.jei.api.JeiPlugin*/
 public final class JeiPluginImpl implements IModPlugin {
     //? if >1.20.6 {
     @SuppressWarnings("unchecked")

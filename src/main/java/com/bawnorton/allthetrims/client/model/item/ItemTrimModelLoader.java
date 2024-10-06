@@ -55,7 +55,7 @@ public final class ItemTrimModelLoader extends Adaptable<TrimModelLoaderAdapter>
             Identifier modelId = trimmableResource.modelId().withSuffixedPath("_%s_trim".formatted(AllTheTrims.DYNAMIC));
 
             if(AllTheTrimsClient.getConfig().overrideExisting) {
-                itemModel.overrides.clear();
+                itemModel.overrides.forEach(modelOverride -> modelOverride.model = modelId.toString());
             }
 
             itemModel.addOverride(ModelOverride.builder()

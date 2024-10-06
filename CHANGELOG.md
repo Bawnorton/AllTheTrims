@@ -1,3 +1,7 @@
+## 4.0.8
+
+- Fix overriding existing material texture rendering
+
 ## 4.0.7
 
 - Fix colour provider accessor on neoforge

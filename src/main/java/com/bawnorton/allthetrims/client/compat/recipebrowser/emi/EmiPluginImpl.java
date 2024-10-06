@@ -23,7 +23,7 @@ import net.minecraft.registry.tag.ItemTags;
 import net.minecraft.recipe.RecipeEntry;
 
 //? if neoforge
-@dev.emi.emi.api.EmiEntrypoint
+/*@dev.emi.emi.api.EmiEntrypoint*/
 public final class EmiPluginImpl implements EmiPlugin {
     @Override
     public void register(EmiRegistry registry) {

@@ -29,14 +29,14 @@ public final class ItemTrimColourProvider implements ItemColorProvider {
     private final TrimPalettes palettes;
     private final LayerData layerData;
     //? if fabric {
-    /*private final IdList<ItemColorProvider> existingProviders;
+    private final IdList<ItemColorProvider> existingProviders;
 
     public ItemTrimColourProvider(TrimPalettes palettes, LayerData layerData, IdList<ItemColorProvider> existingProviders) {
-    *///?} elif neoforge {
-    private final Map<Item, ItemColorProvider> existingProviders;
+    //?} elif neoforge {
+    /*private final Map<Item, ItemColorProvider> existingProviders;
 
     public ItemTrimColourProvider(TrimPalettes palettes, LayerData layerData, Map<Item, ItemColorProvider> existingProviders) {
-    //?}
+    *///?}
         this.palettes = palettes;
         this.layerData = layerData;
         this.existingProviders = existingProviders;
@@ -69,10 +69,10 @@ public final class ItemTrimColourProvider implements ItemColorProvider {
 
     private int getExistingColor(ItemStack stack, int tintIndex) {
         //? if fabric {
-        /*ItemColorProvider existingProvider = existingProviders.get(Item.getRawId(stack.getItem()));
-        *///?} elif neoforge {
-        ItemColorProvider existingProvider = existingProviders.get(stack.getItem());
-        //?}
+        ItemColorProvider existingProvider = existingProviders.get(Item.getRawId(stack.getItem()));
+        //?} elif neoforge {
+        /*ItemColorProvider existingProvider = existingProviders.get(stack.getItem());
+        *///?}
         if (existingProvider == null)
             return -1;
 
