@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Slice;
 import java.util.function.Supplier;
 
-@SuppressWarnings("UnusedMixin")
 @Mixin(VanillaPlugin.class)
 @ConditionalMixin("emi")
 public abstract class VanillaPluginMixin {

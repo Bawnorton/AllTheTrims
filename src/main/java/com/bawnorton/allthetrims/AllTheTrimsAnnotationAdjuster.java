@@ -13,7 +13,6 @@ public final class AllTheTrimsAnnotationAdjuster implements MixinAnnotationAdjus
         if(!mixinClassName.equals("net.irisshaders.iris.mixin.MixinProgram")) return annotationNode;
         if(!annotationNode.is(Inject.class)) return annotationNode;
 
-        annotationNode.set("cancellable", annotationNode.<Boolean>get("cancellable").orElse(false));
         return annotationNode.as(AdjustableInjectNode.class).withCancellable(cancellable -> true); // actually log shader errors instead of failing.. thanks
     }
 }

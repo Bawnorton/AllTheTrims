@@ -44,12 +44,8 @@ public final class EmiPluginImpl implements EmiPlugin {
         registry.addCategory(trimming);
         registry.addWorkstation(trimming, EmiStack.of(Items.SMITHING_TABLE));
 
-        //? if >1.20.6 {
         for (RecipeEntry<SmithingRecipe> recipeEntry : registry.getRecipeManager().listAllOfType(RecipeType.SMITHING)) {
             SmithingRecipe recipe = recipeEntry.value();
-        //?} else {
-        /*for(SmithingRecipe recipe : registry.getRecipeManager().listAllOfType(RecipeType.SMITHING)) {
-        *///?}
             if (recipe instanceof SmithingTrimRecipeAccessor accessor) {
                 registry.addRecipe(new EmiSmithingTrimRecipe(
                         EmiIngredient.of(accessor.getTemplate()),

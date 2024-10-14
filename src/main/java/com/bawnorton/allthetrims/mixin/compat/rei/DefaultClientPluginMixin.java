@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.injection.Slice;
 import java.util.Collection;
 import java.util.function.Function;
 
-@SuppressWarnings({"UnusedMixin", "UnstableApiUsage"})
 @ConditionalMixin("roughlyenoughitems")
 @Mixin(DefaultClientPlugin.class)
 public abstract class DefaultClientPluginMixin {

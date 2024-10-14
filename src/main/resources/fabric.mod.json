@@ -22,9 +22,6 @@
     "client": [
       "com.bawnorton.allthetrims.client.platform.AllTheTrimsClientWrapper"
     ],
-    "modmenu": [
-      "com.bawnorton.allthetrims.client.compat.modmenu.ModMenuImpl"
-    ],
     "rei_client": [
       "com.bawnorton.allthetrims.client.compat.recipebrowser.rei.ReiPluginImpl"
     ],

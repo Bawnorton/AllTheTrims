@@ -3,8 +3,6 @@
   "package": "com.bawnorton.allthetrims.mixin",
   "minVersion": "0.8",
   "mixins": [
-    "RegistryLoaderMixin",
-    "TagGroupLoaderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

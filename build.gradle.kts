@@ -19,6 +19,7 @@ group = mod.group
 base.archivesName.set(mod.name)
 
 repositories {
+    mavenLocal()
     mavenCentral()
     exclusiveContent {
         forRepository { maven("https://api.modrinth.com/maven") }
@@ -38,6 +39,7 @@ repositories {
 
 dependencies {
     minecraft("com.mojang:minecraft:$minecraftVersion")
+    modImplementation("com.bawnorton.runtimetrims:runtimetrims-$loader:${property("runtimetrims")}+$minecraftVersion")
 
     modImplementation("dev.isxander:yet-another-config-lib:${property("yacl")}+$minecraftVersion-$loader")
 

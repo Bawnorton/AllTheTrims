@@ -1,6 +1,7 @@
-package com.bawnorton.allthetrims.client.model.item.adapter;
+package com.bawnorton.allthetrims.client.adapters;
 
-import com.bawnorton.allthetrims.AllTheTrims;
+import com.bawnorton.runtimetrims.RuntimeTrims;
+import com.bawnorton.runtimetrims.client.model.item.adapter.TrimModelLoaderAdapter;
 import dev.kikugie.elytratrims.api.ElytraTrimsAPI;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
@@ -21,6 +22,6 @@ public final class ElytraTrimModelLoaderAdapter extends TrimModelLoaderAdapter {
 
     @Override
     public String getLayerName(Item item, int layerIndex) {
-        return "minecraft:trims/items/elytra/default_%s_%s".formatted(layerIndex, AllTheTrims.DYNAMIC);
+        return "minecraft:trims/items/elytra/default_%s_%s".formatted(layerIndex, RuntimeTrims.DYNAMIC);
     }
 }
