@@ -47,7 +47,8 @@
     "fabricloader": ">=0.15.0",
     "minecraft": "${minecraft_dependency}",
     "java": ">=${java}",
-    "fabric-api": "*"
+    "fabric-api": "*",
+    "runtimetrims": ">=1.0.0"
   },
   "custom": {
     "modmenu": {

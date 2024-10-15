@@ -1,13 +1,13 @@
 package com.bawnorton.allthetrims.client.adapters;
 
 import com.bawnorton.runtimetrims.RuntimeTrims;
-import com.bawnorton.runtimetrims.client.model.item.adapter.TrimModelLoaderAdapter;
+import com.bawnorton.runtimetrims.client.model.item.adapter.DefaultTrimModelLoaderAdapter;
 import dev.kikugie.elytratrims.api.ElytraTrimsAPI;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import java.util.List;
 
-public final class ElytraTrimModelLoaderAdapter extends TrimModelLoaderAdapter {
+public final class ElytraTrimModelLoaderAdapter extends DefaultTrimModelLoaderAdapter {
     public static final List<Item> APPLICABLE = Registries.ITEM.stream().filter(ElytraTrimsAPI::isProbablyElytra).toList();
 
     @Override

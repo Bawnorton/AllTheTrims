@@ -1,3 +1,7 @@
+## 5.0.0
+
+- Migrate to RuntimeTrims mod
+
 ## 4.0.8
 
 - Fix overriding existing material texture rendering
