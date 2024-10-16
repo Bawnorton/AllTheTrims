@@ -91,6 +91,19 @@ tasks {
             expand(refmap)
         }
     }
+
+    processResources {
+        val modMetadata = mapOf(
+            "version" to mod.version,
+            "minecraft_dependency" to mod.minecraftDependency,
+            "loader_version" to loader.getVersion(),
+            "java" to minecraftVersion.javaVersion()
+        )
+
+        inputs.properties(modMetadata)
+        filesMatching("META-INF/neoforge.mods.toml") { expand(modMetadata) }
+        filesMatching("fabric.mod.json") { expand(modMetadata) }
+    }
 }
 
 java {
@@ -144,19 +157,6 @@ if(loader.isFabric) {
 
         mappings("net.fabricmc:yarn:$minecraftVersion+build.${property("yarn_build")}:v2")
     }
-
-    tasks {
-        processResources {
-            val modMetadata = mapOf(
-                "version" to mod.version,
-                "minecraft_dependency" to mod.minecraftDependency,
-                "java" to minecraftVersion.javaVersion(),
-            )
-
-            inputs.properties(modMetadata)
-            filesMatching("fabric.mod.json") { expand(modMetadata) }
-        }
-    }
 }
 
 if (loader.isNeoForge) {
@@ -181,17 +181,6 @@ if (loader.isNeoForge) {
     }
 
     tasks {
-        processResources {
-            val modMetadata = mapOf(
-                "version" to mod.version,
-                "minecraft_dependency" to mod.minecraftDependency,
-                "loader_version" to loader.getVersion()
-            )
-
-            inputs.properties(modMetadata)
-            filesMatching("META-INF/neoforge.mods.toml") { expand(modMetadata) }
-        }
-
         remapJar {
             atAccessWideners.add(awName)
         }
