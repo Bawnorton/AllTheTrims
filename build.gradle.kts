@@ -35,11 +35,14 @@ repositories {
     maven("https://maven.blamejared.com/")
     maven("https://jitpack.io")
     maven("https://maven.bawnorton.com/releases")
+    maven("https://maven.fallenbreath.me/releases")
 }
 
 dependencies {
     minecraft("com.mojang:minecraft:$minecraftVersion")
-    modImplementation("com.bawnorton.runtimetrims:runtimetrims-$loader:${property("runtimetrims")}+$minecraftVersion")
+    modImplementation("com.bawnorton.runtimetrims:runtimetrims-$loader:${property("runtimetrims")}+$minecraftVersion") {
+        exclude("com.bawnorton.allthetrims")
+    }
 
     modImplementation("dev.isxander:yet-another-config-lib:${property("yacl")}+$minecraftVersion-$loader")
 
@@ -126,7 +129,10 @@ if(loader.isFabric) {
 
         modImplementation("com.terraformersmc:modmenu:${property("mod_menu")}")
 
-        modCompileOnly("maven.modrinth:elytra-trims:${property("elytra_trims")}")
+        modImplementation("maven.modrinth:elytra-trims:${property("elytra_trims")}")
+        modRuntimeOnly("net.fabricmc:fabric-language-kotlin:1.12.3+kotlin.2.0.21")
+        modRuntimeOnly("me.fallenbreath:conditional-mixin-fabric:0.6.3")
+
         modCompileOnly("maven.modrinth:show-me-your-skin:${property("show_me_your_skin")}")
         modCompileOnly("maven.modrinth:female-gender:${property("wildfire_gender")}")
         modCompileOnly("maven.modrinth:mythicmetals:${property("mythic_metals")}")
@@ -159,6 +165,8 @@ if (loader.isNeoForge) {
 
         compileOnly(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-common:0.2.0-beta.6")!!)
         implementation(include("com.github.bawnorton.mixinsquared:mixinsquared-forge:0.2.0-beta.6")!!)
+        compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1")!!)
+        implementation(include("io.github.llamalad7:mixinextras-neoforge:0.4.1")!!)
 
         modCompileOnly("maven.modrinth:elytra-trims:${property("elytra_trims")}").stripAw(project)
 

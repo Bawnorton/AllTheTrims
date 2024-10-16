@@ -4,12 +4,13 @@
   "minVersion": "0.8",
   "plugin": "com.bawnorton.allthetrims.mixin.compat.AllTheTrimsCompatMixinPlugin",
   "mixins": [
-    "rei.DefaultClientPluginMixin",
-    "emi.VanillaPluginMixin",
-    "jei.SmithingRecipeCategoryMixin",
     //? if fabric {
     "fabric.mythicmetals.MythicMetalsClientMixin",
     //?}
+    "rei.DefaultClientPluginMixin",
+    "emi.VanillaPluginMixin",
+    "jei.SmithingRecipeCategoryMixin",
+    "elytratrims.AllTheTrimsCompatMixin"
   ],
   "injectors": {
     "defaultRequire": 1
