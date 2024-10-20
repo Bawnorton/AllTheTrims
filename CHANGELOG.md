@@ -1,3 +1,7 @@
+## 5.0.1
+
+- Properly specify runtime trims as a dep
+
 ## 5.0.0
 
 - Migrate to RuntimeTrims mod

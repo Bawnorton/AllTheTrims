@@ -212,7 +212,7 @@ extensions.configure<PublishingExtension> {
 publishMods {
     file = tasks.remapJar.get().archiveFile
     val tag = "$loader-${mod.version}+$minecraftVersion"
-    changelog = "[Changelog](https://github.com/Bawnorton/AllTheTrims/blob/stonecutter/CHANGELOG.md)"
+    changelog = "[Changelog](https://github.com/Bawnorton/AllTheTrims/blob/runtimetrims-port/CHANGELOG.md)"
     displayName = "${mod.name} ${loader.toString().replaceFirstChar { it.uppercase() }} ${mod.version} for $minecraftVersion"
     type = STABLE
     modLoaders.add(loader.toString())
@@ -237,10 +237,9 @@ publishMods {
             }
         }
         if(loader.isFabric) {
-            requires {
-                slug = "fabric-api"
-            }
+            requires("fabric-api")
         }
+        requires("runtimetrims")
     }
 
     curseforge {
@@ -255,9 +254,8 @@ publishMods {
             }
         }
         if(loader.isFabric) {
-            requires {
-                slug = "fabric-api"
-            }
+            requires("fabric-api")
         }
+        requires("runtimetrims")
     }
 }
